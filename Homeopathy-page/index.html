@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Homeopathy | Hello Take Care</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    body {
+      background-color: #f4fdf9;
+      color: #333;
+    }
+
+    header {
+      background-color: #2e7d32;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: white;
+    }
+
+    nav a {
+      margin-left: 20px;
+      text-decoration: none;
+      color: #fff;
+      font-weight: 500;
+    }
+
+    .hero {
+      background: linear-gradient(to right, #c8e6c9, #e8f5e9);
+      padding: 3rem 2rem;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: #1b5e20;
+    }
+
+    .search-box {
+      margin: 2rem auto;
+      width: 100%;
+      max-width: 500px;
+      position: relative;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 1rem;
+      font-size: 1rem;
+      border: 2px solid #81c784;
+      border-radius: 10px;
+      outline: none;
+    }
+
+    .cta-button {
+      margin-top: 1rem;
+      padding: 0.75rem 2rem;
+      background-color: #388e3c;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1.2rem;
+      text-decoration: none;
+    }
+    .cta-button:hover{
+      transition: all 0.3s ease;
+      color: #ff0000;
+    }
+
+    .services, .conditions, .testimonials {
+      padding: 2rem;
+    }
+
+    .section-title {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      text-align: center;
+      color: #2e7d32;
+    }
+
+    .cards {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.5rem;
+    }
+
+    .card {
+      background-color: #fff;
+      padding: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      width: 250px;
+      text-align: center;
+    }
+
+    .testimonials-box {
+      max-width: 600px;
+      margin: 0 auto;
+      background: white;
+      padding: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .testimonials-box textarea {
+      width: 100%;
+      height: 100px;
+      padding: 0.75rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      resize: none;
+    }
+
+    .testimonials-box button {
+      margin-top: 1rem;
+      padding: 0.5rem 1.5rem;
+      background-color: #388e3c;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .bot button{
+    /* background-color:#ff0073 ;
+    height: 50px;
+      width: 50px;
+      margin: 0;
+      padding: 0; */
+      padding: 0px;
+      background-color: #dd0d0d;
+      color: white;
+      height: 80px;
+      width: 80px;
+      font-size: 14px;
+      border-radius: 5px;
+      position: fixed;
+      right: 30px;
+      bottom: 50px;
+      border-radius: 50%;
+      background-color: #ff0073;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+  }
+
+  .bot button img {
+      height: 50px;
+      width: 50px;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    text-decoration: none;
+}
+
+footer {
+    width: 100%;
+    position: relative;
+    bottom: 0;
+    left: 0;
+    background: #313232;
+}
+
+footer .content-f {
+    max-width: 1350px;
+    margin: auto;
+    padding: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+footer .content-f p,
+a {
+    color: #fff;
+}
+
+footer .content-f .box-f {
+    width: 33%;
+    transition: all 0.4s ease;
+}
+
+footer .content-f .topic {
+    font-size: 22px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 16px;
+
+}
+
+footer .content-f p {
+    text-align: justify;
+}
+
+footer .content-f .lower .topic {
+    margin: 24px 0 5px 0;
+}
+
+footer .content-f .lower i {
+    padding-right: 16px;
+}
+
+footer .content-f .middle {
+    padding-left: 80px;
+}
+
+footer .content-f .middle a {
+    line-height: 32px;
+}
+
+footer .content-f .right input[type="text"] {
+    height: 45px;
+    width: 100%;
+    outline: none;
+    color: #d9d9d9;
+    background: #232121;
+    border-radius: 5px;
+    padding-left: 10px;
+    font-size: 17px;
+    border: 2px solid #222222;
+}
+
+footer .content-f .right input[type="submit"] {
+    height: 42px;
+    width: 100%;
+    font-size: 18px;
+    color: #d9d9d9;
+    background: #008893;
+    outline: none;
+    border-radius: 5px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    margin-top: 12px;
+    border: 2px solid #008893;
+    transition: all 0.3s ease-in-out;
+}
+
+.content-f .right input[type="submit"]:hover {
+    background: none;
+    color: #008893;
+}
+
+footer .content-f .media-icons a {
+    font-size: 16px;
+    height: 45px;
+    width: 45px;
+    display: inline-block;
+    text-align: center;
+    line-height: 43px;
+    border-radius: 5px;
+    border: 2px solid none;
+    margin: 30px 5px 0 0;
+    transition: all 0.3s ease;
+}
+
+.content-f .media-icons a:hover {
+    border-color: #008893;
+}
+
+footer .bottom-f {
+    width: 100%;
+    text-align: right;
+    color: #d9d9d9;
+    padding: 0 40px 5px 0;
+}
+
+footer .bottom-f a {
+    color: #008893;
+}
+
+footer a {
+    transition: all 0.3s ease;
+}
+
+footer a:hover {
+    color: #008893;
+}
+
+@media (max-width:992px) {
+    footer .content-f .middle {
+        padding-left: 50px;
+    }
+}
+
+@media (max-width:768px) {
+    footer .content-f .box {
+        width: 50%;
+    }
+
+    .content-f .right {
+        margin-top: 40px;
+    }
+}
+
+@media (max-width:576px) {
+    footer {
+        position: relative;
+    }
+
+    footer .content-f .box-f {
+        width: 100%;
+        margin-top: 30px;
+    }
+
+    footer .content-f .middle {
+        padding-left: 0;
+    }
+}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">HelloTakeCare</div>
+    <nav>
+      <a href="#">Home</a>
+      <a href="#">Services</a>
+      <a href="#">Specialists</a>
+      <a href="#">Contact</a>
+      <a href="#">Login</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h1>Natural Healing with Homeopathy</h1>
+    <div class="search-box">
+      <input type="text" placeholder="Describe your symptoms..." />
+    </div>
+    <a class="cta-button" href="../Doctor_List/HomoDocList.html">Consult a Homeopath</a>
+  </section>
+
+  <section class="services">
+    <h2 class="section-title">Our Homeopathic Services</h2>
+    <div class="cards">
+      <div class="card">
+        <h3>Personalized Treatment</h3>
+        <p>Tailored remedies for your unique constitution and symptoms.</p>
+      </div>
+      <div class="card">
+        <h3>Chronic Conditions</h3>
+        <p>Effective management for allergies, migraines, arthritis and more.</p>
+      </div>
+      <div class="card">
+        <h3>Children’s Wellness</h3>
+        <p>Safe, gentle remedies for common pediatric issues.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="conditions">
+    <h2 class="section-title">Conditions We Address</h2>
+    <div class="cards">
+      <div class="card">Anxiety & Stress</div>
+      <div class="card">Skin Allergies</div>
+      <div class="card">Thyroid Imbalance</div>
+      <div class="card">Digestive Issues</div>
+      <div class="card">Joint Pain</div>
+    </div>
+  </section>
+
+  <section class="testimonials">
+    <h2 class="section-title">Share Your Experience</h2>
+    <div class="testimonials-box">
+      <textarea placeholder="Tell us how homeopathy helped you..."></textarea>
+      <button>Submit Testimonial</button>
+    </div>
+  </section>
+
+  <footer>
+    <!-- <div class="bot">
+      <input type="checkbox" id="check"> <label class="chat-btn" for="check"> <i class="fa fa-commenting-o comment"></i>
+        <i class="fa fa-close close"></i> </label>
+      <div class="wrapper">
+        <iframe id="bot " allow="microphone;" width="350" height="430"
+          src="https://console.dialogflow.com/api-client/demo/embedded/a2a13de6-b506-4521-8512-1b3eaa5dc02f">
+        </iframe>
+      </div>
+    </div> -->
+    <div class="content-f">
+      <div class="left box-f">
+        <div class="upper">
+          <div class="topic">About us</div>
+          <p>MedEase is a thorough telemedicine website created to give consumers easy access to high-quality
+            healtcare services from the convenience of their homes.</p>
+        </div>
+        <div class="lower">
+          <div class="topic">Contact us</div>
+          <div class="phone">
+            <a href="#"><i class="fas fa-phone-volume"></i>+91 9748196100</a>
+          </div>
+          <div class="email">
+            <a href="#"><i class="fas fa-envelope"></i>vikramjeetgupta2004@gmail.com</a>
+          </div>
+        </div>
+      </div>
+      <div class="middle box-f">
+        <div class="topic">Our Services</div>
+        <div><a href="./diet.html">DIET</a></div>
+        <div><a href="./aboutus.html">About Us</a></div>
+        <div><a href="#">Nearby Pharmas</a></div>
+        <div><a href="./map.html"> Nearby Hospitals</a></div>
+        <div><a href="./index.html#faq">FAQ's</a></div>
+      </div>
+      <div class="right box-f">
+        <div class="topic">Subscribe us</div>
+        <form action="#">
+          <input type="text" placeholder="Enter email address">
+          <input type="submit" name="" value="Send">
+          <div class="media-icons">
+            <a href="#" class="me-3"><img src="../img/"></a>
+            <a href="#" class="me-3"><img src="../img/icons8-twitter.svg"></a>
+            <a href="#" class="me-4"><img src="../img/icons8-instagram.svg"></a>
+            <a href="#" class="me-4"><img src="../img/icons8-github.svg"></a>
+            <a href="#" class="me-3"><img src="../img/icons8-linkedin-circled.svg"></a>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="bottom-f mt-4">
+      <p>Copyright © 2025 <a href="./index.html">HelloTakeCare</a> All rights reserved</p>
+    </div>
+  </footer>
+</body>
+</html>

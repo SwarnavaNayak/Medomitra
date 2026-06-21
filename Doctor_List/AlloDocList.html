@@ -1,0 +1,1435 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Allopathy Doctor List</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Poppins', sans-serif;
+        }
+        html{
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: linear-gradient(120deg, #f8fafc 60%, #e0f7fa 100%);
+            color: #222;
+            min-height: 100vh;
+            padding-top: 60px;
+        }
+
+        header {
+            /* background: linear-gradient(90deg, #007bff 60%, #00c6ff 100%); */
+            color: white;
+            padding: 1.2rem 2.5rem;
+            /* display: flex;
+            justify-content: space-between;
+            align-items: center; */
+            box-shadow: 0 4px 24px rgba(0, 123, 255, 0.10);
+            /* gap: 1.5rem; */
+        }
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .header-logo img {
+            height: 48px;
+            width: 48px;
+            object-fit: contain;
+            border-radius: 12px;
+            background: #fff;
+            box-shadow: 0 2px 8px rgba(0,123,255,0.08);
+        }
+        .header-logo span {
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            color: #fff;
+            font-family: 'Poppins', 'Inter', sans-serif;
+            text-shadow: 0 2px 8px rgba(0,123,255,0.10);
+        }
+
+        .trust-badges {
+            background: rgba(255,255,255,0.92);
+            border-radius: 16px;
+            box-shadow: 0 2px 12px rgba(0,123,255,0.07);
+            padding: 1.1rem 1.5rem 1.2rem 1.5rem;
+            margin-bottom: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.7rem;
+            align-items: flex-start;
+            border: 1.5px solid #e0e7ef;
+        }
+        .trust-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            background: #e0f7fa;
+            color: #007bff;
+            font-size: 1.01rem;
+            font-weight: 600;
+            border-radius: 8px;
+            padding: 4px 14px 4px 10px;
+            box-shadow: 0 1px 4px rgba(0,123,255,0.06);
+        }
+        .trust-badge .badge-icon {
+            font-size: 1.2rem;
+        }
+
+        .testimonials-carousel {
+            background: rgba(255,255,255,0.92);
+            border-radius: 16px;
+            box-shadow: 0 2px 12px rgba(0,123,255,0.07);
+            padding: 1.1rem 1.5rem 1.2rem 1.5rem;
+            margin-bottom: 1.2rem;
+            border: 1.5px solid #e0e7ef;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            min-height: 120px;
+            position: relative;
+        }
+        .testimonial-text {
+            font-size: 1.08rem;
+            color: #333;
+            font-style: italic;
+            margin-bottom: 0.7rem;
+        }
+        .testimonial-author {
+            font-size: 0.98rem;
+            color: #007bff;
+            font-weight: 600;
+        }
+        .testimonial-nav {
+            position: absolute;
+            right: 1.2rem;
+            bottom: 1.2rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+        .testimonial-nav button {
+            background: #e0f7fa;
+            border: none;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            color: #007bff;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .testimonial-nav button:hover {
+            background: #b3e0fc;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 2.5rem auto 0 auto;
+            padding: 0 1.2rem 2rem 1.2rem;
+            display: flex;
+            gap: 1.2rem;
+        }
+
+        .sidebar {
+            width: 270px;
+            min-width: 200px;
+            max-height: 85vh;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1.1rem;
+            position: sticky;
+            top: 2.5rem;
+            height: fit-content;
+            scrollbar-width: none;
+            scrollbar-color: transparent transparent;
+        }
+        .sidebar::-webkit-scrollbar {
+            width: 0;
+            background: transparent;
+        }
+
+        .main-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .filter-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            width: 100%;
+        }
+
+        .filter-bar {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: #fff;
+            box-shadow: 0 2px 12px rgba(0,123,255,0.07);
+            border-radius: 16px;
+            padding: 0.7rem 1.5rem;
+            min-width: 0;
+            margin: 0;
+        }
+        .filter-bar label {
+            font-weight: 600;
+            color: #007bff;
+            margin-right: 0.5rem;
+        }
+        .filter-bar select {
+            padding: 0.6rem 1.2rem 0.6rem 2.2rem;
+            border-radius: 10px;
+            border: 1.5px solid #e0e7ef;
+            font-size: 1rem;
+            font-family: inherit;
+            background: #f8fafd url('data:image/svg+xml;utf8,<svg fill="%23007bff" height="18" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat 8px center/18px 18px;
+            color: #007bff;
+            font-weight: 500;
+            transition: border 0.2s;
+        }
+        .filter-bar select:focus {
+            border: 1.5px solid #007bff;
+            outline: none;
+        }
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background: #fff;
+            box-shadow: 0 2px 12px rgba(0,123,255,0.07);
+            border-radius: 16px;
+            padding: 0.6rem 1.2rem;
+            min-width: 0;
+            margin: 0;
+            gap: 0.7rem;
+        }
+        .search-bar input {
+            border: none;
+            outline: none;
+            font-size: 1rem;
+            background: transparent;
+            width: 100%;
+            color: #222;
+            font-family: inherit;
+        }
+        .search-bar .search-icon {
+            color: #007bff;
+            font-size: 1.3rem;
+        }
+        .quick-stats {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: flex-start;
+            align-items: flex-start;
+            margin-top: 0;
+            margin-bottom: 0;
+            flex-wrap: wrap;
+        }
+        .stat-card {
+            background: linear-gradient(90deg, #e0f7fa 60%, #f0f2f5 100%);
+            color: #007bff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,123,255,0.07);
+            padding: 0.7rem 1.5rem;
+            font-size: 1.05rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .stat-card .stat-icon {
+            font-size: 1.2rem;
+            margin-right: 0.3rem;
+        }
+
+        .doctor-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .doctor-card {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 123, 255, 0.08), 0 2px 8px rgba(0,0,0,0.04);
+            padding: 1.7rem 1.5rem 1.5rem 1.5rem;
+            cursor: pointer;
+            transition: transform 0.25s cubic-bezier(.4,2,.6,1), box-shadow 0.25s, border 0.3s, background 0.3s;
+            min-width: 362px;
+            position: relative;
+            border: 2px solid transparent;
+        }
+
+        .doctor-card.active {
+            background: linear-gradient(105deg, #e0f7fa 60%, #f0f2f5 100%);
+            box-shadow: 0 8px 24px rgba(0, 123, 255, 0.12);
+            border: 2px solid #007bff;
+            transform: scale(1.025);
+        }
+
+        .doctor-card:hover {
+            transform: translateY(-7px) scale(1.03);
+            box-shadow: 0 12px 32px rgba(0, 123, 255, 0.13), 0 2px 8px rgba(0,0,0,0.06);
+            border: 2px solid #00c6ff;
+        }
+
+        .doctor-card h3 {
+            margin-bottom: 0.5rem;
+            font-size: 1.35rem;
+            color: #007bff;
+            font-weight: 700;
+        }
+
+        .doctor-card p {
+            margin-bottom: 0.3rem;
+            font-size: 0.95rem;
+            color: #555;
+        }
+
+        .badge {
+            display: inline-block;
+            background: linear-gradient(90deg, #ffb347 60%, #ffcc80 100%);
+            color: #fff;
+            font-size: 0.85rem;
+            font-weight: 600;
+            padding: 3px 12px;
+            border-radius: 8px;
+            margin-left: 0.5rem;
+            margin-bottom: 0.3rem;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 8px rgba(255,179,71,0.08);
+            position: relative;
+        }
+        .tooltip {
+            position: relative;
+            cursor: pointer;
+        }
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: max-content;
+            background: #222;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 6px 12px;
+            position: absolute;
+            z-index: 10;
+            bottom: 120%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.2s;
+            font-size: 0.95rem;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+        .tooltip:hover .tooltiptext, .tooltip:focus .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .doctor-card .chevron {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s;
+            color: #007bff;
+            font-size: 1.3rem;
+            pointer-events: none;
+        }
+        .doctor-card.active .chevron {
+            transform: rotate(90deg);
+        }
+
+        .doctor-details {
+            display: grid;
+            grid-template-rows: 0fr;
+            overflow: hidden;
+            margin-top: 1rem;
+            border-top: 1px solid #eee;
+            padding-top: 0;
+            transition: grid-template-rows 0.4s cubic-bezier(.4,2,.6,1), padding-top 0.3s;
+            background: transparent;
+        }
+        .doctor-card.active .doctor-details {
+            grid-template-rows: 1fr;
+            padding-top: 1rem;
+            background: #f8fbff;
+        }
+        .doctor-details-content {
+            min-height: 0;
+        }
+        .hide-details-btn {
+            margin-top: 1rem;
+            padding: 0.5rem 1.2rem;
+            background: #fff;
+            color: #007bff;
+            border: 1px solid #007bff;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.98rem;
+            font-weight: 500;
+            transition: background 0.2s, color 0.2s;
+        }
+        .hide-details-btn:hover {
+            background: #007bff;
+            color: #fff;
+        }
+
+        .book-button {
+            margin-top: 1rem;
+            padding: 0.6rem 1.5rem;
+            background: linear-gradient(90deg, #28a745 60%, #43e97b 100%);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(40,167,69,0.08);
+            transition: background 0.2s, box-shadow 0.2s;
+        }
+        .book-button:hover {
+            background: linear-gradient(90deg, #218838 60%, #43e97b 100%);
+            box-shadow: 0 4px 16px rgba(40,167,69,0.13);
+        }
+
+        .no-doctors {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #999;
+            margin-top: 2rem;
+        }
+
+        footer {
+            background: linear-gradient(90deg, #007bff 60%, #00c6ff 100%);
+            color: #fff;
+            padding: 2.5rem 0 0.7rem 0;
+            font-size: 1.08rem;
+            letter-spacing: 0.5px;
+            box-shadow: 0 -2px 16px rgba(0, 123, 255, 0.08);
+            margin-top: 2.5rem;
+        }
+        .content-f {
+            display: flex;
+            justify-content: space-between;
+            gap: 2.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+        }
+        .box-f {
+            flex: 1 1 260px;
+            min-width: 220px;
+            margin-bottom: 1.5rem;
+        }
+        .topic {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.7rem;
+            color: #ffe082;
+            letter-spacing: 1px;
+        }
+        .left.box-f p {
+            margin-bottom: 1.2rem;
+            color: #f8fafd;
+        }
+        .lower .topic {
+            margin-bottom: 0.3rem;
+            color: #ffe082;
+        }
+        .phone a, .email a {
+            color: #fff;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.3rem;
+            font-size: 1rem;
+        }
+        .middle.box-f a {
+            color: #fff;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+            transition: color 0.2s;
+        }
+        .middle.box-f a:hover {
+            color: #ffe082;
+            text-decoration: underline;
+        }
+        .right.box-f input[type="text"] {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            border: none;
+            margin-bottom: 0.7rem;
+            width: 80%;
+            font-size: 1rem;
+        }
+        .right.box-f input[type="submit"] {
+            padding: 0.5rem 1.2rem;
+            border-radius: 6px;
+            border: none;
+            background: #ffe082;
+            color: #007bff;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+        }
+        .right.box-f input[type="submit"]:hover {
+            background: #fff;
+            color: #007bff;
+        }
+        .media-icons {
+            margin-top: 1rem;
+            display: flex;
+            gap: 1rem;
+        }
+        .media-icons a img {
+            width: 28px;
+            height: 28px;
+            filter: brightness(0) invert(1);
+            transition: filter 0.2s, transform 0.2s;
+        }
+        .media-icons a:hover img {
+            filter: brightness(1) invert(0.2) sepia(1) hue-rotate(40deg) saturate(4);
+            transform: scale(1.15) rotate(-7deg);
+        }
+        .bottom-f {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 1rem;
+            color: #fff;
+        }
+        .bottom-f a {
+            color: #ffe082;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .bottom-f a:hover {
+            text-decoration: underline;
+        }
+        @media (max-width: 900px) {
+            .content-f {
+                flex-direction: column;
+                gap: 1.5rem;
+                padding: 0 1.2rem;
+            }
+            .box-f {
+                min-width: 0;
+            }
+        }
+
+        /* --- Premium Navbar Styles --- */
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.7rem 2rem;
+            background: linear-gradient(90deg, #007bff 60%, #00c6ff 100%);
+            box-shadow: 0 6px 24px rgba(0, 123, 255, 0.13);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            z-index: 100;
+            border-radius: 0 0 18px 18px;
+        }
+        .header-logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .header-logo span {
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            color: #fff;
+            font-family: 'Poppins', 'Inter', sans-serif;
+            text-shadow: 0 2px 8px rgba(0,123,255,0.10);
+        }
+        .navbar-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .navbar-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar-links li a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.15rem;
+            letter-spacing: 1px;
+            padding: 10px 18px;
+            border-radius: 8px;
+            transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+            font-family: 'Poppins', 'Inter', sans-serif;
+            box-shadow: 0 1px 4px rgba(0,123,255,0.04);
+        }
+        .navbar-links li a:hover, .navbar-links li a:focus {
+            background: rgba(255,255,255,0.18);
+            color: #ffe082;
+            box-shadow: 0 2px 8px rgba(0,123,255,0.10);
+            text-decoration: underline;
+        }
+        .navbar-links li a.active {
+            background: rgba(255,255,255,0.25);
+            color: #ffe082;
+            text-decoration: underline;
+        }
+        .navbar-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 2.2rem;
+            cursor: pointer;
+            padding: 0 8px;
+        }
+        @media (max-width: 900px) {
+            .navbar {
+                flex-wrap: wrap;
+                padding: 0.5rem 0.7rem;
+                border-radius: 0 0 12px 12px;
+            }
+            .navbar-right {
+                gap: 0.5rem;
+            }
+            .navbar-links {
+                display: none;
+                flex-direction: column;
+                gap: 1.2rem;
+                background: #fff;
+                position: absolute;
+                top: 100%;
+                right: 0;
+                width: 60vw;
+                min-width: 180px;
+                box-shadow: 0 8px 32px rgba(0,123,255,0.13);
+                padding: 1.2rem 0;
+                z-index: 200;
+                border-radius: 0 0 0 16px;
+            }
+            .navbar-links.open {
+                display: flex;
+            }
+            .navbar-links li a {
+                color: #007bff;
+                font-size: 1.1rem;
+                border-bottom: none;
+                background: none;
+                box-shadow: none;
+            }
+            .navbar-links li a:hover, .navbar-links li a:focus {
+                background: #e0f7fa;
+                color: #007bff;
+                text-decoration: underline;
+            }
+            .navbar-toggle {
+                display: block;
+                margin-left: 0.5rem;
+            }
+        }
+        /* --- End Navbar Styles --- */
+
+        .sort-bar {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: #fff;
+            box-shadow: 0 2px 12px rgba(0,123,255,0.07);
+            border-radius: 16px;
+            padding: 0.7rem 1.5rem;
+            min-width: 0;
+            margin: 0;
+            border: 1.5px solid #e0e7ef;
+        }
+        .sort-bar label {
+            font-weight: 600;
+            color: #007bff;
+            margin-right: 0.5rem;
+            font-size: 1rem;
+        }
+        .sort-bar select {
+            padding: 0.6rem 1.2rem 0.6rem 2.2rem;
+            border-radius: 10px;
+            border: 1.5px solid #e0e7ef;
+            font-size: 1rem;
+            font-family: inherit;
+            background: #f8fafd url('data:image/svg+xml;utf8,<svg fill="%23007bff" height="18" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat 8px center/18px 18px;
+            color: #007bff;
+            font-weight: 500;
+            transition: border 0.2s;
+        }
+        .sort-bar select:focus {
+            border: 1.5px solid #007bff;
+            outline: none;
+        }
+        @media (max-width: 900px) {
+            .sort-bar {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0.7rem;
+                padding: 0.7rem 1rem;
+            }
+        }
+
+        /* --- Advanced Filters Styles --- */
+        .advanced-filters {
+            background: rgba(255,255,255,0.85);
+            box-shadow: 0 6px 24px rgba(0,123,255,0.10), 0 1.5px 6px rgba(0,0,0,0.04);
+            border-radius: 18px;
+            padding: 1.3rem 1.7rem 1.3rem 1.7rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.3rem;
+            border: 1.5px solid #e0e7ef;
+            backdrop-filter: blur(2px);
+        }
+        .advanced-filters label {
+            font-weight: 600;
+            color: #007bff;
+            margin-bottom: 0.2rem;
+            font-size: 1.05rem;
+        }
+        .advanced-filters select {
+            width: 100%;
+            padding: 0.6rem 1.2rem;
+            border-radius: 10px;
+            border: 1.5px solid #e0e7ef;
+            font-size: 1rem;
+            font-family: inherit;
+            background: #f8fafd;
+            color: #007bff;
+            font-weight: 500;
+            margin-bottom: 0.2rem;
+            transition: border 0.2s, box-shadow 0.2s;
+        }
+        .advanced-filters select:focus {
+            border: 1.5px solid #007bff;
+            box-shadow: 0 0 0 2px #e0f0ff;
+            outline: none;
+        }
+        .advanced-filters input[type='range'] {
+            width: 100%;
+            margin: 0.5rem 0 0.2rem 0;
+            -webkit-appearance: none;
+            background: transparent;
+            height: 2.5px;
+        }
+        .advanced-filters input[type='range']:focus {
+            outline: none;
+        }
+        .advanced-filters input[type='range']::-webkit-slider-runnable-track {
+            height: 6px;
+            background: linear-gradient(90deg, #e0f7fa 60%, #f0f2f5 100%);
+            border-radius: 6px;
+        }
+        .advanced-filters input[type='range']::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #007bff 60%, #00c6ff 100%);
+            box-shadow: 0 2px 8px rgba(0,123,255,0.13);
+            border: 2.5px solid #fff;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .advanced-filters input[type='range']:focus::-webkit-slider-thumb {
+            background: linear-gradient(135deg, #0056b3 60%, #00c6ff 100%);
+        }
+        .advanced-filters input[type='range']::-moz-range-thumb {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #007bff 60%, #00c6ff 100%);
+            box-shadow: 0 2px 8px rgba(0,123,255,0.13);
+            border: 2.5px solid #fff;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .advanced-filters input[type='range']:focus::-moz-range-thumb {
+            background: linear-gradient(135deg, #0056b3 60%, #00c6ff 100%);
+        }
+        .advanced-filters input[type='range']::-ms-thumb {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #007bff 60%, #00c6ff 100%);
+            box-shadow: 0 2px 8px rgba(0,123,255,0.13);
+            border: 2.5px solid #fff;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .advanced-filters input[type='range']:focus::-ms-thumb {
+            background: linear-gradient(135deg, #0056b3 60%, #00c6ff 100%);
+        }
+        .advanced-filters input[type='range']::-ms-fill-lower {
+            background: #e0f7fa;
+        }
+        .advanced-filters input[type='range']::-ms-fill-upper {
+            background: #f0f2f5;
+        }
+        .advanced-filters input[type='range']:focus::-ms-fill-lower {
+            background: #e0f7fa;
+        }
+        .advanced-filters input[type='range']:focus::-ms-fill-upper {
+            background: #f0f2f5;
+        }
+        .advanced-filters input[type='range']::-moz-range-track {
+            height: 6px;
+            background: linear-gradient(90deg, #e0f7fa 60%, #f0f2f5 100%);
+            border-radius: 6px;
+        }
+        .advanced-filters input[type='range']:focus::-webkit-slider-runnable-track {
+            background: linear-gradient(90deg, #b3e0fc 60%, #e0f2ff 100%);
+        }
+        .advanced-filters input[type='range']:focus::-moz-range-track {
+            background: linear-gradient(90deg, #b3e0fc 60%, #e0f2ff 100%);
+        }
+        .advanced-filters input[type='range']:focus::-ms-fill-lower {
+            background: #b3e0fc;
+        }
+        .advanced-filters input[type='range']:focus::-ms-fill-upper {
+            background: #e0f2ff;
+        }
+        .advanced-filters input[type='range']:focus {
+            outline: none;
+        }
+        .advanced-filters input[type='range']::-webkit-slider-thumb {
+            box-shadow: 0 2px 8px rgba(0,123,255,0.18);
+        }
+        .advanced-filters input[type='range']:active::-webkit-slider-thumb {
+            background: linear-gradient(135deg, #0056b3 60%, #00c6ff 100%);
+        }
+        .advanced-filters input[type='range']:active::-moz-range-thumb {
+            background: linear-gradient(135deg, #0056b3 60%, #00c6ff 100%);
+        }
+        .advanced-filters input[type='range']:active::-ms-thumb {
+            background: linear-gradient(135deg, #0056b3 60%, #00c6ff 100%);
+        }
+        .advanced-filters .filter-value {
+            color: #007bff;
+            font-size: 0.98rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+            background: #e0f7fa;
+            border-radius: 6px;
+            padding: 2px 10px;
+            margin-top: 0.2rem;
+            display: inline-block;
+        }
+
+        /* --- Mini Message Box (Ask a Question) Styles --- */
+        .ask-btn {
+            position: fixed;
+            bottom: 2.2rem;
+            right: 2.2rem;
+            z-index: 1200;
+            background: linear-gradient(135deg, #007bff 60%, #00c6ff 100%);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            box-shadow: 0 4px 16px rgba(0,123,255,0.18);
+            font-size: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.2s, box-shadow 0.2s;
+        }
+        .ask-btn:hover {
+            background: linear-gradient(135deg, #0056b3 60%, #00c6ff 100%);
+            box-shadow: 0 8px 32px rgba(0,123,255,0.23);
+        }
+        .ask-modal-bg {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.18);
+            z-index: 1100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .ask-modal {
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 8px 32px rgba(0,123,255,0.13);
+            padding: 2.2rem 2.5rem 2rem 2.5rem;
+            min-width: 350px;
+            max-width: 95vw;
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            position: relative;
+        }
+        .ask-modal-close {
+            position: absolute;
+            top: 1.1rem;
+            right: 1.3rem;
+            font-size: 1.7rem;
+            color: #007bff;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-weight: 700;
+        }
+        .ask-modal label {
+            font-weight: 600;
+            color: #007bff;
+            margin-bottom: 0.2rem;
+        }
+        .ask-modal input, .ask-modal textarea {
+            width: 100%;
+            padding: 0.7rem 1rem;
+            border-radius: 8px;
+            border: 1.5px solid #e0e7ef;
+            font-size: 1rem;
+            font-family: inherit;
+            background: #f8fafd;
+            color: #222;
+            margin-bottom: 0.7rem;
+        }
+        .ask-modal textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+        .ask-modal button[type='submit'] {
+            background: linear-gradient(90deg, #28a745 60%, #43e97b 100%);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 0.8rem 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .ask-modal button[type='submit']:hover {
+            background: linear-gradient(90deg, #218838 60%, #43e97b 100%);
+        }
+        .ask-confirm {
+            background: #d4edda;
+            color: #155724;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1.2rem;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+        @media (max-width: 600px) {
+            .ask-modal {
+                min-width: 0;
+                padding: 1.2rem 0.7rem 1rem 0.7rem;
+            }
+            .ask-btn {
+                width: 48px;
+                height: 48px;
+                font-size: 1.3rem;
+                bottom: 1.1rem;
+                right: 1.1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <nav class="navbar">
+            <div class="header-logo">
+                <img src="../img/medlogo.png" alt="Logo" />
+                <span>HelloTakeCare</span>
+            </div>
+            <div class="navbar-right">
+                <ul class="navbar-links" id="navbarLinks">
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+                <button class="navbar-toggle" id="navbarToggle" aria-label="Toggle navigation">&#9776;</button>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+
+        <div class="sidebar">
+            <div class="filter-container">
+                <div class="search-bar">
+                    <span class="search-icon">&#128269;</span>
+                    <input type="text" id="doctorSearch" placeholder="Search doctor, clinic, or specialty..." />
+                </div>
+                <div class="advanced-filters">
+                    <div>
+                        <label for="minExperience">Min. Experience (years)</label>
+                        <select id="minExperience">
+                            <option value="0">Any</option>
+                            <option value="5">5+</option>
+                            <option value="10">10+</option>
+                            <option value="15">15+</option>
+                            <option value="20">20+</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="trust-badges">
+                <div class="trust-badge"><span class="badge-icon">&#128274;</span> HIPAA Compliant</div>
+                <div class="trust-badge"><span class="badge-icon">&#9989;</span> Admin-Verified Doctors</div>
+                <div class="trust-badge"><span class="badge-icon">&#127942;</span> Awarded Best Health Startup 2024</div>
+            </div>
+            <div class="testimonials-carousel" id="testimonialsCarousel">
+                <div class="testimonial-text" id="testimonialText"></div>
+                <div class="testimonial-author" id="testimonialAuthor"></div>
+                <div class="testimonial-nav">
+                    <button id="testimonialPrev" title="Previous">&#8592;</button>
+                    <button id="testimonialNext" title="Next">&#8594;</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="filters-row" style="display: flex; align-items: center; gap: 1.2rem; margin-bottom: 1.2rem; flex-wrap: wrap;">
+                <div class="filter-bar" style="margin-bottom: 0;">
+                    <label for="departmentFilter">Specialization</label>
+                    <select id="departmentFilter">
+                        <option value="all">All</option>
+                    </select>
+                </div>
+                <div class="sort-bar" style="margin-bottom: 0;">
+                    <label for="sortDoctors">Sort by</label>
+                    <select id="sortDoctors">
+                        <option value="default">Default</option>
+                        <option value="experience">Experience (High to Low)</option>
+                        <option value="name">Name (A-Z)</option>
+                        <option value="fee">Fee (Low to High)</option>
+                    </select>
+                </div>
+            </div>
+        <div class="doctor-list" id="doctorList"></div>
+        <div class="no-doctors" id="noDoctors" style="display: none;">No doctors found matching your filters.</div>
+        </div>
+
+    </div>
+
+    <footer id="footer">
+      <div class="content-f">
+        <div class="left box-f">
+          <div class="upper">
+            <div class="topic" id="about">About us</div>
+            <p>HelloTakeCare is dedicated to connecting you with top allopathy doctors and providing trusted healthcare information and services.</p>
+          </div>
+          <div class="lower">
+            <div class="topic" id="contact">Contact us</div>
+            <div class="phone">
+              <a href="#"><i class="fas fa-phone-volume"></i>+91 9748196100</a>
+            </div>
+            <div class="email">
+              <a href="#"><i class="fas fa-envelope"></i>support@hellotakecare.com</a>
+            </div>
+          </div>
+        </div>
+        <div class="middle box-f">
+          <div class="topic">Quick Links</div>
+          <div><a href="../index.html">Home</a></div>
+          <div><a href="#">Allopathy Doctors</a></div>
+          <div><a href="#about">About Us</a></div>
+          <div><a href="#contact">Contact</a></div>
+        </div>
+        <div class="right box-f">
+          <div class="topic">Subscribe us</div>
+          <form action="#">
+            <input type="text" placeholder="Enter email address">
+            <input type="submit" value="Send">
+            <div class="media-icons">
+              <a href="#"><img src="../img/icons8-facebook.svg"></a>
+              <a href="#"><img src="../img/icons8-twitter.svg"></a>
+              <a href="#"><img src="../img/icons8-instagram.svg"></a>
+              <a href="#"><img src="../img/icons8-github.svg"></a>
+              <a href="#"><img src="../img/icons8-linkedin-circled.svg"></a>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="bottom-f mt-4">
+        <p>Copyright © 2025 <a href="../index.html">HelloTakeCare</a> All rights reserved</p>
+      </div>
+    </footer>
+
+    <script>
+        const API_BASE = "http://localhost:5000";
+        let doctors = []; // populated from the live database, not hardcoded
+
+        const doctorListContainer = document.getElementById('doctorList');
+        const departmentFilter = document.getElementById('departmentFilter');
+        const noDoctors = document.getElementById('noDoctors');
+        const doctorSearch = document.getElementById('doctorSearch');
+        const minExperience = document.getElementById('minExperience');
+        const sortDoctors = document.getElementById('sortDoctors');
+
+        // Builds an <img> src for a doctor, falling back to a generic
+        // placeholder when they haven't uploaded a profile photo.
+        function doctorPhotoUrl(doctor) {
+            return doctor.has_profile_photo
+                ? `${API_BASE}/api/doctors/${doctor.id}/photo`
+                : 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Crect width=%22100%22 height=%22100%22 fill=%22%23e0e7ff%22/%3E%3Ccircle cx=%2250%22 cy=%2238%22 r=%2218%22 fill=%22%23a5b4fc%22/%3E%3Cpath d=%22M20 90 Q20 62 50 62 Q80 62 80 90 Z%22 fill=%22%23a5b4fc%22/%3E%3C/svg%3E';
+        }
+
+        function feeToNumber(fee) {
+            if (!fee) return Number.MAX_SAFE_INTEGER; // doctors without a listed fee sort last
+            const n = parseInt(String(fee).replace(/[^0-9]/g, ''), 10);
+            return isNaN(n) ? Number.MAX_SAFE_INTEGER : n;
+        }
+
+        // Populates the Specialization dropdown from whatever specializations
+        // actually exist in the live data, instead of a fixed guess list.
+        function populateSpecializationFilter() {
+            const specializations = [...new Set(doctors.map(d => d.specialization).filter(Boolean))].sort();
+            departmentFilter.innerHTML = '<option value="all">All</option>' +
+                specializations.map(s => `<option value="${s}">${s}</option>`).join('');
+        }
+
+        async function loadDoctors() {
+            doctorListContainer.innerHTML = '';
+            for (let i = 0; i < 3; i++) {
+                doctorListContainer.innerHTML += `
+                  <div class="skeleton-card">
+                    <div style="display: flex; gap: 1rem; align-items: center;">
+                      <div class="skeleton-img"></div>
+                      <div style="flex:1;">
+                        <div class="skeleton-line"></div>
+                        <div class="skeleton-line short"></div>
+                        <div class="skeleton-line tiny"></div>
+                        <div class="skeleton-badge"></div>
+                      </div>
+                    </div>
+                    <div class="skeleton-line"></div>
+                    <div class="skeleton-line short"></div>
+                  </div>
+                `;
+            }
+
+            try {
+                const res = await fetch(`${API_BASE}/api/doctors?type=allopathy`);
+                const data = await res.json();
+                doctors = data.doctors || [];
+            } catch (err) {
+                doctorListContainer.innerHTML = `<div class="no-doctors" style="display:block;">
+                    Could not load doctors right now. Please make sure the backend server is running, then refresh this page.
+                </div>`;
+                return;
+            }
+
+            populateSpecializationFilter();
+            displayDoctors('all', '', parseInt(minExperience.value), sortDoctors.value);
+        }
+
+        function displayDoctors(department, searchTerm = '', minExpVal = 0, sortBy = 'default') {
+            let filteredDoctors = department === 'all' ? doctors : doctors.filter(doc => doc.specialization === department);
+
+            if (searchTerm.trim() !== '') {
+                const term = searchTerm.trim().toLowerCase();
+                filteredDoctors = filteredDoctors.filter(doc =>
+                    (doc.name && doc.name.toLowerCase().includes(term)) ||
+                    (doc.clinic_name && doc.clinic_name.toLowerCase().includes(term)) ||
+                    (doc.specialization && doc.specialization.toLowerCase().includes(term)) ||
+                    (doc.bio && doc.bio.toLowerCase().includes(term))
+                );
+            }
+
+            filteredDoctors = filteredDoctors.filter(doc => (doc.years_experience || 0) >= minExpVal);
+
+            if (sortBy === 'experience') {
+                filteredDoctors.sort((a, b) => (b.years_experience || 0) - (a.years_experience || 0));
+            } else if (sortBy === 'name') {
+                filteredDoctors.sort((a, b) => a.name.localeCompare(b.name));
+            } else if (sortBy === 'fee') {
+                filteredDoctors.sort((a, b) => feeToNumber(a.consultation_fee) - feeToNumber(b.consultation_fee));
+            }
+
+            doctorListContainer.innerHTML = '';
+
+            if (doctors.length === 0) {
+                noDoctors.textContent = "No allopathy doctors have registered with Medomitra yet. Check back soon!";
+                noDoctors.style.display = 'block';
+                return;
+            }
+            if (filteredDoctors.length === 0) {
+                noDoctors.textContent = "No doctors found matching your filters.";
+                noDoctors.style.display = 'block';
+                return;
+            }
+            noDoctors.style.display = 'none';
+
+            filteredDoctors.forEach((doctor, index) => {
+                const card = document.createElement('div');
+                card.className = 'doctor-card';
+                card.setAttribute('data-index', index);
+
+                const compareId = `compare-${index}`;
+                const photoUrl = doctorPhotoUrl(doctor);
+                const experienceLine = doctor.years_experience ? `${doctor.years_experience} yrs exp.` : 'Experience not listed';
+                const feeLine = doctor.consultation_fee || 'Contact clinic for pricing';
+                const clinicLine = doctor.clinic_name || 'Clinic address not listed';
+                const bioLine = doctor.bio || 'This doctor has not added a bio yet.';
+                const regLine = doctor.registration_number ? `Reg. No: ${doctor.registration_number}` : '';
+
+                card.innerHTML = `
+  <label class="compare-checkbox" title="Select to compare"><input type="checkbox" id="${compareId}" class="compare-input" /> Compare</label>
+  <div style="display: flex; gap: 1rem; align-items: center;">
+    <img src="${photoUrl}" alt="${doctor.name}" style="width: 80px; height: 120px; border-radius: 12px; object-fit: cover;" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Crect width=%22100%22 height=%22100%22 fill=%22%23e0e7ff%22/%3E%3Ccircle cx=%2250%22 cy=%2238%22 r=%2218%22 fill=%22%23a5b4fc%22/%3E%3Cpath d=%22M20 90 Q20 62 50 62 Q80 62 80 90 Z%22 fill=%22%23a5b4fc%22/%3E%3C/svg%3E'" />
+    <div style="flex:1;">
+      <h3>${doctor.name}
+        <span class="badge tooltip">&#9989; Verified<span class="tooltiptext">Approved by a Medomitra admin after reviewing this doctor's registration number and certificate</span></span>
+      </h3>
+      <p><strong>Specialization:</strong> ${doctor.specialization || '—'}</p>
+      <p><strong>Clinic:</strong> ${clinicLine}</p>
+      <div style="display: flex; align-items: center; gap: 1.1rem; margin: 0.3rem 0 0.2rem 0;">
+        <span style="color: #555; font-size: 0.98rem;">${experienceLine}</span>
+      </div>
+      <p><strong>Fee:</strong> ${feeLine}</p>
+    </div>
+    <span class="chevron">&#9654;</span>
+  </div>
+  <div class="doctor-details" id="details-${index}">
+    <div class="doctor-details-content">
+    <p><strong>About:</strong> ${bioLine}</p>
+    <p><strong>Clinic Address:</strong> ${clinicLine}</p>
+    ${regLine ? `<p style="font-size:0.85em; color:#888;">${regLine}</p>` : ''}
+      <button class="book-button" data-doctor-index="${index}">Book Appointment</button>
+      <button class="hide-details-btn" data-doctor-index="${index}">Hide Details</button>
+    </div>
+  </div>
+`;
+
+                card.addEventListener('click', (e) => {
+                    if (e.target.tagName.toLowerCase() === 'button') return;
+                    if (e.target.closest('.compare-checkbox')) return;
+                    card.classList.toggle('active');
+                });
+
+                card.querySelector('.book-button').addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    bookAppointment(doctor);
+                });
+                card.querySelector('.hide-details-btn').addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    card.classList.remove('active');
+                });
+                card.querySelector('.compare-input').addEventListener('change', (e) => {
+                    handleCompareToggle(doctor, e.target.checked, compareId);
+                });
+
+                doctorListContainer.appendChild(card);
+            });
+        }
+
+        function triggerDisplay() {
+            displayDoctors(
+                departmentFilter.value,
+                doctorSearch.value,
+                parseInt(minExperience.value),
+                sortDoctors.value
+            );
+        }
+
+        departmentFilter.addEventListener('change', triggerDisplay);
+        doctorSearch.addEventListener('input', triggerDisplay);
+        minExperience.addEventListener('change', triggerDisplay);
+        sortDoctors.addEventListener('change', triggerDisplay);
+
+        // Stores the chosen doctor (real data straight from the database) and
+        // sends the patient to the booking page.
+        function bookAppointment(doctor) {
+            localStorage.setItem('selectedDoctor', JSON.stringify(doctor));
+            window.location.href = 'appointment.html';
+        }
+
+        // Add tooltips to filter controls
+        document.getElementById('minExperience').setAttribute('title', 'Filter doctors by minimum years of experience');
+        document.getElementById('departmentFilter').setAttribute('title', 'Filter by specialization');
+        document.getElementById('doctorSearch').setAttribute('title', 'Search by name, clinic, or specialty');
+        document.getElementById('sortDoctors').setAttribute('title', 'Sort the doctor list');
+
+        // --- Doctor Comparison Logic ---
+        let compareDoctors = [];
+        function handleCompareToggle(doctor, checked, compareId) {
+            if (checked) {
+                if (compareDoctors.length < 2) {
+                    compareDoctors.push(doctor);
+                } else {
+                    // Only allow 2
+                    document.getElementById(compareId).checked = false;
+                    alert('You can only compare two doctors at a time.');
+                }
+            } else {
+                compareDoctors = compareDoctors.filter(d => d.name !== doctor.name);
+            }
+            showCompareModalIfReady();
+        }
+
+        function showCompareModalIfReady() {
+            // Remove any existing modal
+            const existing = document.getElementById('compareModalBg');
+            if (existing) existing.remove();
+            if (compareDoctors.length === 2) {
+                // Build modal
+                const modalBg = document.createElement('div');
+                modalBg.className = 'compare-modal-bg';
+                modalBg.id = 'compareModalBg';
+                modalBg.innerHTML = `
+                  <div class="compare-modal">
+                    <button class="compare-modal-close" onclick="document.getElementById('compareModalBg').remove(); clearCompareChecks();">&times;</button>
+                    <h2 style="text-align:center; color:#007bff; margin-bottom:1.2rem;">Doctor Comparison</h2>
+                    <table class="compare-table">
+                      <tr>
+                        <th></th>
+                        <th>${compareDoctors[0].name}</th>
+                        <th>${compareDoctors[1].name}</th>
+                      </tr>
+                      <tr>
+                        <td>Photo</td>
+                        <td><img src="${doctorPhotoUrl(compareDoctors[0])}" alt="${compareDoctors[0].name}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Crect width=%22100%22 height=%22100%22 fill=%22%23e0e7ff%22/%3E%3Ccircle cx=%2250%22 cy=%2238%22 r=%2218%22 fill=%22%23a5b4fc%22/%3E%3Cpath d=%22M20 90 Q20 62 50 62 Q80 62 80 90 Z%22 fill=%22%23a5b4fc%22/%3E%3C/svg%3E'" /></td>
+                        <td><img src="${doctorPhotoUrl(compareDoctors[1])}" alt="${compareDoctors[1].name}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Crect width=%22100%22 height=%22100%22 fill=%22%23e0e7ff%22/%3E%3Ccircle cx=%2250%22 cy=%2238%22 r=%2218%22 fill=%22%23a5b4fc%22/%3E%3Cpath d=%22M20 90 Q20 62 50 62 Q80 62 80 90 Z%22 fill=%22%23a5b4fc%22/%3E%3C/svg%3E'" /></td>
+                      </tr>
+                      <tr>
+                        <td>Specialization</td>
+                        <td>${compareDoctors[0].specialization || '—'}</td>
+                        <td>${compareDoctors[1].specialization || '—'}</td>
+                      </tr>
+                      <tr>
+                        <td>Clinic</td>
+                        <td>${compareDoctors[0].clinic_name || '—'}</td>
+                        <td>${compareDoctors[1].clinic_name || '—'}</td>
+                      </tr>
+                      <tr>
+                        <td>Experience</td>
+                        <td>${compareDoctors[0].years_experience ? compareDoctors[0].years_experience + ' yrs' : 'Not listed'}</td>
+                        <td>${compareDoctors[1].years_experience ? compareDoctors[1].years_experience + ' yrs' : 'Not listed'}</td>
+                      </tr>
+                      <tr>
+                        <td>Fee</td>
+                        <td>${compareDoctors[0].consultation_fee || 'Contact clinic'}</td>
+                        <td>${compareDoctors[1].consultation_fee || 'Contact clinic'}</td>
+                      </tr>
+                      <tr>
+                        <td>Registration No.</td>
+                        <td>${compareDoctors[0].registration_number || '—'}</td>
+                        <td>${compareDoctors[1].registration_number || '—'}</td>
+                      </tr>
+                    </table>
+                  </div>
+                `;
+                document.body.appendChild(modalBg);
+            }
+        }
+        function clearCompareChecks() {
+            compareDoctors = [];
+            document.querySelectorAll('.compare-input').forEach(cb => cb.checked = false);
+        }
+
+        // --- Testimonials Carousel ---
+        const testimonials = [
+            { text: "This platform made it so easy to find the right doctor for my family. Highly recommended!", author: "— Priya S., Mumbai" },
+            { text: "I love the transparency and the verified doctors. I feel safe booking here.", author: "— Rahul G., Delhi" },
+            { text: "The comparison feature is a game changer! I could easily choose the best doctor for my needs.", author: "— Anjali T., Pune" },
+            { text: "Very professional and trustworthy. The ratings and reviews helped a lot.", author: "— Suresh V., Bangalore" },
+            { text: "Best health platform I've used. The support team is also very responsive.", author: "— Meena K., Hyderabad" }
+        ];
+        let testimonialIndex = 0;
+        function showTestimonial(idx) {
+            const t = testimonials[idx];
+            document.getElementById('testimonialText').textContent = t.text;
+            document.getElementById('testimonialAuthor').textContent = t.author;
+        }
+        document.getElementById('testimonialPrev').onclick = function() {
+            testimonialIndex = (testimonialIndex - 1 + testimonials.length) % testimonials.length;
+            showTestimonial(testimonialIndex);
+        };
+        document.getElementById('testimonialNext').onclick = function() {
+            testimonialIndex = (testimonialIndex + 1) % testimonials.length;
+            showTestimonial(testimonialIndex);
+        };
+        showTestimonial(testimonialIndex);
+
+        window.onload = () => {
+            loadDoctors();
+        };
+
+        // Responsive navbar toggle
+        const navbarToggle = document.getElementById('navbarToggle');
+        const navbarLinks = document.getElementById('navbarLinks');
+        navbarToggle.onclick = function() {
+            navbarLinks.classList.toggle('open');
+        };
+
+        // --- Ask a Question Button & Modal ---
+        // Floating button
+        const askBtn = document.createElement('button');
+        askBtn.className = 'ask-btn';
+        askBtn.title = 'Ask a Question';
+        askBtn.innerHTML = '&#9993;';
+        askBtn.onclick = showAskModal;
+        document.body.appendChild(askBtn);
+
+        function showAskModal() {
+            // Remove any existing modal
+            const existing = document.getElementById('askModalBg');
+            if (existing) existing.remove();
+            // Build modal
+            const modalBg = document.createElement('div');
+            modalBg.className = 'ask-modal-bg';
+            modalBg.id = 'askModalBg';
+            modalBg.innerHTML = `
+              <form class="ask-modal" id="askForm">
+                <button type="button" class="ask-modal-close" onclick="document.getElementById('askModalBg').remove();">&times;</button>
+                <h2 style="text-align:center; color:#007bff; margin-bottom:1.2rem;">Ask a Question</h2>
+                <label for="askName">Your Name</label>
+                <input type="text" id="askName" name="askName" required />
+                <label for="askEmail">Your Email</label>
+                <input type="email" id="askEmail" name="askEmail" required />
+                <label for="askMsg">Your Question</label>
+                <textarea id="askMsg" name="askMsg" required></textarea>
+                <button type="submit">Send</button>
+                <div class="ask-confirm" id="askConfirm" style="display:none;">Thank you! Your question has been submitted.</div>
+              </form>
+            `;
+            document.body.appendChild(modalBg);
+            // Form handler
+            document.getElementById('askForm').onsubmit = function(e) {
+                e.preventDefault();
+                document.getElementById('askConfirm').style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById('askModalBg').remove();
+                }, 1800);
+            };
+        }
+    </script>
+
+</body>
+
+</html>

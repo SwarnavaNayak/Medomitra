@@ -1,0 +1,1652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Dashboard</title>
+  <!-- Bootstrap CSS CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons CDN -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <!-- Add AOS CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" />
+  <style>
+    :root {
+      --main-bg: #f8fafc;
+      --card-bg: rgba(255,255,255,0.35);
+      --card-border: rgba(255,255,255,0.35);
+      --text-main: #222;
+      --text-muted: #888;
+      --accent: #00e8ae;
+      --accent-light: #e6f9f3;
+      --navbar-bg: rgba(255,255,255,0.85);
+      --footer-bg: #f1f3f6;
+      --shadow: 0 2px 12px rgba(0,0,0,0.06);
+    }
+    body {
+      background: linear-gradient(135deg, var(--main-bg) 0%, #e0e7ef 100%);
+      color: var(--text-main);
+      min-height: 100vh;
+      padding-top: 70px;
+    }
+    .avatar-status-dot {
+      position: absolute;
+      right: 0px;
+      bottom: 0px;
+      width: 13px;
+      height: 13px;
+      background: #28c76f;
+      border: 2.5px solid #fff;
+      border-radius: 50%;
+      z-index: 2;
+      box-shadow: 0 0 0 2px #fff;
+    }
+    .navbar {
+      background: var(--navbar-bg) !important;
+      color: var(--accent);
+      box-shadow: 0 4px 24px 0 rgba(0,0,0,0.10);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 2.5px solid #00C89644;
+    }
+    .navbar .navbar-brand, .navbar .nav-link, .navbar .bi {
+      color: var(--accent) !important;
+    }
+    .navbar .nav-link.active, .navbar .nav-link:focus, .navbar .nav-link:hover {
+      color: #009e7a !important;
+      background: #e6f9f3 !important;
+      border-radius: 0.5rem;
+    }
+    .card {
+      border-radius: 1rem;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      background: var(--card-bg) !important;
+      color: var(--text-main);
+    }
+    .card-header {
+      border-top-left-radius: 1rem !important;
+      border-top-right-radius: 1rem !important;
+    }
+    .card:last-child {
+      margin-bottom: 0;
+    }
+    .footer {
+      background: var(--footer-bg);
+      color: var(--text-muted);
+      text-align: center;
+      padding: 1rem 0;
+      font-size: 0.95rem;
+      border-top: 1px solid #e0e0e0;
+      margin-top: 2rem;
+    }
+    @media (max-width: 767px) {
+      .card {
+        border-radius: 0.5rem;
+      }
+      .footer {
+        font-size: 0.85rem;
+      }
+    }
+    .dropdown-menu {
+      border-radius: 1rem;
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+      padding: 0.5rem 0.5rem 0.5rem 0.5rem;
+      min-width: 270px;
+      background: #fff;
+      border: none;
+      margin-top: 1rem !important;
+      animation: dropdownFadeIn 0.25s cubic-bezier(.4,1.4,.6,1);
+    }
+    .dropdown-profile-header {
+      position: relative;
+      background: linear-gradient(135deg, #e6f9f3 0%, #fff 100%);
+      border-top-left-radius: 1rem;
+      border-top-right-radius: 1rem;
+      padding-top: 1rem;
+      margin: -0.5rem -0.5rem 0.5rem -0.5rem;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    .dropdown-settings-btn {
+      position: absolute;
+      top: 0.7rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      color: #00C896;
+      font-size: 1.3rem;
+      z-index: 2;
+      padding: 0.2rem;
+      border-radius: 50%;
+      transition: background 0.15s;
+    }
+    .dropdown-settings-btn:hover, .dropdown-settings-btn:focus {
+      background: #e6f9f3;
+      color: #009e7a;
+      outline: none;
+    }
+    .dropdown-profile-avatar {
+      display: inline-block;
+      border-radius: 50%;
+      border: 3px solid #00C896;
+      box-shadow: 0 2px 8px #00C89622;
+      padding: 3px;
+      background: #fff;
+      margin-bottom: 0.5rem;
+    }
+    .dropdown-profile-info h6 {
+      margin-bottom: 0.2rem;
+      font-weight: 600;
+      color: #00C896;
+    }
+    .dropdown-profile-info small {
+      color: #888;
+    }
+    .dropdown-divider {
+      margin: 0.5rem 0;
+    }
+    .dropdown-item {
+      border-radius: 0.5rem;
+      margin-bottom: 0.2rem;
+      transition: background 0.15s, color 0.15s;
+    }
+    .dropdown-item:active, .dropdown-item:focus, .dropdown-item:hover {
+      background: #e6f9f3;
+      color: #00C896;
+    }
+    .dropdown-menu .btn-outline-secondary,
+    .dropdown-menu .btn-outline-primary,
+    .dropdown-menu .btn-outline-success,
+    .dropdown-menu .btn-outline-info,
+    .dropdown-menu .btn-outline-warning {
+      border-radius: 1rem;
+      font-size: 0.9rem;
+      padding: 0.25rem 0.75rem;
+      border-width: 2px;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+    }
+    .dropdown-menu .btn-outline-primary:hover,
+    .dropdown-menu .btn-outline-primary:focus {
+      background: #00C89622;
+      color: #00C896;
+      border-color: #00C896;
+    }
+    .dropdown-menu .btn-outline-success:hover,
+    .dropdown-menu .btn-outline-success:focus {
+      background: #e6f9f3;
+      color: #00C896;
+      border-color: #00C896;
+    }
+    .dropdown-menu .btn-outline-info:hover,
+    .dropdown-menu .btn-outline-info:focus {
+      background: #e6f9f3;
+      color: #00C896;
+      border-color: #00C896;
+    }
+    .dropdown-menu .btn-outline-warning:hover,
+    .dropdown-menu .btn-outline-warning:focus {
+      background: #e6f9f3;
+      color: #00C896;
+      border-color: #00C896;
+    }
+    .dropdown-menu .btn-outline-secondary:hover, .dropdown-menu .btn-outline-secondary:focus {
+      background: #e6f9f3;
+      color: #00C896;
+      border-color: #00C896;
+    }
+    .badge.bg-info {
+      background: #e6f9f3 !important;
+      color: #00C896 !important;
+      border: 1.5px solid #00C896;
+    }
+    .badge.bg-success {
+      background: #00C896 !important;
+      color: #fff !important;
+    }
+    /* Animated Notification Badge */
+    .badge-animate {
+      animation: notifPulse 1.2s infinite cubic-bezier(.4,1.4,.6,1);
+      box-shadow: 0 0 0 0.15rem #ff3b3b44;
+    }
+    @keyframes notifPulse {
+      0% { box-shadow: 0 0 0 0.15rem #ff3b3b44, 0 0 0 0 #ff3b3b22; }
+      60% { box-shadow: 0 0 0 0.35rem #ff3b3b22, 0 0 0 0.15rem #ff3b3b44; }
+      100% { box-shadow: 0 0 0 0 #ff3b3b22, 0 0 0 0.15rem #ff3b3b44; }
+    }
+    .spinner-border {
+      width: 1.2rem;
+      height: 1.2rem;
+      vertical-align: middle;
+      margin-left: 0.5rem;
+      display: none;
+    }
+    .dashboard-section {
+      margin-bottom: 2.5rem;
+    }
+    .dashboard-section:last-child {
+      margin-bottom: 0;
+    }
+    .dashboard-section h5 {
+      margin-bottom: 1.2rem;
+      font-weight: 600;
+      color: var(--accent);
+      letter-spacing: 0.5px;
+    }
+    .dashboard-divider {
+      border-top: 2px solid #e6f9f3;
+      margin: 2.5rem 0 2rem 0;
+    }
+    .card {
+      border-radius: 1rem;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      padding: 1.2rem 1.2rem 1rem 1.2rem;
+      margin-bottom: 1.5rem;
+    }
+    @media (max-width: 991px) {
+      .dashboard-section {
+        margin-bottom: 2rem;
+      }
+      .card {
+        padding: 1rem;
+      }
+    }
+    .btn, .btn-outline-primary, .btn-outline-success, .btn-outline-info, .btn-outline-warning, .btn-outline-secondary {
+      transition: all 0.18s cubic-bezier(.4,1.4,.6,1), box-shadow 0.18s cubic-bezier(.4,1.4,.6,1);
+    }
+    .btn:hover, .btn:focus {
+      transform: translateY(-2px) scale(1.045);
+      box-shadow: 0 4px 18px 0 rgba(0,200,150,0.10), 0 1.5px 6px 0 rgba(0,0,0,0.07);
+      z-index: 2;
+    }
+    .btn:active {
+      transform: scale(0.97);
+      box-shadow: 0 1.5px 6px 0 rgba(0,0,0,0.07);
+    }
+    .card {
+      transition: box-shadow 0.22s cubic-bezier(.4,1.4,.6,1), transform 0.22s cubic-bezier(.4,1.4,.6,1);
+    }
+    .card:hover {
+      box-shadow: 0 8px 32px 0 rgba(0,200,150,0.10), 0 2px 12px rgba(0,0,0,0.10);
+      transform: translateY(-4px) scale(1.012);
+      z-index: 2;
+    }
+    table tr {
+      transition: background 0.18s cubic-bezier(.4,1.4,.6,1);
+    }
+    table tr:hover {
+      background: #e6f9f3 !important;
+    }
+    .navbar .nav-link, .navbar .navbar-brand {
+      transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+    }
+    .navbar .nav-link:hover, .navbar .nav-link:focus {
+      box-shadow: 0 2px 8px 0 #00C89622;
+      background: #e6f9f3 !important;
+      color: #009e7a !important;
+    }
+    .dropdown-menu .dropdown-item {
+      transition: background 0.18s, color 0.18s;
+    }
+    .dropdown-menu .dropdown-item:hover, .dropdown-menu .dropdown-item:focus {
+      background: #e6f9f3;
+      color: #00C896;
+    }
+    .dropdown-profile-avatar img {
+      transition: box-shadow 0.22s, transform 0.22s;
+    }
+    .dropdown-profile-avatar img:hover {
+      box-shadow: 0 0 0 4px #00C89644, 0 2px 8px #00C89622;
+      transform: scale(1.07);
+      cursor: pointer;
+    }
+    #navAvatar {
+      transition: box-shadow 0.22s, transform 0.22s;
+    }
+    #navAvatar:hover {
+      box-shadow: 0 0 0 4px #00C89644, 0 2px 8px #00C89622;
+      transform: scale(1.09);
+      cursor: pointer;
+    }
+    /* Notification bell microinteraction */
+    .bi-bell {
+      transition: color 0.18s, transform 0.18s;
+    }
+    .bi-bell:hover {
+      color: #009e7a !important;
+      animation: notifBellWiggle 0.7s cubic-bezier(.4,1.4,.6,1);
+    }
+    @keyframes notifBellWiggle {
+      0% { transform: rotate(0deg); }
+      15% { transform: rotate(-18deg); }
+      30% { transform: rotate(14deg); }
+      45% { transform: rotate(-10deg); }
+      60% { transform: rotate(6deg); }
+      75% { transform: rotate(-4deg); }
+      100% { transform: rotate(0deg); }
+    }
+    /* Ripple effect for quick links (simple CSS version) */
+    .btn:active::after {
+      content: '';
+      display: block;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 120%;
+      height: 120%;
+      background: rgba(0,200,150,0.13);
+      border-radius: 50%;
+      transform: translate(-50%, -50%) scale(0.7);
+      animation: ripple 0.4s linear;
+      pointer-events: none;
+      z-index: 1;
+    }
+    @keyframes ripple {
+      0% { opacity: 0.5; transform: translate(-50%, -50%) scale(0.7); }
+      80% { opacity: 0.2; transform: translate(-50%, -50%) scale(1.1); }
+      100% { opacity: 0; transform: translate(-50%, -50%) scale(1.2); }
+    }
+    /* Card Accent Border/Shadow */
+    .card-accent {
+      border-left: 5px solid var(--accent);
+      box-shadow: 0 4px 24px 0 var(--shadow), 0 0 0 2px #00C89622;
+      border-radius: 1rem;
+      background: var(--card-bg);
+    }
+    @media (max-width: 767px) {
+      .card-accent {
+        border-left-width: 3px;
+        border-radius: 0.5rem;
+      }
+    }
+    /* Section Gradient & Patterned Backgrounds */
+    .section-gradient {
+      background: linear-gradient(135deg, var(--accent-light) 0%, var(--main-bg) 100%);
+      border-radius: 1rem;
+      box-shadow: 0 2px 12px rgba(0,200,150,0.04);
+      padding: 1.2rem 1.2rem 1rem 1.2rem;
+    }
+    .section-pattern {
+      background-color: var(--main-bg);
+      border-radius: 1rem;
+      box-shadow: 0 2px 12px rgba(0,200,150,0.04);
+      padding: 1.2rem 1.2rem 1rem 1.2rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .section-pattern::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background-image: url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="10" r="2" fill="%2300C89622"/><circle cx="60" cy="60" r="2" fill="%2300C89622"/><circle cx="90" cy="30" r="1.5" fill="%2300C89622"/><circle cx="30" cy="80" r="1.5" fill="%2300C89622"/></svg>');
+      opacity: 0.18;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .section-gradient > *, .section-pattern > * { position: relative; z-index: 1; }
+    .profile-progress-ring {
+      width: 98px;
+      height: 98px;
+      position: relative;
+      display: inline-block;
+    }
+    .profile-progress-ring svg {
+      display: block;
+      width: 98px;
+      height: 98px;
+      position: relative;
+      z-index: 1;
+    }
+    .profile-progress-ring img {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      z-index: 2;
+      border: 3px solid #fff;
+      box-shadow: 0 2px 8px #00C89622;
+    }
+    .profile-progress-ring .ring-bg {
+      stroke: #e6f9f3;
+    }
+    .profile-progress-ring .ring-fg {
+      stroke: url(#profileRingGradient);
+      transition: stroke-dashoffset 1.2s cubic-bezier(.4,1.4,.6,1);
+    }
+    .profile-progress-ring #profileProgressValue {
+      font-size: 1.1rem;
+      color: #00C896;
+      font-weight: 700;
+      text-shadow: 0 1px 4px #fff;
+    }
+    /* SVG Gradient for ring */
+    .profile-progress-ring svg defs {
+      pointer-events: none;
+    }
+    /* Floating Action Button (FAB) */
+    .fab {
+      position: fixed;
+      right: 2.2rem;
+      bottom: 2.2rem;
+      z-index: 1050;
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #00C896 60%, #00e6b8 100%);
+      box-shadow: 0 8px 32px 0 rgba(0,200,150,0.18), 0 2px 8px rgba(0,0,0,0.10);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 2rem;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      transition: box-shadow 0.18s, transform 0.18s, background 0.18s;
+      animation: fabBounceIn 0.7s cubic-bezier(.4,1.4,.6,1);
+    }
+    .fab:hover, .fab:focus {
+      box-shadow: 0 12px 36px 0 rgba(0,200,150,0.22), 0 4px 16px rgba(0,0,0,0.13);
+      background: linear-gradient(135deg, #00e6b8 0%, #00C896 100%);
+      transform: scale(1.08) translateY(-2px);
+      color: #fff;
+    }
+    @keyframes fabBounceIn {
+      0% { opacity: 0; transform: scale(0.5) translateY(80px); }
+      60% { opacity: 1; transform: scale(1.1) translateY(-8px); }
+      80% { transform: scale(0.98) translateY(2px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .fab:active {
+      transform: scale(0.96);
+    }
+    .fab .bi {
+      pointer-events: none;
+    }
+    @media (max-width: 767px) {
+      .fab {
+        width: 52px;
+        height: 52px;
+        font-size: 1.5rem;
+        right: 1.2rem;
+        bottom: 1.2rem;
+      }
+    }
+    /* Glassmorphism Card */
+    .glass-card {
+      background: rgba(255,255,255,0.35) !important;
+      border: 1.5px solid rgba(255,255,255,0.35) !important;
+      box-shadow: 0 8px 32px 0 rgba(31,38,135,0.10), 0 2px 12px rgba(0,200,150,0.06);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 1rem;
+    }
+    /* Dark Mode */
+    body.dark-mode {
+      --main-bg: #181c1f;
+      --card-bg: rgba(30,34,38,0.82);
+      --card-border: rgba(255,255,255,0.10);
+      --text-main: #f8fafc;
+      --text-muted: #b0b8c1;
+      --accent: #00e6b8;
+      --accent-light: #00382e;
+      --navbar-bg: rgba(24,28,31,0.92);
+      --footer-bg: #23272b;
+      --shadow: 0 2px 12px rgba(0,0,0,0.18);
+    }
+    body.dark-mode .dropdown-menu {
+      background: #23272b;
+      color: #f8fafc;
+      box-shadow: 0 8px 32px 0 rgba(0,0,0,0.28);
+    }
+    body.dark-mode .dropdown-item {
+      color: #f8fafc;
+    }
+    body.dark-mode .dropdown-item:hover, body.dark-mode .dropdown-item:focus {
+      background: #00382e;
+      color: #00e6b8;
+    }
+    body.dark-mode .card {
+      box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+    }
+    body.dark-mode .glass-card {
+      background: rgba(30,34,38,0.82) !important;
+      border-color: rgba(255,255,255,0.10) !important;
+    }
+    body.dark-mode .section-gradient {
+      background: linear-gradient(135deg, #00382e 0%, #23272b 100%);
+    }
+    body.dark-mode .section-pattern {
+      background-color: #23272b;
+    }
+    body.dark-mode .footer {
+      background: #23272b;
+      color: #b0b8c1;
+    }
+    body.dark-mode .navbar .navbar-brand, body.dark-mode .navbar .nav-link, body.dark-mode .navbar .bi {
+      color: #00e6b8 !important;
+    }
+    body.dark-mode .dashboard-section h5 {
+      color: #00e6b8;
+    }
+    body.dark-mode .profile-progress-ring .ring-bg {
+      stroke: #00382e;
+    }
+    body.dark-mode .profile-progress-ring .ring-fg {
+      stroke: url(#profileRingGradient);
+    }
+    body.dark-mode .fab {
+      background: linear-gradient(135deg, #00382e 60%, #00e6b8 100%);
+      color: #fff;
+    }
+    body.dark-mode .fab:hover, body.dark-mode .fab:focus {
+      background: linear-gradient(135deg, #00e6b8 0%, #00382e 100%);
+      color: #fff;
+    }
+    body.dark-mode .alert-info, body.dark-mode .alert-warning, body.dark-mode .alert-success {
+      background: #00382e;
+      color: #00e6b8;
+      border: none;
+    }
+    body.dark-mode .table {
+      color: #f8fafc;
+    }
+    body.dark-mode .btn-outline-primary, body.dark-mode .btn-outline-success, body.dark-mode .btn-outline-info, body.dark-mode .btn-outline-warning, body.dark-mode .btn-outline-secondary {
+      color: #00e6b8;
+      border-color: #00e6b8;
+      background: transparent;
+    }
+    body.dark-mode .btn-outline-primary:hover, body.dark-mode .btn-outline-success:hover, body.dark-mode .btn-outline-info:hover, body.dark-mode .btn-outline-warning:hover, body.dark-mode .btn-outline-secondary:hover {
+      background: #00382e;
+      color: #fff;
+      border-color: #00e6b8;
+    }
+    /* Table dark mode support */
+    body.dark-mode .table {
+      background-color: #23272b;
+      color: #f8fafc;
+    }
+    body.dark-mode .table th, body.dark-mode .table td {
+      background-color: transparent;
+      color: #f8fafc;
+      border-color: #2c3237;
+    }
+    body.dark-mode .table-striped > tbody > tr:nth-of-type(odd) {
+      background-color: #23272b;
+    }
+    body.dark-mode .table-striped > tbody > tr:nth-of-type(even) {
+      background-color: #181c1f;
+    }
+    body.dark-mode .table thead th {
+      background-color: #181c1f;
+      color: #00e6b8;
+      border-bottom: 2px solid #00e6b8;
+    }
+    body.dark-mode .table-responsive {
+      background: transparent;
+    }
+    /* Dropdown quick links dark mode */
+    body.dark-mode .dropdown-menu {
+      background: #23272b;
+    }
+    body.dark-mode .dropdown-menu .btn-outline-primary,
+    body.dark-mode .dropdown-menu .btn-outline-success,
+    body.dark-mode .dropdown-menu .btn-outline-info,
+    body.dark-mode .dropdown-menu .btn-outline-warning,
+    body.dark-mode .dropdown-menu .btn-outline-secondary {
+      color: #00e6b8;
+      border-color: #00e6b8;
+      background: transparent;
+    }
+    body.dark-mode .dropdown-menu .btn-outline-primary:hover,
+    body.dark-mode .dropdown-menu .btn-outline-success:hover,
+    body.dark-mode .dropdown-menu .btn-outline-info:hover,
+    body.dark-mode .dropdown-menu .btn-outline-warning:hover,
+    body.dark-mode .dropdown-menu .btn-outline-secondary:hover {
+      background: #00382e;
+      color: #fff;
+      border-color: #00e6b8;
+    }
+    body.dark-mode .table tr:hover, body.dark-mode .table-striped > tbody > tr:hover {
+      background: #00382e !important;
+      color: #00e6b8;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+    <div class="container-fluid">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="#">
+        <img src="../Supporting Meterial/AI Health Logo.png" alt="Logo" width="38" height="38" style="object-fit:contain; border-radius:8px; box-shadow:0 2px 8px rgba(0,200,150,0.10); background:#fff; padding:3px;">
+        <span>AI Health Package</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mx-auto gap-2">
+          <li class="nav-item">
+            <a class="nav-link d-flex align-items-center" href="../index.html" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Home"><i class="bi bi-house-door me-1"></i>Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link d-flex align-items-center" href="#" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Dashboard"><i class="bi bi-speedometer2 me-1"></i>Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link d-flex align-items-center" href="../Doctor_List/AlloDocList.html" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Doctors"><i class="bi bi-person-badge me-1"></i>Doctors</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link d-flex align-items-center" href="#" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Appointments"><i class="bi bi-calendar-check me-1"></i>Appointments</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link d-flex align-items-center" href="#" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Records"><i class="bi bi-folder2-open me-1"></i>Records</a>
+          </li>
+        </ul>
+      </div>
+      <div class="d-flex align-items-center ms-auto">
+        <!-- Notification Bell -->
+        <div class="dropdown me-3">
+          <a href="#" class="text-white position-relative d-flex align-items-center" id="notifDropdown" data-bs-toggle="dropdown" aria-expanded="false" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Notifications">
+            <i class="bi bi-bell" style="font-size:1.5rem;"></i>
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger badge-animate" id="notifBadge" style="font-size:0.7rem;">2</span>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="notifDropdown" style="min-width:270px;">
+            <li class="dropdown-header">Notifications</li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item d-flex align-items-center gap-2" href="#"><i class="bi bi-calendar-event text-info"></i>Upcoming appointment with Dr. Smith</a></li>
+            <li><a class="dropdown-item d-flex align-items-center gap-2" href="#"><i class="bi bi-file-earmark-medical text-success"></i>New medical record available</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item text-center text-primary" href="#">View all notifications</a></li>
+          </ul>
+        </div>
+        <!-- Quick Action Button -->
+        <a href="#" class="btn btn-success d-flex align-items-center me-3 px-3 py-2 fw-semibold shadow-sm" style="border-radius:1.5rem; font-size:1rem; background:#00C896; border:none;">
+          <i class="bi bi-plus-circle me-2"></i>Book Appointment
+        </a>
+        <!-- User Avatar Dropdown -->
+        <div class="dropdown position-relative">
+          <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            <span class="position-relative">
+              <img id="navAvatar" src="https://via.placeholder.com/40" alt="User Avatar" width="40" height="40" class="rounded-circle" style="object-fit:cover;">
+              <span class="avatar-status-dot"></span>
+            </span>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="userDropdown">
+            <li class="dropdown-profile-header text-center p-3 pb-2">
+              <button class="dropdown-settings-btn" id="dropdownSettingsBtn" data-bs-toggle="modal" data-bs-target="#profileSettingsModal" type="button" title="Edit Profile Info">
+                <i class="bi bi-gear"></i>
+              </button>
+              <span class="dropdown-profile-avatar">
+                <img id="dropdownAvatar" src="https://via.placeholder.com/80" alt="User Avatar" width="74" height="74" class="rounded-circle" style="object-fit:cover;">
+              </span>
+              <div class="dropdown-profile-info mt-2">
+                <h6 id="dropdownUserName" class="mb-0">User Name</h6>
+                <small id="dropdownUserEmail">user@email.com</small>
+              </div>
+              <!-- Profile Stats -->
+              <div class="d-flex justify-content-center gap-2 mt-2 mb-1">
+                <span class="badge px-3 py-2" style="font-size:0.95em; background:var(--accent-light); color:var(--accent); border:1.5px solid var(--accent);"><i class="bi bi-calendar2-check me-1"></i>Appointments: 2</span>
+                <span class="badge px-3 py-2" style="font-size:0.95em; background:var(--accent); color:#fff;"><i class="bi bi-file-earmark-medical me-1"></i>Records: 3</span>
+              </div>
+              <!-- Quick Actions -->
+              <div class="d-flex justify-content-center gap-2 mt-3 mb-2">
+                <a href="#" class="btn btn-outline-primary btn-sm d-flex align-items-center" style="border-radius:1rem;"><i class="bi bi-calendar2-check me-1"></i>My Appointments</a>
+                <a href="#" class="btn btn-outline-success btn-sm d-flex align-items-center" style="border-radius:1rem;"><i class="bi bi-file-earmark-medical me-1"></i>My Records</a>
+              </div>
+              <div class="d-flex justify-content-center gap-2 mb-1">
+                <a href="#" class="btn btn-outline-info btn-sm d-flex align-items-center" style="border-radius:1rem;"><i class="bi bi-person-video3 me-1"></i>Find Doctor</a>
+                <a href="#" class="btn btn-outline-warning btn-sm d-flex align-items-center" style="border-radius:1rem;"><i class="bi bi-heart-pulse me-1"></i>Health Packages</a>
+              </div>
+              <div class="mt-2 mb-1">
+                <label for="avatarUpload" class="btn btn-sm btn-outline-secondary d-inline-flex align-items-center" id="changePhotoBtn">
+                  <i class="bi bi-camera me-1"></i>Change Photo
+                  <span class="spinner-border spinner-border-sm text-success" id="avatarSpinner" role="status"></span>
+                </label>
+                <input type="file" id="avatarUpload" accept="image/*" style="display:none;">
+              </div>
+            </li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#" id="editProfileBtn"><i class="bi bi-pencil me-2"></i>Edit Profile</a></li>
+            <li><a class="dropdown-item text-danger" href="#" id="logoutBtn"><i class="bi bi-box-arrow-right me-2"></i>Logout</a></li>
+          </ul>
+        </div>
+        <!-- Dark/Light Mode Toggle -->
+        <button id="themeToggleBtn" class="btn btn-link px-2 me-2" style="font-size:1.6rem; color:var(--accent);" title="Toggle dark/light mode" data-bs-toggle="tooltip" data-bs-placement="bottom">
+          <i id="themeToggleIcon" class="bi bi-moon-stars"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-fluid mt-5 mb-5">
+    <div class="row justify-content-center g-4">
+      <!-- Left Column -->
+      <div class="col-lg-4 col-md-6 col-12">
+        <section class="dashboard-section" data-aos="fade-up">
+          <div class="card card-accent glass-card text-center mb-4 p-4 position-relative overflow-hidden">
+            <!-- Decorative SVG Illustration -->
+            <svg width="110" height="110" viewBox="0 0 110 110" fill="none" xmlns="http://www.w3.org/2000/svg" class="position-absolute start-0 top-0" style="z-index:0; opacity:0.18;">
+              <ellipse cx="55" cy="55" rx="50" ry="50" fill="var(--accent)"/>
+              <path d="M55 30c-8 0-15 7-15 15 0 10 15 25 15 25s15-15 15-25c0-8-7-15-15-15zm0 20a5 5 0 110-10 5 5 0 010 10z" stroke="#fff" stroke-width="2" fill="#fff"/>
+            </svg>
+            <div class="d-flex flex-column align-items-center justify-content-center mb-2 position-relative" style="z-index:1;">
+              <div class="profile-progress-ring position-relative mb-2">
+                <svg width="98" height="98" viewBox="0 0 98 98">
+                  <circle class="ring-bg" cx="49" cy="49" r="44" stroke="#e6f9f3" stroke-width="8" fill="none"/>
+                  <circle class="ring-fg" id="profileProgressRing" cx="49" cy="49" r="44" stroke="#00C896" stroke-width="8" fill="none" stroke-linecap="round" stroke-dasharray="276.46" stroke-dashoffset="276.46"/>
+                </svg>
+                <img id="profileCardAvatar" src="https://via.placeholder.com/64" alt="User Avatar" width="64" height="64" class="rounded-circle position-absolute top-50 start-50 translate-middle" style="object-fit:cover; box-shadow:0 2px 8px #00C89622; border:3px solid #fff;"/>
+                <span id="profileProgressValue" class="position-absolute top-50 start-50 translate-middle text-success fw-bold" style="font-size:1.1rem; z-index:2; pointer-events:none;">0%</span>
+              </div>
+            </div>
+            <h2 class="card-title mb-2">Welcome, <span id="userName">User</span>!</h2>
+            <p class="card-text">This is your health dashboard. Here you can view your health summary, appointments, records, and more.</p>
+          </div>
+        </section>
+        <section class="dashboard-section">
+          <h5>Health Summary</h5>
+          <div class="card card-accent glass-card">
+            <div class="row text-center">
+              <div class="col-4 mb-3 mb-md-0">
+                <h6>Last Checkup</h6>
+                <p id="lastCheckup">12 Jan 2024</p>
+              </div>
+              <div class="col-4 mb-3 mb-md-0">
+                <h6>Next Appointment</h6>
+                <p id="nextAppointment">25 Feb 2024</p>
+              </div>
+              <div class="col-4">
+                <h6>Health Score</h6>
+                <p id="healthScore">82/100</p>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="dashboard-section">
+          <h5>Health Tips & Recommendations</h5>
+          <div class="card bg-light section-gradient glass-card">
+            <div class="row g-3">
+              <div class="col-12 mb-2">
+                <div class="card h-100 border-0 bg-transparent">
+                  <div class="card-body d-flex align-items-center gap-3">
+                    <!-- Water Glass SVG -->
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="32" height="32" rx="16" fill="var(--accent-light)"/><path d="M10 8h12l-1.5 14.5a3 3 0 01-3 2.5h-3a3 3 0 01-3-2.5L10 8z" stroke="var(--accent)" stroke-width="2" fill="var(--card-bg)"/><path d="M13 14c.5 1 1.5 2 3 2s2.5-1 3-2" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round"/></svg>
+                    <div>
+                      <h6 class="card-title mb-1">Stay Hydrated</h6>
+                      <p class="card-text mb-0">Drink at least 8 glasses of water daily to keep your body hydrated and healthy.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 mb-2">
+                <div class="card h-100 border-0 bg-transparent">
+                  <div class="card-body d-flex align-items-center gap-3">
+                    <!-- Dumbbell SVG -->
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="32" height="32" rx="16" fill="var(--accent-light)"/><rect x="10" y="14" width="12" height="4" rx="2" fill="var(--accent)"/><rect x="8" y="13" width="2" height="6" rx="1" fill="var(--accent)"/><rect x="22" y="13" width="2" height="6" rx="1" fill="var(--accent)"/></svg>
+                    <div>
+                      <h6 class="card-title mb-1">Regular Exercise</h6>
+                      <p class="card-text mb-0">Aim for at least 30 minutes of moderate exercise most days of the week.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="card h-100 border-0 bg-transparent">
+                  <div class="card-body d-flex align-items-center gap-3">
+                    <!-- Salad Bowl SVG -->
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="32" height="32" rx="16" fill="var(--accent-light)"/><ellipse cx="16" cy="20" rx="7" ry="3" fill="var(--accent)"/><path d="M9 20c0-2.5 3.134-5 7-5s7 2.5 7 5" stroke="var(--accent)" stroke-width="1.5" fill="none"/></svg>
+                    <div>
+                      <h6 class="card-title mb-1">Eat Balanced Meals</h6>
+                      <p class="card-text mb-0">Include fruits, vegetables, and whole grains in your daily diet for optimal health.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+      <!-- Right Column -->
+      <div class="col-lg-6 col-md-8 col-12">
+        <section class="dashboard-section" data-aos="fade-up" data-aos-delay="50">
+          <h5>Your Health Insights</h5>
+          <div class="row g-3">
+            <div class="col-12 col-md-7">
+              <div class="card section-gradient mb-3">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <span class="fw-semibold">Health Score Trend</span>
+                </div>
+                <canvas id="healthScoreChart" height="120"></canvas>
+              </div>
+            </div>
+            <div class="col-12 col-md-5">
+              <div class="card section-pattern mb-3">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <span class="fw-semibold">Appointments by Type</span>
+                </div>
+                <canvas id="appointmentsChart" height="120"></canvas>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="dashboard-section" data-aos="fade-up" data-aos-delay="100">
+          <h5>Notifications</h5>
+          <div id="notificationsArea">
+            <div class="alert alert-info d-flex align-items-center mb-2" role="alert">
+              <span class="me-2 bi bi-calendar-event"></span>
+              Upcoming appointment with Dr. Smith on 25 Feb 2024 at 10:00 AM.
+            </div>
+            <div class="alert alert-warning d-flex align-items-center mb-2" role="alert">
+              <span class="me-2 bi bi-exclamation-triangle"></span>
+              Your medical record "Blood Test Report" is ready for review.
+            </div>
+            <div class="alert alert-success d-flex align-items-center mb-2" role="alert">
+              <span class="me-2 bi bi-check-circle"></span>
+              You have successfully updated your profile.
+            </div>
+          </div>
+        </section>
+        <div class="dashboard-divider"></div>
+        <section class="dashboard-section" data-aos="fade-up" data-aos-delay="200">
+          <h5>Quick Links</h5>
+          <div class="card section-pattern glass-card">
+            <div class="d-flex flex-wrap justify-content-center gap-3">
+              <a href="#" class="btn btn-outline-primary">Book Appointment</a>
+              <a href="#" class="btn btn-outline-success">View Records</a>
+              <a href="#" class="btn btn-outline-info">Find Doctor</a>
+              <a href="#" class="btn btn-outline-warning">Health Packages</a>
+            </div>
+          </div>
+        </section>
+        <div class="dashboard-divider"></div>
+        <section class="dashboard-section" data-aos="fade-up" data-aos-delay="300">
+          <h5>Upcoming Appointments</h5>
+          <div class="card">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <span class="fw-semibold">Upcoming Appointments</span>
+              <button class="btn btn-sm btn-outline-primary" id="bookAppointmentBtn">Book New Appointment</button>
+            </div>
+            <div class="table-responsive">
+              <table class="table mb-0">
+                <thead>
+                  <tr>
+                    <th scope="col">Doctor</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Time</th>
+                    <th scope="col">Type</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Dr. Smith</td>
+                    <td>25 Feb 2024</td>
+                    <td>10:00 AM</td>
+                    <td>Consultation</td>
+                  </tr>
+                  <tr>
+                    <td>Dr. Lee</td>
+                    <td>10 Mar 2024</td>
+                    <td>2:30 PM</td>
+                    <td>Follow-up</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+        <div class="dashboard-divider"></div>
+        <section class="dashboard-section" data-aos="fade-up" data-aos-delay="400">
+          <h5>Medical Records</h5>
+          <div class="card">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <span class="fw-semibold">Medical Records</span>
+              <button class="btn btn-sm btn-outline-primary" id="uploadRecordBtn">Upload New Record</button>
+            </div>
+            <div class="table-responsive">
+              <table class="table mb-0">
+                <thead>
+                  <tr>
+                    <th scope="col">Record Name</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Blood Test Report</td>
+                    <td>05 Jan 2024</td>
+                    <td>Lab Report</td>
+                    <td><a href="#" class="btn btn-sm btn-outline-primary">View</a></td>
+                  </tr>
+                  <tr>
+                    <td>X-Ray Result</td>
+                    <td>20 Dec 2023</td>
+                    <td>Imaging</td>
+                    <td><a href="#" class="btn btn-sm btn-outline-primary">View</a></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+        <div class="dashboard-divider"></div>
+        <section class="dashboard-section" data-aos="fade-up">
+          <h5>Your Doctors & Consultations</h5>
+          <div class="card">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <span class="fw-semibold">Your Doctors & Consultations</span>
+            </div>
+            <div class="table-responsive">
+              <table class="table mb-0">
+                <thead>
+                  <tr>
+                    <th scope="col">Doctor</th>
+                    <th scope="col">Specialty</th>
+                    <th scope="col">Contact</th>
+                    <th scope="col">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Dr. Smith</td>
+                    <td>Cardiologist</td>
+                    <td>smith@email.com</td>
+                    <td><button class="btn btn-sm btn-outline-success">Book Consultation</button></td>
+                  </tr>
+                  <tr>
+                    <td>Dr. Lee</td>
+                    <td>General Physician</td>
+                    <td>lee@email.com</td>
+                    <td><button class="btn btn-sm btn-outline-success">Book Consultation</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    &copy; 2024 AI Health Package. All rights reserved.
+  </div>
+
+  <!-- Floating Action Button (FAB) -->
+  <button class="fab shadow-lg" id="fabBtn" title="Book Appointment" data-bs-toggle="tooltip" data-bs-placement="left">
+    <i class="bi bi-plus-lg"></i>
+  </button>
+
+  <!-- Bootstrap JS Bundle CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Add AOS JS -->
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script>
+    AOS.init({ duration: 800, once: true });
+    // Display user info dynamically and handle basic auth check
+    document.addEventListener('DOMContentLoaded', function() {
+      const userName = localStorage.getItem('userName');
+      const userEmail = localStorage.getItem('userEmail');
+      const userAvatar = localStorage.getItem('userAvatar');
+      // If not logged in, redirect to login page
+      if (!userName || !userEmail) {
+        window.location.href = 'Login.html';
+        return;
+      }
+      // Set user info in dashboard
+      document.getElementById('userName').textContent = userName;
+      document.getElementById('dropdownUserName').textContent = userName;
+      document.getElementById('dropdownUserEmail').textContent = userEmail;
+      // Set avatar images
+      const defaultAvatar = 'https://via.placeholder.com/80';
+      const navAvatar = document.getElementById('navAvatar');
+      const dropdownAvatar = document.getElementById('dropdownAvatar');
+      const profileCardAvatar = document.getElementById('profileCardAvatar');
+      if (userAvatar) {
+        navAvatar.src = userAvatar;
+        dropdownAvatar.src = userAvatar;
+        if (profileCardAvatar) profileCardAvatar.src = userAvatar;
+      } else {
+        navAvatar.src = defaultAvatar;
+        dropdownAvatar.src = defaultAvatar;
+        if (profileCardAvatar) profileCardAvatar.src = 'https://via.placeholder.com/64';
+      }
+      // Logout button functionality
+      const logoutBtn = document.getElementById('logoutBtn');
+      if (logoutBtn) {
+        logoutBtn.addEventListener('click', function() {
+          localStorage.removeItem('userName');
+          localStorage.removeItem('userEmail');
+          localStorage.removeItem('userAvatar');
+          window.location.href = 'Login.html';
+        });
+      }
+      // Avatar upload functionality with spinner
+      const avatarUpload = document.getElementById('avatarUpload');
+      const avatarSpinner = document.getElementById('avatarSpinner');
+      avatarUpload.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+          avatarSpinner.style.display = 'inline-block';
+          const reader = new FileReader();
+          reader.onload = function(evt) {
+            localStorage.setItem('userAvatar', evt.target.result);
+            navAvatar.src = evt.target.result;
+            dropdownAvatar.src = evt.target.result;
+            if (profileCardAvatar) profileCardAvatar.src = evt.target.result;
+            avatarSpinner.style.display = 'none';
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+      // Initialize Bootstrap tooltip for avatar
+      var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+      tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+      });
+
+      // Profile Settings Modal logic (now inside DOMContentLoaded)
+      const profileSettingsModal = new bootstrap.Modal(document.getElementById('profileSettingsModal'));
+      const profileSettingsForm = document.getElementById('profileSettingsForm');
+      const settingsName = document.getElementById('settingsName');
+      const settingsEmail = document.getElementById('settingsEmail');
+      const settingsPassword = document.getElementById('settingsPassword');
+      const settingsPasswordConfirm = document.getElementById('settingsPasswordConfirm');
+      const togglePassword = document.getElementById('togglePassword');
+      const togglePasswordConfirm = document.getElementById('togglePasswordConfirm');
+      const passwordMismatch = document.getElementById('passwordMismatch');
+      const profileSettingsSuccess = document.getElementById('profileSettingsSuccess');
+
+      // When modal is shown, pre-fill with current values and clear password fields
+      document.getElementById('profileSettingsModal').addEventListener('show.bs.modal', function () {
+        settingsName.value = localStorage.getItem('userName') || '';
+        settingsEmail.value = localStorage.getItem('userEmail') || '';
+        settingsPassword.value = '';
+        settingsPasswordConfirm.value = '';
+        passwordMismatch.classList.add('d-none');
+        profileSettingsSuccess.classList.add('d-none');
+      });
+
+      // Toggle password visibility
+      togglePassword.addEventListener('click', function() {
+        settingsPassword.type = settingsPassword.type === 'password' ? 'text' : 'password';
+        this.querySelector('i').classList.toggle('bi-eye');
+        this.querySelector('i').classList.toggle('bi-eye-slash');
+      });
+      togglePasswordConfirm.addEventListener('click', function() {
+        settingsPasswordConfirm.type = settingsPasswordConfirm.type === 'password' ? 'text' : 'password';
+        this.querySelector('i').classList.toggle('bi-eye');
+        this.querySelector('i').classList.toggle('bi-eye-slash');
+      });
+
+      profileSettingsForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        // Password change logic (demo only)
+        if (settingsPassword.value || settingsPasswordConfirm.value) {
+          if (settingsPassword.value !== settingsPasswordConfirm.value) {
+            passwordMismatch.classList.remove('d-none');
+            return;
+          } else {
+            passwordMismatch.classList.add('d-none');
+            // Save password to localStorage (demo only)
+            localStorage.setItem('userPassword', settingsPassword.value);
+          }
+        } else {
+          passwordMismatch.classList.add('d-none');
+        }
+        // Save name/email to localStorage
+        localStorage.setItem('userName', settingsName.value);
+        localStorage.setItem('userEmail', settingsEmail.value);
+        // Update UI instantly
+        document.getElementById('userName').textContent = settingsName.value;
+        document.getElementById('dropdownUserName').textContent = settingsName.value;
+        document.getElementById('dropdownUserEmail').textContent = settingsEmail.value;
+        document.getElementById('navUserName') && (document.getElementById('navUserName').textContent = settingsName.value);
+        // Show success message
+        profileSettingsSuccess.classList.remove('d-none');
+        setTimeout(() => {
+          profileSettingsModal.hide();
+        }, 1200);
+      });
+
+      // Profile Progress Ring (Health Score)
+      function animateProfileProgressRing(score) {
+        const ring = document.getElementById('profileProgressRing');
+        const value = document.getElementById('profileProgressValue');
+        if (!ring || !value) return;
+        const max = 100;
+        const percent = Math.max(0, Math.min(score, max));
+        const circumference = 2 * Math.PI * 44;
+        const offset = circumference * (1 - percent / 100);
+        ring.style.strokeDashoffset = circumference;
+        setTimeout(() => {
+          ring.style.strokeDashoffset = offset;
+        }, 200);
+        value.textContent = percent + '%';
+      }
+      // Get health score from dashboard
+      let healthScore = 82;
+      const healthScoreElem = document.getElementById('healthScore');
+      if (healthScoreElem) {
+        const val = parseInt(healthScoreElem.textContent);
+        if (!isNaN(val)) healthScore = val;
+      }
+      animateProfileProgressRing(healthScore);
+    });
+
+    // Chart.js - Health Score Trend (Line Chart)
+    document.addEventListener('DOMContentLoaded', function() {
+      if (window.Chart) {
+        // Health Score Trend
+        const ctx1 = document.getElementById('healthScoreChart').getContext('2d');
+        new Chart(ctx1, {
+          type: 'line',
+          data: {
+            labels: ['Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar'],
+            datasets: [{
+              label: 'Health Score',
+              data: [75, 78, 80, 82, 85, 83],
+              fill: true,
+              backgroundColor: 'rgba(0,200,150,0.10)',
+              borderColor: '#00C896',
+              borderWidth: 3,
+              tension: 0.4,
+              pointBackgroundColor: '#fff',
+              pointBorderColor: '#00C896',
+              pointRadius: 5,
+              pointHoverRadius: 7,
+              pointBorderWidth: 2
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: { display: false },
+              tooltip: { enabled: true }
+            },
+            scales: {
+              y: {
+                min: 60, max: 100,
+                ticks: { color: '#00C896', font: { weight: 'bold' } },
+                grid: { color: '#e6f9f3' }
+              },
+              x: {
+                ticks: { color: '#888' },
+                grid: { display: false }
+              }
+            }
+          }
+        });
+        // Appointments by Type (Doughnut)
+        const ctx2 = document.getElementById('appointmentsChart').getContext('2d');
+        new Chart(ctx2, {
+          type: 'doughnut',
+          data: {
+            labels: ['Consultation', 'Follow-up', 'Lab Test'],
+            datasets: [{
+              data: [8, 4, 2],
+              backgroundColor: [
+                'rgba(0,200,150,0.85)',
+                'rgba(0,200,150,0.35)',
+                'rgba(0,200,150,0.15)'
+              ],
+              borderColor: '#fff',
+              borderWidth: 2
+            }]
+          },
+          options: {
+            cutout: '70%',
+            plugins: {
+              legend: {
+                display: true,
+                position: 'bottom',
+                labels: { color: '#00C896', font: { weight: 'bold' } }
+              },
+              tooltip: { enabled: true }
+            }
+          }
+        });
+      }
+    });
+
+    // Add SVG gradient definition for the progress ring
+    document.addEventListener('DOMContentLoaded', function() {
+      const svg = document.querySelector('.profile-progress-ring svg');
+      if (svg && !svg.querySelector('defs')) {
+        const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+        const grad = document.createElementNS('http://www.w3.org/2000/svg', 'linearGradient');
+        grad.setAttribute('id', 'profileRingGradient');
+        grad.setAttribute('x1', '0%');
+        grad.setAttribute('y1', '0%');
+        grad.setAttribute('x2', '100%');
+        grad.setAttribute('y2', '100%');
+        const stop1 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+        stop1.setAttribute('offset', '0%');
+        stop1.setAttribute('stop-color', '#00C896');
+        const stop2 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+        stop2.setAttribute('offset', '100%');
+        stop2.setAttribute('stop-color', '#00e6b8');
+        grad.appendChild(stop1);
+        grad.appendChild(stop2);
+        defs.appendChild(grad);
+        svg.insertBefore(defs, svg.firstChild);
+      }
+    });
+
+    // Floating Action Button (FAB) logic
+    document.addEventListener('DOMContentLoaded', function() {
+      var fabBtn = document.getElementById('fabBtn');
+      if (fabBtn) {
+        // Tooltip
+        new bootstrap.Tooltip(fabBtn);
+        // Scroll to Upcoming Appointments section on click
+        fabBtn.addEventListener('click', function() {
+          var apptSection = document.querySelector('section.dashboard-section h5');
+          var apptSectionAll = document.querySelectorAll('section.dashboard-section h5');
+          var found = null;
+          apptSectionAll.forEach(function(h5) {
+            if (h5.textContent.trim().toLowerCase().includes('upcoming appointment')) found = h5;
+          });
+          if (found) {
+            found.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        });
+      }
+    });
+
+    // Dark/Light Mode Toggle
+    document.addEventListener('DOMContentLoaded', function() {
+      const themeToggleBtn = document.getElementById('themeToggleBtn');
+      const themeToggleIcon = document.getElementById('themeToggleIcon');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      function setTheme(dark) {
+        document.body.classList.toggle('dark-mode', dark);
+        if (themeToggleIcon) {
+          themeToggleIcon.className = dark ? 'bi bi-sun' : 'bi bi-moon-stars';
+        }
+      }
+      // Load theme from localStorage or system
+      let darkMode = localStorage.getItem('themeMode');
+      if (darkMode === null) darkMode = prefersDark ? 'dark' : 'light';
+      setTheme(darkMode === 'dark');
+      // Toggle on click
+      if (themeToggleBtn) {
+        new bootstrap.Tooltip(themeToggleBtn);
+        themeToggleBtn.addEventListener('click', function() {
+          const isDark = document.body.classList.toggle('dark-mode');
+          localStorage.setItem('themeMode', isDark ? 'dark' : 'light');
+          setTheme(isDark);
+        });
+      }
+    });
+  </script>
+
+  <!-- Settings Modal with Sidebar Navigation -->
+  <div class="modal fade" id="profileSettingsModal" tabindex="-1" aria-labelledby="profileSettingsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="profileSettingsModalLabel"><i class="bi bi-gear me-2"></i>Settings</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-4 border-end">
+              <div class="nav flex-column nav-pills gap-2" id="settingsTab" role="tablist" aria-orientation="vertical">
+                <button class="nav-link active" id="tab-profile-info" data-bs-toggle="pill" data-bs-target="#settings-profile-info" type="button" role="tab" aria-controls="settings-profile-info" aria-selected="true"><i class="bi bi-person-lines-fill me-2"></i>Profile Info</button>
+                <button class="nav-link" id="tab-change-password" data-bs-toggle="pill" data-bs-target="#settings-change-password" type="button" role="tab" aria-controls="settings-change-password" aria-selected="false"><i class="bi bi-key me-2"></i>Change Password</button>
+                <button class="nav-link" id="tab-theme" data-bs-toggle="pill" data-bs-target="#settings-theme" type="button" role="tab" aria-controls="settings-theme" aria-selected="false"><i class="bi bi-moon-stars me-2"></i>Theme</button>
+                <button class="nav-link" id="tab-notifications" data-bs-toggle="pill" data-bs-target="#settings-notifications" type="button" role="tab" aria-controls="settings-notifications" aria-selected="false"><i class="bi bi-bell me-2"></i>Notifications</button>
+                <button class="nav-link" id="tab-language" data-bs-toggle="pill" data-bs-target="#settings-language" type="button" role="tab" aria-controls="settings-language" aria-selected="false"><i class="bi bi-translate me-2"></i>Language</button>
+                <button class="nav-link" id="tab-advanced-security" data-bs-toggle="pill" data-bs-target="#settings-advanced-security" type="button" role="tab" aria-controls="settings-advanced-security" aria-selected="false"><i class="bi bi-shield-lock me-2"></i>Advanced Security</button>
+                <button class="nav-link text-danger" id="tab-delete-account" data-bs-toggle="pill" data-bs-target="#settings-delete-account" type="button" role="tab" aria-controls="settings-delete-account" aria-selected="false"><i class="bi bi-trash me-2"></i>Delete Account</button>
+              </div>
+            </div>
+            <div class="col-md-8">
+              <div class="tab-content" id="settingsTabContent">
+                <!-- Profile Info Tab -->
+                <div class="tab-pane fade show active" id="settings-profile-info" role="tabpanel" aria-labelledby="tab-profile-info">
+                  <form id="profileSettingsForm">
+                    <div class="mb-3">
+                      <label for="settingsName" class="form-label">Name</label>
+                      <input type="text" class="form-control" id="settingsName" required>
+                    </div>
+                    <div class="mb-3">
+                      <label for="settingsEmail" class="form-label">Email</label>
+                      <input type="email" class="form-control" id="settingsEmail" required>
+                    </div>
+                    <div id="profileSettingsSuccess" class="alert alert-success d-none py-2 px-3 mb-0" role="alert">
+                      Profile updated successfully!
+                    </div>
+                    <div class="text-end">
+                      <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </div>
+                  </form>
+                </div>
+                <!-- Change Password Tab -->
+                <div class="tab-pane fade" id="settings-change-password" role="tabpanel" aria-labelledby="tab-change-password">
+                  <form id="changePasswordForm">
+                    <div class="mb-3 input-group">
+                      <input type="password" class="form-control" id="settingsPassword" placeholder="New Password" minlength="6">
+                      <button class="btn btn-outline-secondary" type="button" id="togglePassword"><i class="bi bi-eye"></i></button>
+                    </div>
+                    <div class="mb-3 input-group">
+                      <input type="password" class="form-control" id="settingsPasswordConfirm" placeholder="Confirm New Password" minlength="6">
+                      <button class="btn btn-outline-secondary" type="button" id="togglePasswordConfirm"><i class="bi bi-eye"></i></button>
+                    </div>
+                    <div id="passwordMismatch" class="alert alert-danger d-none py-2 px-3 mb-2" role="alert">
+                      Passwords do not match.
+                    </div>
+                    <div id="passwordSuccess" class="alert alert-success d-none py-2 px-3 mb-0" role="alert">
+                      Password updated successfully!
+                    </div>
+                    <div class="text-end">
+                      <button type="submit" class="btn btn-primary">Change Password</button>
+                    </div>
+                  </form>
+                </div>
+                <!-- Theme Tab (Interactive) -->
+                <div class="tab-pane fade" id="settings-theme" role="tabpanel" aria-labelledby="tab-theme">
+                  <form id="themeSettingsForm">
+                    <label class="form-label mb-2">Choose your theme:</label>
+                    <div class="btn-group mb-3 w-100" role="group" aria-label="Theme toggle">
+                      <input type="radio" class="btn-check" name="themeOptions" id="themeLight" autocomplete="off" value="light">
+                      <label class="btn btn-outline-primary" for="themeLight"><i class="bi bi-brightness-high me-1"></i>Light</label>
+                      <input type="radio" class="btn-check" name="themeOptions" id="themeDark" autocomplete="off" value="dark">
+                      <label class="btn btn-outline-primary" for="themeDark"><i class="bi bi-moon-stars me-1"></i>Dark</label>
+                      <input type="radio" class="btn-check" name="themeOptions" id="themeSystem" autocomplete="off" value="system">
+                      <label class="btn btn-outline-primary" for="themeSystem"><i class="bi bi-laptop me-1"></i>System</label>
+                    </div>
+                    <div class="d-flex justify-content-between gap-2 mb-3">
+                      <div class="flex-fill text-center p-2 rounded border" style="background:linear-gradient(135deg,#f8fafc 0%,#e0e7ef 100%);">
+                        <i class="bi bi-brightness-high" style="font-size:1.7rem;color:#00C896;"></i>
+                        <div class="small mt-1">Light</div>
+                      </div>
+                      <div class="flex-fill text-center p-2 rounded border" style="background:linear-gradient(135deg,#181c1f 0%,#23272b 100%);">
+                        <i class="bi bi-moon-stars" style="font-size:1.7rem;color:#00e6b8;"></i>
+                        <div class="small mt-1">Dark</div>
+                      </div>
+                      <div class="flex-fill text-center p-2 rounded border" style="background:linear-gradient(135deg,#e6f9f3 0%,#00382e 100%);">
+                        <i class="bi bi-laptop" style="font-size:1.7rem;color:#00C896;"></i>
+                        <div class="small mt-1">System</div>
+                      </div>
+                    </div>
+                    <div id="themeSettingsSuccess" class="alert alert-success d-none py-2 px-3 mb-0" role="alert">
+                      Theme updated!
+                    </div>
+                    <div class="text-end">
+                      <button type="submit" class="btn btn-primary">Save Theme</button>
+                    </div>
+                  </form>
+                </div>
+                <!-- Notification Preferences Tab -->
+                <div class="tab-pane fade" id="settings-notifications" role="tabpanel" aria-labelledby="tab-notifications">
+                  <form id="notificationPrefsForm">
+                    <div class="form-check form-switch mb-3">
+                      <input class="form-check-input" type="checkbox" id="notifAppointments">
+                      <label class="form-check-label" for="notifAppointments">Appointment Reminders</label>
+                    </div>
+                    <div class="form-check form-switch mb-3">
+                      <input class="form-check-input" type="checkbox" id="notifRecords">
+                      <label class="form-check-label" for="notifRecords">New Medical Records</label>
+                    </div>
+                    <div class="form-check form-switch mb-3">
+                      <input class="form-check-input" type="checkbox" id="notifTips">
+                      <label class="form-check-label" for="notifTips">Health Tips & Recommendations</label>
+                    </div>
+                    <div id="notifPrefsSuccess" class="alert alert-success d-none py-2 px-3 mb-0" role="alert">
+                      Notification preferences saved!
+                    </div>
+                    <div class="text-end">
+                      <button type="submit" class="btn btn-primary">Save Preferences</button>
+                    </div>
+                  </form>
+                </div>
+                <!-- Delete Account Tab -->
+                <div class="tab-pane fade" id="settings-delete-account" role="tabpanel" aria-labelledby="tab-delete-account">
+                  <form id="deleteAccountForm">
+                    <div class="mb-3">
+                      <label for="deleteAccountPassword" class="form-label">Enter your password to confirm:</label>
+                      <input type="password" class="form-control" id="deleteAccountPassword" placeholder="Password" required>
+                    </div>
+                    <div id="deleteAccountError" class="alert alert-danger d-none py-2 px-3 mb-2" role="alert">
+                      Incorrect password. Please try again.
+                    </div>
+                    <div class="alert alert-danger d-flex align-items-center" role="alert">
+                      <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                      <div>
+                        <strong>Warning:</strong> This will permanently delete your account and all your data. This action cannot be undone.
+                      </div>
+                    </div>
+                    <div class="text-end">
+                      <button id="deleteAccountBtn" class="btn btn-danger" type="submit"><i class="bi bi-trash me-2"></i>Delete My Account</button>
+                    </div>
+                  </form>
+                </div>
+                <!-- Language Tab -->
+                <div class="tab-pane fade" id="settings-language" role="tabpanel" aria-labelledby="tab-language">
+                  <form id="languageForm">
+                    <div class="mb-3">
+                      <label for="languageSelect" class="form-label">Select your preferred language:</label>
+                      <select class="form-select" id="languageSelect">
+                        <option value="en">English</option>
+                        <option value="hi">Hindi</option>
+                        <option value="es">Spanish</option>
+                        <option value="fr">French</option>
+                        <option value="de">German</option>
+                        <!-- Add more languages as needed -->
+                      </select>
+                    </div>
+                    <div id="languageSuccess" class="alert alert-success d-none py-2 px-3 mb-0" role="alert">
+                      Language preference saved!
+                    </div>
+                    <div class="text-end">
+                      <button type="submit" class="btn btn-primary">Save Language</button>
+                    </div>
+                  </form>
+                </div>
+                <!-- Advanced Security Tab -->
+                <div class="tab-pane fade" id="settings-advanced-security" role="tabpanel" aria-labelledby="tab-advanced-security">
+                  <div class="mb-4">
+                    <h6><i class="bi bi-clock-history me-2"></i>Login Activity</h6>
+                    <ul id="loginActivityList" class="list-group mb-2" style="max-height:120px;overflow:auto;"></ul>
+                  </div>
+                  <form id="securityForm">
+                    <div class="form-check form-switch mb-3">
+                      <input class="form-check-input" type="checkbox" id="enable2FA">
+                      <label class="form-check-label" for="enable2FA">Enable Two-Factor Authentication (2FA)</label>
+                    </div>
+                    <div id="securitySuccess" class="alert alert-success d-none py-2 px-3 mb-0" role="alert">
+                      Security settings updated!
+                    </div>
+                    <div class="text-end">
+                      <button type="submit" class="btn btn-primary">Save Security Settings</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // ...existing JS...
+      // Profile Info Tab
+      const profileSettingsForm = document.getElementById('profileSettingsForm');
+      const settingsName = document.getElementById('settingsName');
+      const settingsEmail = document.getElementById('settingsEmail');
+      const profileSettingsSuccess = document.getElementById('profileSettingsSuccess');
+      document.getElementById('profileSettingsModal').addEventListener('show.bs.modal', function () {
+        settingsName.value = localStorage.getItem('userName') || '';
+        settingsEmail.value = localStorage.getItem('userEmail') || '';
+        profileSettingsSuccess.classList.add('d-none');
+      });
+      profileSettingsForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        localStorage.setItem('userName', settingsName.value);
+        localStorage.setItem('userEmail', settingsEmail.value);
+        document.getElementById('userName').textContent = settingsName.value;
+        document.getElementById('dropdownUserName').textContent = settingsName.value;
+        document.getElementById('dropdownUserEmail').textContent = settingsEmail.value;
+        document.getElementById('navUserName') && (document.getElementById('navUserName').textContent = settingsName.value);
+        profileSettingsSuccess.classList.remove('d-none');
+        setTimeout(() => { profileSettingsSuccess.classList.add('d-none'); }, 1200);
+      });
+      // Change Password Tab
+      const changePasswordForm = document.getElementById('changePasswordForm');
+      const settingsPassword = document.getElementById('settingsPassword');
+      const settingsPasswordConfirm = document.getElementById('settingsPasswordConfirm');
+      const togglePassword = document.getElementById('togglePassword');
+      const togglePasswordConfirm = document.getElementById('togglePasswordConfirm');
+      const passwordMismatch = document.getElementById('passwordMismatch');
+      const passwordSuccess = document.getElementById('passwordSuccess');
+      changePasswordForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        if (settingsPassword.value !== settingsPasswordConfirm.value) {
+          passwordMismatch.classList.remove('d-none');
+          passwordSuccess.classList.add('d-none');
+          return;
+        } else {
+          passwordMismatch.classList.add('d-none');
+          localStorage.setItem('userPassword', settingsPassword.value);
+          passwordSuccess.classList.remove('d-none');
+          setTimeout(() => { passwordSuccess.classList.add('d-none'); }, 1200);
+          settingsPassword.value = '';
+          settingsPasswordConfirm.value = '';
+        }
+      });
+      togglePassword.addEventListener('click', function() {
+        settingsPassword.type = settingsPassword.type === 'password' ? 'text' : 'password';
+        this.querySelector('i').classList.toggle('bi-eye');
+        this.querySelector('i').classList.toggle('bi-eye-slash');
+      });
+      togglePasswordConfirm.addEventListener('click', function() {
+        settingsPasswordConfirm.type = settingsPasswordConfirm.type === 'password' ? 'text' : 'password';
+        this.querySelector('i').classList.toggle('bi-eye');
+        this.querySelector('i').classList.toggle('bi-eye-slash');
+      });
+      // Notification Preferences Tab
+      const notificationPrefsForm = document.getElementById('notificationPrefsForm');
+      const notifAppointments = document.getElementById('notifAppointments');
+      const notifRecords = document.getElementById('notifRecords');
+      const notifTips = document.getElementById('notifTips');
+      const notifPrefsSuccess = document.getElementById('notifPrefsSuccess');
+      // Load preferences when tab is shown
+      document.getElementById('tab-notifications').addEventListener('shown.bs.tab', function () {
+        notifAppointments.checked = localStorage.getItem('notifAppointments') !== 'false';
+        notifRecords.checked = localStorage.getItem('notifRecords') !== 'false';
+        notifTips.checked = localStorage.getItem('notifTips') !== 'false';
+        notifPrefsSuccess.classList.add('d-none');
+      });
+      notificationPrefsForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        localStorage.setItem('notifAppointments', notifAppointments.checked);
+        localStorage.setItem('notifRecords', notifRecords.checked);
+        localStorage.setItem('notifTips', notifTips.checked);
+        notifPrefsSuccess.classList.remove('d-none');
+        setTimeout(() => { notifPrefsSuccess.classList.add('d-none'); }, 1200);
+      });
+      // Delete Account Tab with password check
+      const deleteAccountForm = document.getElementById('deleteAccountForm');
+      const deleteAccountPassword = document.getElementById('deleteAccountPassword');
+      const deleteAccountError = document.getElementById('deleteAccountError');
+      if (deleteAccountForm) {
+        deleteAccountForm.addEventListener('submit', function(e) {
+          e.preventDefault();
+          const storedPassword = localStorage.getItem('userPassword') || '';
+          if (deleteAccountPassword.value !== storedPassword) {
+            deleteAccountError.classList.remove('d-none');
+            return;
+          } else {
+            deleteAccountError.classList.add('d-none');
+            if (confirm('Are you sure you want to delete your account? This cannot be undone.')) {
+              localStorage.clear();
+              window.location.href = 'Login.html';
+            }
+          }
+        });
+      }
+      // Language Tab
+      const languageForm = document.getElementById('languageForm');
+      const languageSelect = document.getElementById('languageSelect');
+      const languageSuccess = document.getElementById('languageSuccess');
+      document.getElementById('tab-language').addEventListener('shown.bs.tab', function () {
+        languageSelect.value = localStorage.getItem('userLanguage') || 'en';
+        languageSuccess.classList.add('d-none');
+      });
+      languageForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        localStorage.setItem('userLanguage', languageSelect.value);
+        languageSuccess.classList.remove('d-none');
+        setTimeout(() => { languageSuccess.classList.add('d-none'); }, 1200);
+      });
+      // Advanced Security Tab
+      const loginActivityList = document.getElementById('loginActivityList');
+      const securityForm = document.getElementById('securityForm');
+      const enable2FA = document.getElementById('enable2FA');
+      const securitySuccess = document.getElementById('securitySuccess');
+      // Load login activity and 2FA preference when tab is shown
+      document.getElementById('tab-advanced-security').addEventListener('shown.bs.tab', function () {
+        // Load login activity from localStorage (array of ISO strings)
+        const activity = JSON.parse(localStorage.getItem('loginActivity') || '[]');
+        loginActivityList.innerHTML = activity.length ? activity.map(dt => `<li class='list-group-item py-1'>${new Date(dt).toLocaleString()}</li>`).join('') : '<li class="list-group-item text-muted">No recent logins.</li>';
+        enable2FA.checked = localStorage.getItem('enable2FA') === 'true';
+        securitySuccess.classList.add('d-none');
+      });
+      securityForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        localStorage.setItem('enable2FA', enable2FA.checked);
+        securitySuccess.classList.remove('d-none');
+        setTimeout(() => { securitySuccess.classList.add('d-none'); }, 1200);
+      });
+      // (Demo) Add a login activity entry on each page load
+      let activity = JSON.parse(localStorage.getItem('loginActivity') || '[]');
+      activity.push(new Date().toISOString());
+      if (activity.length > 10) activity = activity.slice(-10);
+      localStorage.setItem('loginActivity', JSON.stringify(activity));
+    });
+
+    // Theme Settings Tab logic
+    document.addEventListener('DOMContentLoaded', function() {
+      const themeSettingsForm = document.getElementById('themeSettingsForm');
+      const themeLight = document.getElementById('themeLight');
+      const themeDark = document.getElementById('themeDark');
+      const themeSystem = document.getElementById('themeSystem');
+      const themeSettingsSuccess = document.getElementById('themeSettingsSuccess');
+      if (themeSettingsForm) {
+        // On tab show, set radio to current theme
+        document.getElementById('tab-theme').addEventListener('shown.bs.tab', function () {
+          let mode = localStorage.getItem('themeMode');
+          if (!mode) {
+            mode = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+          }
+          if (mode === 'light') themeLight.checked = true;
+          else if (mode === 'dark') themeDark.checked = true;
+          else themeSystem.checked = true;
+          themeSettingsSuccess.classList.add('d-none');
+        });
+        themeSettingsForm.addEventListener('submit', function(e) {
+          e.preventDefault();
+          let selected = themeLight.checked ? 'light' : themeDark.checked ? 'dark' : 'system';
+          if (selected === 'system') {
+            localStorage.removeItem('themeMode');
+            selected = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+          } else {
+            localStorage.setItem('themeMode', selected);
+          }
+          document.body.classList.toggle('dark-mode', selected === 'dark');
+          // Also update navbar toggle icon
+          const themeToggleIcon = document.getElementById('themeToggleIcon');
+          if (themeToggleIcon) themeToggleIcon.className = selected === 'dark' ? 'bi bi-sun' : 'bi bi-moon-stars';
+          themeSettingsSuccess.classList.remove('d-none');
+          setTimeout(() => { themeSettingsSuccess.classList.add('d-none'); }, 1200);
+        });
+      }
+    });
+  </script>
+</body>
+</html>

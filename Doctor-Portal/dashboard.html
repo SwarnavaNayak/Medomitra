@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Doctor Portal | Medomitra</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="portal.css">
+</head>
+<body>
+
+  <!-- ───────────── LOGIN VIEW ───────────── -->
+  <div id="loginView" class="auth-screen">
+    <div class="auth-card">
+      <div class="auth-brand">
+        <i class="fa-solid fa-user-doctor"></i>
+        <h1>Medomitra Doctor Portal</h1>
+        <p>Review AI suggestions. Verify diagnoses. Train the model.</p>
+      </div>
+
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="login">Login</button>
+        <button class="tab-btn" data-tab="register">Register</button>
+      </div>
+
+      <form id="loginForm" class="auth-form active-form">
+        <label>Email
+          <input type="email" id="loginEmail" required placeholder="you@hospital.com" />
+        </label>
+        <label>Password
+          <input type="password" id="loginPassword" required placeholder="••••••••" />
+        </label>
+        <div class="form-error" id="loginError"></div>
+        <button type="submit">Login</button>
+      </form>
+
+      <form id="registerForm" class="auth-form">
+        <label>Full Name
+          <input type="text" id="regName" required placeholder="Dr. Jane Doe" />
+        </label>
+        <label>Email
+          <input type="email" id="regEmail" required placeholder="you@hospital.com" />
+        </label>
+        <label>Specialization
+          <input type="text" id="regSpecialization" required placeholder="e.g. General Medicine" />
+        </label>
+        <label>Password
+          <input type="password" id="regPassword" required minlength="8" placeholder="At least 8 characters" />
+        </label>
+        <div class="form-error" id="registerError"></div>
+        <button type="submit">Create Doctor Account</button>
+      </form>
+
+      <a class="back-link" href="../index.html"><i class="fa-solid fa-arrow-left"></i> Back to Medomitra</a>
+    </div>
+  </div>
+
+  <!-- ───────────── PENDING / REJECTED STATUS VIEW ───────────── -->
+  <!-- Shown instead of the dashboard when a doctor account is logged in
+       but hasn't been approved by an admin yet (or was rejected). -->
+  <div id="statusView" class="auth-screen hidden">
+    <div class="auth-card status-card">
+      <div class="auth-brand">
+        <i class="fa-solid fa-user-clock" id="statusIcon"></i>
+        <h1 id="statusTitle">Pending Approval</h1>
+        <p id="statusMessage">Your doctor account is awaiting review by an admin. You'll be able to access the portal once approved.</p>
+      </div>
+      <div id="statusNotes" class="status-notes hidden"></div>
+      <button id="statusLogoutBtn" class="logout-btn" style="width:100%; margin-top:1rem;">
+        <i class="fa-solid fa-right-from-bracket"></i> Log Out
+      </button>
+      <a class="back-link" href="../index.html"><i class="fa-solid fa-arrow-left"></i> Back to Medomitra</a>
+    </div>
+  </div>
+
+  <!-- ───────────── DASHBOARD VIEW ───────────── -->
+  <div id="dashboardView" class="dashboard hidden">
+    <header class="portal-header">
+      <div class="brand"><i class="fa-solid fa-user-doctor"></i> Medomitra Doctor Portal</div>
+      <div class="doc-info">
+        <span id="docName"></span>
+        <a href="../index.html" class="back-to-site-btn"><i class="fa-solid fa-house"></i> Main Site</a>
+        <button id="logoutBtn" class="logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+      </div>
+    </header>
+
+    <nav class="portal-tabs">
+      <button class="ptab active" data-view="queue">📋 Review Queue</button>
+      <button class="ptab" data-view="history">🗂️ My History</button>
+      <button class="ptab" data-view="train">🧠 Train Model</button>
+      <button class="ptab admin-only hidden" data-view="approvals">👤 Doctor Approvals</button>
+    </nav>
+
+    <!-- QUEUE -->
+    <section id="queueSection" class="portal-section">
+      <div class="section-head">
+        <h2>Pending AI Diagnoses</h2>
+        <button id="refreshQueue" class="refresh-btn"><i class="fa-solid fa-rotate"></i> Refresh</button>
+      </div>
+      <div id="queueList" class="card-list">
+        <p class="empty-state">Loading…</p>
+      </div>
+    </section>
+
+    <!-- HISTORY -->
+    <section id="historySection" class="portal-section hidden">
+      <div class="section-head"><h2>Your Verification History</h2></div>
+      <div id="historyList" class="card-list">
+        <p class="empty-state">Loading…</p>
+      </div>
+    </section>
+
+    <!-- TRAIN -->
+    <section id="trainSection" class="portal-section hidden">
+      <div class="section-head"><h2>Model Training</h2></div>
+      <div class="train-card">
+        <p>The diagnostic model learns only from <strong>doctor-verified</strong> symptom checks. The more cases you verify, the more accurate future AI predictions become.</p>
+        <div id="modelStatus" class="model-status">Loading model status…</div>
+        <button id="trainBtn" class="train-btn"><i class="fa-solid fa-brain"></i> Train Model Now</button>
+        <div id="trainResult" class="train-result"></div>
+      </div>
+    </section>
+
+    <!-- ADMIN: DOCTOR APPROVALS (only visible to admin accounts) -->
+    <section id="approvalsSection" class="portal-section hidden">
+      <div class="section-head">
+        <h2>Pending Doctor Applications</h2>
+        <button id="refreshApprovals" class="refresh-btn"><i class="fa-solid fa-rotate"></i> Refresh</button>
+      </div>
+      <div id="approvalsList" class="card-list">
+        <p class="empty-state">Loading…</p>
+      </div>
+
+      <div class="section-head" style="margin-top:32px;">
+        <h2>All Doctor Accounts</h2>
+      </div>
+      <div id="allDoctorsList" class="card-list">
+        <p class="empty-state">Loading…</p>
+      </div>
+    </section>
+  </div>
+
+  <!-- Doctor Approval Modal -->
+  <div id="approvalModal" class="modal hidden">
+    <div class="modal-content">
+      <button class="modal-close" id="closeApprovalModal">✕</button>
+      <h3>Review Doctor Application</h3>
+      <div class="verify-details">
+        <p><strong>Name:</strong> <span id="approvalName"></span></p>
+        <p><strong>Email:</strong> <span id="approvalEmail"></span></p>
+        <p><strong>Specialization:</strong> <span id="approvalSpecialization"></span></p>
+        <p><strong>Applied:</strong> <span id="approvalDate"></span></p>
+      </div>
+      <label>Notes (optional — e.g. license number verified, reason for rejection)
+        <textarea id="approvalNotes" rows="3" placeholder="Add a note..."></textarea>
+      </label>
+      <div class="verify-actions">
+        <button id="approveDoctorBtn" class="approve-btn"><i class="fa-solid fa-check"></i> Approve</button>
+        <button id="rejectDoctorBtn" class="reject-btn"><i class="fa-solid fa-xmark"></i> Reject</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Verify Modal -->
+  <div id="verifyModal" class="modal hidden">
+    <div class="modal-content">
+      <button class="modal-close" id="closeVerifyModal">✕</button>
+      <h3>Review Symptom Check</h3>
+      <div class="verify-details">
+        <p><strong>Patient-reported symptoms:</strong></p>
+        <p id="verifySymptoms" class="symptom-text"></p>
+        <p><strong>AI Prediction:</strong> <span id="verifyPrediction"></span></p>
+        <p><strong>Confidence:</strong> <span id="verifyConfidence"></span></p>
+        <p><strong>Source:</strong> <span id="verifySource"></span></p>
+      </div>
+      <label>Doctor's Notes (optional)
+        <textarea id="verifyNotes" rows="3" placeholder="Add clinical notes..."></textarea>
+      </label>
+      <label>Correct the diagnosis (optional — leave blank to keep AI's prediction)
+        <input type="text" id="correctedDisease" placeholder="e.g. Common Cold" />
+      </label>
+      <div class="verify-actions">
+        <button id="approveBtn" class="approve-btn"><i class="fa-solid fa-check"></i> Approve</button>
+        <button id="rejectBtn" class="reject-btn"><i class="fa-solid fa-xmark"></i> Reject</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="portal.js"></script>
+</body>
+</html>

@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI-Powered Diagnosis</title>
+  <!-- AOS CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" />
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <!-- Upper Header -->
+  <div class="upper-Header">
+    <div class="logo">
+      <img src="Supporting Meterial/healthcare.png" alt="Logo">
+    </div>
+    <div class="user-Connect" id="userConnect">
+      <button onclick="location.href='Sign_Up/Login.html'" class="btn1 btn-log" id="loginNavBtn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px;">
+          <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+          <polyline points="10,17 15,12 10,7"></polyline>
+          <line x1="15" y1="12" x2="3" y2="12"></line>
+        </svg>
+        Log In
+      </button>
+      <button onclick="location.href='Sign_Up/Register.html'" class="btn1 btn-red-sn" id="signupNavBtn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px;">
+          <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+          <circle cx="8.5" cy="7" r="4"></circle>
+          <line x1="20" y1="8" x2="20" y2="14"></line>
+          <line x1="23" y1="11" x2="17" y2="11"></line>
+        </svg>
+        Sign Up
+      </button>
+    </div>
+  </div>
+  <!-- Header -->
+  <header>
+    <nav class="navbar">
+      <ul class="nav-links">
+        <li><a href="#">Home</a></li>
+        <!-- <li class="symptom-dropdown">
+          <a href="#">Find My Disease <span class="arrow">&#9662;</span></a>
+          <ul class="symptom-menu">
+            <li><button onclick="openSymptomWindow()">Select Symptoms</button></li>
+          </ul>
+        </li> -->
+        <li class="doctor-dropdown">
+          <a href="#">Find Doctor <span class="arrow">&#9662;</span></a>
+          <ul class="doctor-menu">
+            <li><a href="Doctor_List/AlloDocList.html">Dr. For Allopathy</a></li>
+            <li><a href="Doctor_List/HomoDocList.html">Dr. For Homeopathy</a></li>
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#">Treatments <span class="arrow">&#9662;</span></a>
+          <ul class="dropdown-menu">
+            <li><a href="Allopathy-Page/index.html">Allopathy</a></li>
+            <li><a href="Homeopathy-page/index.html">Homeopathy</a></li>
+          </ul>
+        </li>
+        <li><a href="#doctors">AI Diagnosis</a></li>
+        <li><a href="#footer">Contact</a></li>
+      </ul>
+    </nav>
+
+    <div class="floating-window" id="allopathyDr">
+      <h2>Select Your Doctor</h2>
+      <div class="DRcontent">
+        <p>Dr. A Kumar - Cardiologist - 9876543210</p>
+        <p>Dr. C Verma - Neurologist - 8234567890</p>
+        <p>Dr. B Sharma - Dermatologist - 9123456789</p>
+      </div>
+      <button class="book-btn">Book Appointment</button>
+      <button class="close-btn" onclick="closeAllopathyDoctorWindow()">Close</button>
+    </div>
+  </header>
+  <div class="floating-window" id="homeopathyDr">
+    <h2>Select Your Doctor</h2>
+    <div class="DRcontent">
+      <p>Dr. C Verma - Neurologist - 8234567890</p>
+      <p>Dr. A Kumar - Cardiologist - 9876543210</p>
+      <p>Dr. B Sharma - Dermatologist - 9123456789</p>
+    </div>
+    <button class="book-btn">Book Appointment</button>
+    <button class="close-btn" onclick="closeHomeopathyDoctorWindow()">Close</button>
+  </div>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <!-- Animated Background -->
+    <div class="hero-background">
+      <div class="floating-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+      </div>
+    </div>
+
+    <div class="hero-content">
+      <!-- Main Hero Content -->
+      <div class="hero-main">
+        <div class="hero-text">
+          <h2 class="hero-title">
+            <span class="title-line">AI-Powered Diagnosis</span>
+            <span class="title-line">for Better Health</span>
+          </h2>
+          <p class="hero-subtitle">Get accurate insights for both Allopathy and Homeopathy solutions with our advanced AI technology.</p>
+        </div>
+
+        <!-- Treatment Options on Right -->
+        <div class="treatment-options">
+          <a href="Allopathy-Page/index.html" class="option">
+            <div class="option-icon">🏥</div>
+            <div class="option-content">
+              <h3>Allopathy</h3>
+              <p>Modern medical treatment</p>
+            </div>
+          </a>
+          <!-- <a href="Homeopathy-page/index.html" class="option">
+            <div class="option-icon">🌿</div>
+            <div class="option-content">
+              <h3>Homeopathy</h3>
+              <p>Natural healing approach</p>
+            </div>
+          </a> -->
+        </div>
+      </div>
+
+      <!-- Trust Indicators at Bottom -->
+      <div class="trust-indicators">
+        <div class="trust-item">
+          <span class="trust-number" data-target="5000">0</span>
+          <span class="trust-label">Patients Served</span>
+        </div>
+        <div class="trust-item">
+          <span class="trust-number" data-target="150">0</span>
+          <span class="trust-label">Expert Doctors</span>
+        </div>
+        <div class="trust-item">
+          <span class="trust-number" data-target="98">0</span>
+          <span class="trust-label">% Success Rate</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Login Modal -->
+  <div class="login-modal" id="loginModal">
+    <div class="login-modal-content">
+      <div class="login-modal-header">
+        <h3>🔐 Login Required</h3>
+        <p>Please login to access the Health Assessment</p>
+        <button class="close-login" onclick="closeLogin()">×</button>
+      </div>
+      
+      <div class="login-form" id="loginForm">
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" placeholder="Enter your email" required>
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" placeholder="Enter your password" required>
+        </div>
+        <button class="login-btn" onclick="handleLogin()">Login</button>
+        <div class="login-links">
+          <a href="#" onclick="showSignup()">Don't have an account? Sign up</a>
+          <a href="#" onclick="showForgotPassword()">Forgot password?</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Health Assessment Modal -->
+  <div class="health-assessment-modal" id="healthAssessmentModal">
+    <div class="assessment-modal-content">
+      <div class="assessment-modal-header">
+        <h3>🏥 Comprehensive Health Assessment</h3>
+        <p>Complete 10 questions for detailed health insights</p>
+        <button class="close-assessment" onclick="closeAssessment()">×</button>
+      </div>
+      
+      <div class="assessment-form" id="assessmentForm">
+        <!-- Progress Bar
+        <div class="assessment-progress">
+          <div class="progress-bar-assessment">
+            <div class="progress-fill-assessment" id="assessmentProgressFill"></div>
+          </div>
+          <div class="progress-text">Question <span id="currentQuestionNumber">1</span> of 10</div>
+          <button onclick="manualTestStep()" style="margin-top: 10px; padding: 5px 10px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer;">Test Step</button>
+          <button onclick="nextAssessmentStep()" style="margin-top: 10px; padding: 5px 10px; background: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer;">Force Next Step</button>
+          <button onclick="testButtonClick()" style="margin-top: 10px; padding: 5px 10px; background: #ffc107; color: black; border: none; border-radius: 5px; cursor: pointer;">Test Button Click</button>
+        </div> -->
+        
+        <!-- Question 1 -->
+        <div class="form-step active" data-step="1">
+          <div class="question-header">
+            <span class="question-number">1/10</span>
+            <h4>How would you rate your overall energy levels today?</h4>
+          </div>
+          <div class="question-options">
+            <button class="option-btn" data-value="5" data-category="energy">⚡ Very High Energy</button>
+            <button class="option-btn" data-value="4" data-category="energy">😊 Good Energy</button>
+            <button class="option-btn" data-value="3" data-category="energy">😐 Moderate Energy</button>
+            <button class="option-btn" data-value="2" data-category="energy">😴 Low Energy</button>
+            <button class="option-btn" data-value="1" data-category="energy">😵 Very Low Energy</button>
+          </div>
+        </div>
+
+        <!-- Question 2 -->
+        <div class="form-step" data-step="2">
+          <div class="question-header">
+            <span class="question-number">2/10</span>
+            <h4>How many hours of sleep did you get last night?</h4>
+          </div>
+          <div class="question-options">
+            <button class="option-btn" data-value="5" data-category="sleep">😴 8+ hours (Excellent)</button>
+            <button class="option-btn" data-value="4" data-category="sleep">😊 7-8 hours (Good)</button>
+            <button class="option-btn" data-value="3" data-category="sleep">😐 6-7 hours (Fair)</button>
+            <button class="option-btn" data-value="2" data-category="sleep">😴 5-6 hours (Poor)</button>
+            <button class="option-btn" data-value="1" data-category="sleep">😵 Less than 5 hours (Very Poor)</button>
+          </div>
+        </div>
+
+        <!-- Question 3 -->
+        <div class="form-step" data-step="3">
+          <div class="question-header">
+            <span class="question-number">3/10</span>
+            <h4>How would you describe your stress levels recently?</h4>
+          </div>
+          <div class="question-options">
+            <button class="option-btn" data-value="5" data-category="stress">😌 Very Low Stress</button>
+            <button class="option-btn" data-value="4" data-category="stress">🙂 Low Stress</button>
+            <button class="option-btn" data-value="3" data-category="stress">😐 Moderate Stress</button>
+            <button class="option-btn" data-value="2" data-category="stress">😰 High Stress</button>
+            <button class="option-btn" data-value="1" data-category="stress">😱 Very High Stress</button>
+          </div>
+        </div>
+
+        <!-- Question 4 -->
+        <div class="form-step" data-step="4">
+          <div class="question-header">
+            <span class="question-number">4/10</span>
+            <h4>How often do you exercise or engage in physical activity?</h4>
+          </div>
+          <div class="question-options">
+            <button class="option-btn" data-value="5" data-category="exercise">🏃‍♂️ Daily (Excellent)</button>
+            <button class="option-btn" data-value="4" data-category="exercise">🚶‍♂️ 3-4 times/week (Good)</button>
+            <button class="option-btn" data-value="3" data-category="exercise">🧘‍♂️ 1-2 times/week (Fair)</button>
+            <button class="option-btn" data-value="2" data-category="exercise">🪑 Rarely (Poor)</button>
+            <button class="option-btn" data-value="1" data-category="exercise">🛋️ Never (Very Poor)</button>
+          </div>
+        </div>
+
+        <!-- Question 5 -->
+        <div class="form-step" data-step="5">
+          <div class="question-header">
+            <span class="question-number">5/10</span>
+            <h4>How would you rate your eating habits?</h4>
+          </div>
+          <div class="question-options">
+            <button class="option-btn" data-value="5" data-category="nutrition">🥗 Very Healthy (Balanced)</button>
+            <button class="option-btn" data-value="4" data-category="nutrition">🥙 Mostly Healthy (Good)</button>
+            <button class="option-btn" data-value="3" data-category="nutrition">🍎 Somewhat Healthy (Fair)</button>
+            <button class="option-btn" data-value="2" data-category="nutrition">🍕 Unhealthy (Poor)</button>
+            <button class="option-btn" data-value="1" data-category="nutrition">🍔 Very Unhealthy (Very Poor)</button>
+          </div>
+        </div>
+
+        <!-- Question 6 -->
+        <div class="form-step" data-step="6">
+          <div class="question-header">
+            <span class="question-number">6/10</span>
+            <h4>How much water do you drink daily?</h4>
+          </div>
+          <div class="question-options">
+            <button class="option-btn" data-value="5" data-category="hydration">💧 8+ glasses (Excellent)</button>
+            <button class="option-btn" data-value="4" data-category="hydration">🥤 6-8 glasses (Good)</button>
+            <button class="option-btn" data-value="3" data-category="hydration">☕ 4-6 glasses (Fair)</button>
+            <button class="option-btn" data-value="2" data-category="hydration">🥛 2-4 glasses (Poor)</button>
+            <button class="option-btn" data-value="1" data-category="hydration">🚰 Less than 2 glasses (Very Poor)</button>
+          </div>
+        </div>
+
+        <!-- Question 7 -->
+        <div class="form-step" data-step="7">
+          <div class="question-header">
+            <span class="question-number">7/10</span>
+            <h4>How would you rate your mental clarity and focus?</h4>
+          </div>
+          <div class="question-options">
+            <button class="option-btn" data-value="5" data-category="mental">🧠 Excellent Focus</button>
+            <button class="option-btn" data-value="4" data-category="mental">💭 Good Focus</button>
+            <button class="option-btn" data-value="3" data-category="mental">🤔 Moderate Focus</button>
+            <button class="option-btn" data-value="2" data-category="mental">😵 Poor Focus</button>
+            <button class="option-btn" data-value="1" data-category="mental">😱 Very Poor Focus</button>
+          </div>
+        </div>
+
+        <!-- Question 8 -->
+        <div class="form-step" data-step="8">
+          <div class="question-header">
+            <span class="question-number">8/10</span>
+            <h4>How often do you experience physical discomfort or pain?</h4>
+          </div>
+          <div class="question-options">
+            <button class="option-btn" data-value="5" data-category="pain">😊 Never (Excellent)</button>
+            <button class="option-btn" data-value="4" data-category="pain">🙂 Rarely (Good)</button>
+            <button class="option-btn" data-value="3" data-category="pain">😐 Sometimes (Fair)</button>
+            <button class="option-btn" data-value="2" data-category="pain">😣 Often (Poor)</button>
+            <button class="option-btn" data-value="1" data-category="pain">😫 Very Often (Very Poor)</button>
+          </div>
+        </div>
+
+        <!-- Question 9 -->
+        <div class="form-step" data-step="9">
+          <div class="question-header">
+            <span class="question-number">9/10</span>
+            <h4>How would you rate your social connections and relationships?</h4>
+          </div>
+          <div class="question-options">
+            <button class="option-btn" data-value="5" data-category="social">👥 Excellent (Very Connected)</button>
+            <button class="option-btn" data-value="4" data-category="social">🤝 Good (Well Connected)</button>
+            <button class="option-btn" data-value="3" data-category="social">👋 Fair (Moderately Connected)</button>
+            <button class="option-btn" data-value="2" data-category="social">😔 Poor (Limited Connections)</button>
+            <button class="option-btn" data-value="1" data-category="social">😢 Very Poor (Isolated)</button>
+          </div>
+        </div>
+
+        <!-- Question 10 -->
+        <div class="form-step" data-step="10">
+          <div class="question-header">
+            <span class="question-number">10/10</span>
+            <h4>How satisfied are you with your current lifestyle?</h4>
+          </div>
+          <div class="question-options">
+            <button class="option-btn" data-value="5" data-category="satisfaction">😍 Very Satisfied</button>
+            <button class="option-btn" data-value="4" data-category="satisfaction">😊 Satisfied</button>
+            <button class="option-btn" data-value="3" data-category="satisfaction">😐 Neutral</button>
+            <button class="option-btn" data-value="2" data-category="satisfaction">😔 Dissatisfied</button>
+            <button class="option-btn" data-value="1" data-category="satisfaction">😢 Very Dissatisfied</button>
+          </div>
+        </div>
+
+        <div class="assessment-result" id="assessmentResult" style="display: none;">
+          <div class="result-header">
+            <h4>Your Health Assessment Results</h4>
+            <div class="health-score-container">
+              <div class="health-score" id="healthScore">85</div>
+              <div class="score-label">Health Score</div>
+            </div>
+          </div>
+          
+          <div class="result-charts">
+            <div class="chart-container">
+              <h5>Health Categories Breakdown</h5>
+              <canvas id="radarChart" width="300" height="300"></canvas>
+            </div>
+            <div class="chart-container">
+              <h5>Overall Health Trend</h5>
+              <canvas id="lineChart" width="300" height="200"></canvas>
+            </div>
+          </div>
+          
+          <div class="result-content" id="resultContent">
+            <!-- Results will be populated here -->
+          </div>
+          
+          <div class="disclaimer-section">
+            <div class="disclaimer-header">
+              <h5>⚠️ Important Disclaimer</h5>
+            </div>
+            <div class="disclaimer-content">
+              <p>This assessment is for informational purposes only and should not replace professional medical advice. The results are based on self-reported data and may not reflect your complete health status.</p>
+              <p><strong>Recommendations:</strong></p>
+              <ul>
+                <li>Consult with healthcare professionals for accurate diagnosis</li>
+                <li>Use our AI chatbot for preliminary guidance</li>
+                <li>Schedule appointments with our doctors for comprehensive evaluation</li>
+                <li>This assessment is not a substitute for medical consultation</li>
+              </ul>
+            </div>
+          </div>
+          
+          <div class="action-buttons">
+            <button class="chat-with-bot" onclick="openChatBot()">🤖 Chat with AI Bot</button>
+            <button class="book-doctor" onclick="bookDoctor()">👨‍⚕️ Book Doctor Appointment</button>
+            <button class="retake-assessment" onclick="restartAssessment()">🔄 Take Assessment Again</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- How It Works Section -->
+  <section class="section" id="symptom">
+    <section class="text">
+      <div class="bg-text">Working</div>
+      <h2 class="sub-heading">How it works</h2>
+      <div class="main-heading">Working of our System</div>
+      <img src="../Supporting Meterial/line-1.png" alt="">
+    </section>
+    
+    <!-- Interactive Progress Bar -->
+    <div class="progress-container">
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <div class="progress-steps">
+        <div class="step-indicator active" data-step="1">1</div>
+        <div class="step-indicator" data-step="2">2</div>
+        <div class="step-indicator" data-step="3">3</div>
+      </div>
+    </div>
+
+    <div class="cards interactive-cards">
+      <div class="card interactive-card" data-step="1" data-aos="fade-right" data-aos-delay="200">
+        <div class="card-number">01</div>
+        <div class="card-icon-container">
+          <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png" alt="Search icon" />
+          <div class="icon-glow"></div>
+        </div>
+        <h3>Step 1: Search Symptoms</h3>
+        <p>Enter your symptoms and get personalized suggestions.</p>
+        <div class="card-details">
+          <div class="detail-item">
+            <span class="detail-icon">🔍</span>
+            <span>AI-powered symptom analysis</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-icon">⚡</span>
+            <span>Instant results</span>
+          </div>
+        </div>
+        <button class="try-demo-btn" onclick="showDemo(1)">Try Demo</button>
+      </div>
+  
+      <div class="card interactive-card" data-step="2" data-aos="fade-down" data-aos-delay="500">
+        <div class="card-number">02</div>
+        <div class="card-icon-container">
+          <img src="https://cdn-icons-png.flaticon.com/512/565/565547.png" alt="Select doctor" />
+          <div class="icon-glow"></div>
+        </div>
+        <h3>Step 2: Select a Specialist</h3>
+        <p>We'll guide you to the right healthcare professional.</p>
+        <div class="card-details">
+          <div class="detail-item">
+            <span class="detail-icon">👨‍⚕️</span>
+            <span>Expert doctor matching</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-icon">📋</span>
+            <span>Specialized treatment plans</span>
+          </div>
+        </div>
+        <button class="try-demo-btn" onclick="showDemo(2)">Try Demo</button>
+      </div>
+  
+      <div class="card interactive-card" data-step="3" data-aos="fade-left" data-aos-delay="800">
+        <div class="card-number">03</div>
+        <div class="card-icon-container">
+          <img src="https://cdn-icons-png.flaticon.com/512/3105/3105825.png" alt="Get support" />
+          <div class="icon-glow"></div>
+        </div>
+        <h3>Step 3: Get Support</h3>
+        <p>Connect and start your journey toward wellness.</p>
+        <div class="card-details">
+          <div class="detail-item">
+            <span class="detail-icon">💬</span>
+            <span>24/7 support available</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-icon">📱</span>
+            <span>Mobile-friendly consultation</span>
+          </div>
+        </div>
+        <button class="try-demo-btn" onclick="showDemo(3)">Try Demo</button>
+      </div>
+    </div>
+
+    <!-- Interactive Demo Modal -->
+    <div class="demo-modal" id="demoModal">
+      <div class="demo-content">
+        <div class="demo-header">
+          <h3 id="demoTitle">Step Demo</h3>
+          <button class="close-demo" onclick="closeDemo()">×</button>
+        </div>
+        <div class="demo-body" id="demoBody">
+          <!-- Demo content will be loaded here -->
+        </div>
+        <div class="demo-footer">
+          <button class="demo-btn prev-btn" onclick="prevDemo()">Previous</button>
+          <button class="demo-btn next-btn" onclick="nextDemo()">Next</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mental Health Section -->
+  <section class="section" id="mental">
+    <section class="text">
+      <div class="bg-text">Mental Health</div>
+      <h2 class="sub-heading">Mental Health Cards</h2>
+      <div class="main-heading">Know your Mental health</div>
+      <img src="../Supporting Meterial/line-1.png" alt="">
+    </section>
+    <div class="cards">
+      <div class="card" data-aos="fade-right" data-aos-delay="200">
+        <img src="https://static.thenounproject.com/png/chatbot-icon-2761520-512.png" alt="AI Chatbot Icon">
+        <h3>AI Chatbot</h3>
+        <p>Chat with our AI for mental health advice.</p>
+        <a href="#" class="btn btn-green">Chat Now</a>
+      </div>
+  
+      <div class="card" data-aos="fade-left" data-aos-delay="500">
+        <img src="https://static.thenounproject.com/png/self-assessment-icon-5592497-512.png" alt="Self Assessment Icon">
+        <h3>Self-Assessment</h3>
+        <p>Take a quick quiz to assess your mental health.</p>
+        <button class="btn btn-green" onclick="openAssessment()">Start Quiz</button>
+        
+      </div>
+      <!-- <div class="card">
+        <h4>AI Chatbot</h4>
+        <p>Chat with our AI for mental health advice.</p>
+        <a href="#" class="btn">Chat Now</a>
+      </div>
+      <div class="card">
+        <h4>Self-Assessment</h4>
+        <p>Take a quick quiz to assess your mental health.</p>
+        <a href="#" class="btn">Start Quiz</a>
+      </div> -->
+    </div>
+  </section>
+
+  <!-- Doctor Consultation Section -->
+  <section class="section" id="doctors">
+    <section class="text">
+      <div class="bg-text">Doctors</div>
+      <h2 class="sub-heading">Our Doctors</h2>
+      <div class="main-heading">Let's Cure Your Health with us</div>
+      <img src="../Supporting Meterial/line-1.png" alt="">
+    </section>
+    <div class="cards">
+      <div class="card" data-aos="fade-right" data-aos-delay="200">
+        <img src="https://cdn-icons-png.flaticon.com/512/3175/3175199.png" alt="Allopathy" />
+        <h3>Dr. Rahul Sharma</h3>
+        <p>Allopathy Specialist (MBBS, MD)</p>
+        <a href="#" class="btn btn-green">Book Appointment</a>
+        <a href="./Doctor_List/AlloDocList.html">
+          <button class="btn btn-indigo">View All Doctors</button>
+        </a>
+      </div>
+  
+      <div class="card" data-aos="fade-down" data-aos-delay="500">
+        <img src="https://cdn-icons-png.flaticon.com/512/3500/3500396.png" alt="Homeopathy" />
+        <h3>Dr. Ananya Singh</h3>
+        <p>Homeopathy Specialist (BHMS)</p>
+        <a href="#" class="btn btn-green">Book Appointment</a>
+        <a href="#">
+          <button class="btn btn-indigo">View All Doctors</button>
+        </a>
+      </div>
+
+      <div class="card" data-aos="fade-left" data-aos-delay="800">
+        <img src="https://cdn-icons-png.flaticon.com/512/4320/4320337.png" alt="ai doctor" />
+        <h3>AI Doctor</h3>
+        <p>Connect with our AI-powered virtual doctor for assistance</p>
+        <a href="#">
+          <button class="btn btn-green">AI Doctor</button>
+        </a>
+      </div>
+      <!-- <div class="card">
+        <h4>Dr. Rahul Sharma</h4>
+        <p>Allopathy Specialist (MBBS, MD)</p>
+        <a href="#" class="btn">Book Appointment</a>
+      </div>
+      <div class="card">
+        <h4>Dr. Ananya Singh</h4>
+        <p>Homeopathy Specialist (BHMS)</p>
+        <a href="#" class="btn">Book Appointment</a>
+      </div> -->
+    </div>
+  </section>
+
+  <!-- Chat Bot -->
+  <section>
+    <!-- Floating Button -->
+  <button class="chatbot-button" onclick="toggleChat()">💬</button>
+
+  <!-- Chat Window -->
+  <div class="chat-window" id="chatWindow">
+    <div class="chat-header">
+      AskBot AI
+      <span onclick="toggleChat()">✖</span>
+    </div>
+    <div class="chat-messages" id="chatMessages">
+      <!-- messages will appear here -->
+    </div>
+    <div class="chat-input">
+      <input type="text" id="userInput" placeholder="Type your question..." />
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+
+  <!-- User Dashboard Section -->
+  <!-- <section class="section" id="dashboard">
+    <h3>User Dashboard</h3>
+    <p>Access your past reports, track symptoms, and set medication reminders.</p>
+    <a href="#" class="btn">Go to Dashboard</a>
+  </section> -->
+
+  <!-- Login Section for Personalized Tracker -->
+  <!-- <section class="login-section" id="login">
+    <h3>User Login</h3>
+    <form class="login-form">
+      <input type="email" placeholder="Email" required />
+      <input type="password" placeholder="Password" required />
+      <button type="submit">Login</button>
+    </form>
+    <p style="text-align:center; margin-top:10px;">
+      Don't have an account? <a href="#" style="color:#00C896; text-decoration:none;">Register</a>
+    </p>
+  </section> -->
+
+  <!-- Footer -->
+  <footer id="footer">
+    <!-- <div class="bot">
+      <input type="checkbox" id="check"> <label class="chat-btn" for="check"> <i class="fa fa-commenting-o comment"></i>
+        <i class="fa fa-close close"></i> </label>
+      <div class="wrapper">
+        <iframe id="bot " allow="microphone;" width="350" height="430"
+          src="https://console.dialogflow.com/api-client/demo/embedded/a2a13de6-b506-4521-8512-1b3eaa5dc02f">
+        </iframe>
+      </div>
+    </div> -->
+    <div class="content-f">
+      <div class="left box-f">
+        <div class="upper">
+          <div class="topic">About us</div>
+          <p>MEDOMITRA is a thorough telemedicine website created to give consumers easy access to high-quality
+            healtcare services from the convenience of their homes.</p>
+        </div>
+        <div class="lower">
+          <div class="topic">Contact us</div>
+          <div class="phone">
+            <a href="#"><i class="fas fa-phone-volume"></i>+91 9748196100</a>
+          </div>
+          <div class="email">
+            <a href="#"><i class="fas fa-envelope"></i>vikramjeetgupta2004@gmail.com</a>
+          </div>
+        </div>
+      </div>
+      <div class="middle box-f">
+        <div class="topic">Our Services</div>
+        <div><a href="./diet.html">DIET</a></div>
+        <div><a href="./aboutus.html">About Us</a></div>
+        <div><a href="#">Nearby Pharmas</a></div>
+        <div><a href="./map.html"> Nearby Hospitals</a></div>
+        <div><a href="./index.html#faq">FAQ's</a></div>
+      </div>
+      <div class="right box-f">
+        <div class="topic">Subscribe us</div>
+        <form action="#">
+          <input type="text" placeholder="Enter email address">
+          <input type="submit" name="" value="Send">
+          <div class="media-icons">
+            <a href="#" class="me-3"><img src="img/icons8-facebook.svg"></a>
+            <a href="#" class="me-3"><img src="img/icons8-twitter.svg"></a>
+            <a href="#" class="me-4"><img src="img/icons8-instagram.svg"></a>
+            <a href="#" class="me-4"><img src="img/icons8-github.svg"></a>
+            <a href="#" class="me-3"><img src="img/icons8-linkedin-circled.svg"></a>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="bottom-f mt-4">
+      <p>Copyright © 2025 <a href="./index.html">MEDOMITRA</a> All rights reserved</p>
+    </div>
+  </footer>
+  <!-- AOS JS -->
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+  <script>
+    AOS.init();
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="script.js"></script>
+
+</body>
+
+</html>

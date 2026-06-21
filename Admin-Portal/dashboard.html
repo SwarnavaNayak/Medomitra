@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Admin Portal | Medomitra</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+  <!-- ───────────── LOGIN VIEW ───────────── -->
+  <div id="loginView" class="auth-screen">
+    <div class="auth-card">
+      <div class="auth-brand">
+        <i class="fa-solid fa-shield-halved"></i>
+        <h1>Medomitra Admin Portal</h1>
+        <p>Review and approve doctor account applications.</p>
+      </div>
+
+      <form id="loginForm" class="auth-form active-form">
+        <label>Admin Email
+          <input type="email" id="loginEmail" required placeholder="admin@medomitra.com" />
+        </label>
+        <label>Password
+          <input type="password" id="loginPassword" required placeholder="••••••••" />
+        </label>
+        <div class="form-error" id="loginError"></div>
+        <button type="submit">Login</button>
+      </form>
+
+      <p class="admin-hint">Admin accounts aren't created here — see the README for how to bootstrap the first one via environment variables.</p>
+      <a class="back-link" href="../index.html"><i class="fa-solid fa-arrow-left"></i> Back to Medomitra</a>
+    </div>
+  </div>
+
+  <!-- ───────────── DASHBOARD VIEW ───────────── -->
+  <div id="dashboardView" class="dashboard hidden">
+    <header class="portal-header">
+      <div class="brand"><i class="fa-solid fa-shield-halved"></i> Medomitra Admin Portal</div>
+      <div class="doc-info">
+        <span id="adminName"></span>
+        <a href="../index.html" class="back-to-site-btn"><i class="fa-solid fa-house"></i> Main Site</a>
+        <button id="logoutBtn" class="logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+      </div>
+    </header>
+
+    <nav class="portal-tabs">
+      <button class="ptab active" data-view="pending">⏳ Pending Doctors</button>
+      <button class="ptab" data-view="all">🗂️ All Doctors</button>
+    </nav>
+
+    <!-- PENDING -->
+    <section id="pendingSection" class="portal-section">
+      <div class="section-head">
+        <h2>Doctor Applications Awaiting Review</h2>
+        <button id="refreshPending" class="refresh-btn"><i class="fa-solid fa-rotate"></i> Refresh</button>
+      </div>
+      <div id="pendingList" class="card-list">
+        <p class="empty-state">Loading…</p>
+      </div>
+    </section>
+
+    <!-- ALL DOCTORS -->
+    <section id="allSection" class="portal-section hidden">
+      <div class="section-head"><h2>All Doctor Accounts</h2></div>
+      <div id="allList" class="card-list">
+        <p class="empty-state">Loading…</p>
+      </div>
+    </section>
+  </div>
+
+  <!-- Review Modal -->
+  <div id="reviewModal" class="modal hidden">
+    <div class="modal-content">
+      <button class="modal-close" id="closeReviewModal">✕</button>
+      <h3>Review Doctor Application</h3>
+      <div class="verify-details">
+        <p><strong>Name:</strong> <span id="reviewName"></span></p>
+        <p><strong>Email:</strong> <span id="reviewEmail"></span></p>
+        <p><strong>Specialization:</strong> <span id="reviewSpecialization"></span></p>
+        <p><strong>Registration Number:</strong> <span id="reviewRegNum"></span></p>
+        <p><strong>Practice Type:</strong> <span id="reviewPracticeType"></span></p>
+        <p><strong>Certificate:</strong> <span id="reviewCertStatus"></span></p>
+        <p><strong>Applied:</strong> <span id="reviewDate"></span></p>
+      </div>
+      <label>Note (optional — visible to the doctor)
+        <textarea id="reviewNotes" rows="3" placeholder="e.g. Verified medical license number XXXXX"></textarea>
+      </label>
+      <div class="verify-actions">
+        <button id="approveBtn" class="approve-btn"><i class="fa-solid fa-check"></i> Approve</button>
+        <button id="rejectBtn" class="reject-btn"><i class="fa-solid fa-xmark"></i> Reject</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="admin.js"></script>
+</body>
+</html>

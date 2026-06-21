@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Book Appointment</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+    <style>
+        body {
+            background: linear-gradient(120deg, #f0f2f5 60%, #e0f7fa 100%);
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 500px;
+            margin: 40px auto;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 6px 24px rgba(0,0,0,0.12);
+            padding: 2.5rem 2rem 2rem 2rem;
+        }
+        .doctor-header {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            margin-bottom: 1.5rem;
+        }
+        .doctor-header img {
+            width: 80px;
+            height: 120px;
+            border-radius: 12px;
+            object-fit: cover;
+            border: 3px solid #007bff;
+        }
+        .doctor-info h2 {
+            margin: 0 0 0.2rem 0;
+            font-size: 1.4rem;
+            color: #007bff;
+        }
+        .doctor-info p {
+            margin: 0.1rem 0;
+            color: #555;
+            font-size: 0.98rem;
+        }
+        .fee-box {
+            background: #e0f0ff;
+            color: #007bff;
+            display: inline-block;
+            padding: 0.4rem 1.2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            margin: 0.7rem 0 1.2rem 0;
+            font-size: 1.1rem;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.1rem;
+        }
+        label {
+            font-weight: 500;
+            margin-bottom: 0.3rem;
+        }
+        input, select {
+            padding: 0.7rem 1rem;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+            background: #f8fafd;
+        }
+        input:focus, select:focus {
+            outline: 2px solid #007bff;
+        }
+        .submit-btn {
+            background: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 0.8rem 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .submit-btn:hover {
+            background: #0056b3;
+        }
+        .confirmation {
+            background: #d4edda;
+            color: #155724;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1.5rem;
+            text-align: center;
+            font-size: 1.1rem;
+            display: none;
+        }
+        @media (max-width: 600px) {
+            .container {
+                padding: 1.2rem 0.5rem;
+            }
+            .doctor-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .doctor-header img {
+                margin-bottom: 0.7rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="doctor-header">
+            <img id="doctorImage" src="" alt="Doctor Photo" />
+            <div class="doctor-info">
+                <h2 id="doctorName">Doctor Name</h2>
+                <p id="doctorDegree">Degree</p>
+                <p><strong>Department:</strong> <span id="doctorDept"></span></p>
+                <p><strong>Hospital:</strong> <span id="doctorHospital"></span></p>
+                <p><strong>Availability:</strong> <span id="doctorAvail"></span></p>
+            </div>
+        </div>
+        <div class="fee-box">
+            Fee: <span id="doctorFee"></span>
+        </div>
+        <form id="appointmentForm">
+            <div>
+                <label for="patientName">Your Name</label>
+                <input type="text" id="patientName" name="patientName" required />
+            </div>
+            <div>
+                <label for="patientAge">Age</label>
+                <input type="number" id="patientAge" name="patientAge" min="0" max="120" required />
+            </div>
+            <div>
+                <label for="patientGender">Gender</label>
+                <select id="patientGender" name="patientGender" required>
+                    <option value="">Select</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            <div>
+                <label for="patientContact">Contact Number</label>
+                <input type="tel" id="patientContact" name="patientContact" pattern="[0-9]{10}" maxlength="10" required />
+            </div>
+            <div>
+                <label for="appointmentDate">Preferred Date</label>
+                <input type="date" id="appointmentDate" name="appointmentDate" required />
+            </div>
+            <div>
+                <label for="appointmentTime">Preferred Time</label>
+                <input type="time" id="appointmentTime" name="appointmentTime" required />
+            </div>
+            <button type="submit" class="submit-btn">Book Appointment</button>
+        </form>
+        <div class="confirmation" id="confirmationMsg">
+            Appointment booked successfully!<br />We will contact you soon.
+        </div>
+    </div>
+    <script>
+        // Load doctor info from localStorage. Real doctors (from the live
+        // database) and demo data may have slightly different shapes, so
+        // every field falls back gracefully instead of showing "undefined".
+        const doctor = JSON.parse(localStorage.getItem('selectedDoctor'));
+        if (doctor) {
+            const imgEl = document.getElementById('doctorImage');
+            if (doctor.image) {
+                imgEl.src = doctor.image;
+            } else if (doctor.id && doctor.has_profile_photo) {
+                imgEl.src = `http://localhost:5000/api/doctors/${doctor.id}/photo`;
+            } else {
+                imgEl.src = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Crect width=%22100%22 height=%22100%22 fill=%22%23e0e7ff%22/%3E%3Ccircle cx=%2250%22 cy=%2238%22 r=%2218%22 fill=%22%23a5b4fc%22/%3E%3Cpath d=%22M20 90 Q20 62 50 62 Q80 62 80 90 Z%22 fill=%22%23a5b4fc%22/%3E%3C/svg%3E'; // generic placeholder
+            }
+            imgEl.alt = doctor.name || 'Doctor';
+            document.getElementById('doctorName').textContent = doctor.name || 'Doctor';
+            document.getElementById('doctorDegree').textContent = doctor.degree || doctor.specialization || '';
+            document.getElementById('doctorDept').textContent = doctor.department || doctor.specialization || '—';
+            document.getElementById('doctorHospital').textContent = doctor.hospital || doctor.clinic_name || '—';
+            document.getElementById('doctorAvail').textContent = doctor.availability || 'Contact clinic for availability';
+            document.getElementById('doctorFee').textContent = doctor.fees || doctor.consultation_fee || 'Contact clinic for pricing';
+        }
+        // Handle form submission
+        document.getElementById('appointmentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            document.getElementById('appointmentForm').style.display = 'none';
+            document.getElementById('confirmationMsg').style.display = 'block';
+        });
+    </script>
+</body>
+</html> 

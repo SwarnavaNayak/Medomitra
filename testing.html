@@ -1,0 +1,1360 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI-Powered Diagnosis</title>
+  <!-- AOS CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" />
+  <style>
+    /* Reset and basic styles */
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #f8fafd;
+      color: #222;
+      line-height: 1.6;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    .upper-Header {
+      /* border: 2px solid red; */
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-right: 30px;
+      padding-left: 20px;
+      background-color: #ffffff;
+      margin-top: 10px;
+    }
+
+    .user-Connect {
+      /* border: 2px solid pink; */
+      display: flex;
+      align-items: center;
+      column-gap: 16px;
+    }
+
+    .btn1 {
+      height: 40px;
+      padding: 3px 8px;
+      font-weight: bold;
+      background-color: #ffffff;
+      color: #222;
+    }
+
+    .btn-log {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100px;
+      font-size: 16px;
+      margin: 3px;
+      border-radius: 4px;
+      height: 35px;
+      color: white;
+      background-color: rgb(23, 23, 23);
+      border: 0.1px solid rgba(200, 198, 198, 0.489);
+      color: #ffffff;
+    }
+
+    .btn-red-sn {
+      padding: 0px;
+      height: 35px;
+      background-color: #dd0d0d;
+      color: white;
+      width: 95px;
+      font-size: 14px;
+      border-radius: 5px;
+    }
+
+    header {
+      width: 100vw;
+      padding: 10px 5px;
+      text-align: center;
+      background-color: #ffffff;
+    }
+
+    .navbar {
+      position: sticky;
+      top: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #ffffff;
+      padding: 2px 25px;
+      height: 35px;
+      box-shadow: 0px 4px 10px rgba(0, 150, 209, 0.2);
+    }
+
+    .logo {
+      display: flex;
+      justify-content: center;
+      font-size: 24px;
+      font-weight: bold;
+      color: #0096d1;
+    }
+
+    .logo>img {
+      height: 50px;
+      width: 60px;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 25px;
+    }
+
+    .nav-links li {
+      position: relative;
+      border-radius: 10px;
+    }
+
+    .nav-links a {
+      color: #333;
+      text-decoration: none;
+      font-size: 15px;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: #ffffff;
+    }
+
+    .dropdown-menu,
+    .symptom-menu,
+    .doctor-menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background-color: rgba(255, 255, 255, 0.95);
+      box-shadow: 0 4px 8px rgba(0, 255, 136, 0.3);
+      padding: 15px;
+      min-width: 190px;
+      border-radius: 10px;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    .dropdown:hover .dropdown-menu,
+    .symptom-dropdown:hover .symptom-menu,
+    .doctor-dropdown:hover .doctor-menu {
+      display: block;
+      z-index: 1;
+    }
+
+    .dropdown-menu li,
+    .symptom-menu li,
+    .doctor-menu li {
+      padding: 10px;
+      transition: background 0.3s;
+    }
+
+    .dropdown-menu li:hover,
+    .symptom-menu li:hover,
+    .doctor-menu li:hover {
+      background: rgba(0, 255, 136, 0.719);
+    }
+
+    .dropdown-menu li a,
+    .symptom-menu li button,
+    .doctor-menu li button {
+      color: #222;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 15px;
+      text-align: left;
+      width: 100%;
+    }
+
+    .floating-window {
+      display: none;
+      position: absolute;
+      top: 28%;
+      left: 15%;
+      transform: translate(-50%, -50%);
+      /* background: #0f0f0f; */
+      padding: 20px;
+      border-radius: 12px;
+      /* box-shadow: 0px 10px 20px rgba(0, 255, 136, 0.5); */
+      width: 390px;
+      text-align: center;
+      animation: popUp 0.3s ease-in-out;
+      z-index: 0;
+      background: #ffffff;
+      box-shadow: 0px 10px 20px rgba(0, 150, 209, 0.3);
+    }
+
+    .floating-window h2 {
+      color: #00ff88;
+    }
+
+    .floating-window .content {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      column-gap: 10px;
+      text-align: left;
+      max-height: 100px;
+      overflow-y: auto;
+      margin-top: 10px;
+      border: 1px solid #00ff88;
+      padding: 10px;
+      border-radius: 8px;
+      /* background: #1a1a1a; */
+      background: #f0f9ff;
+    }
+
+    .DRcontent {
+      text-align: left;
+      max-height: 100px;
+      overflow-y: auto;
+      margin-top: 10px;
+      border: 1px solid #00ff88;
+      padding: 10px;
+      border-radius: 8px;
+      background: #f0f9ff;
+    }
+
+    .floating-window .close-btn {
+      font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+      background: #ff4444;
+      color: white;
+      padding: 8px 15px;
+      border: none;
+      cursor: pointer;
+      margin-top: 10px;
+      border-radius: 8px;
+    }
+
+    .analyze-btn,
+    .book-btn {
+      font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+      background: #00ff88;
+      color: rgb(0, 0, 0);
+      padding: 8px;
+      border: none;
+      cursor: pointer;
+      margin-top: 10px;
+      border-radius: 8px;
+
+    }
+
+    .hero {
+      background: #ffffff;
+      padding: 60px 20px;
+      text-align: center;
+    }
+
+    .hero h2 {
+      font-size: 2.5em;
+      margin-bottom: 10px;
+    }
+
+    .hero p {
+      font-size: 1.2em;
+      margin-bottom: 20px;
+      /* color: #b0b0b0; */
+      color: #555;
+    }
+
+    /* Search box for symptoms */
+    .search-box {
+      position: relative;
+      border: 2px solid rgba(255, 0, 0, 0.701);
+      width: 600px;
+      margin: 0 auto 30px auto;
+      display: flex;
+      flex-direction: column;
+      border-radius: 6px;
+
+    }
+
+    .search-box input {
+      flex: 1;
+      padding: 15px;
+      border: none;
+      /* border-radius: 5px 0 0 5px; */
+      border-radius: 5px;
+      font-size: 1em;
+    }
+
+    .suggestions {
+      position: absolute;
+      background: white;
+      border: 1px solid #ccc;
+      max-height: 200px;
+      overflow-y: auto;
+      width: 300px;
+      z-index: 100;
+      border-radius: 10px;
+      top: 50px;
+    }
+
+    #search {
+      width: 100%;
+      /* padding: 10px; */
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+
+    .suggestions div {
+      padding: 8px;
+      cursor: pointer;
+    }
+
+    .suggestions div:hover {
+      background-color: #f0f0f0;
+    }
+
+    .search-box button {
+      padding: 15px 25px;
+      border: none;
+      background-color: #00C896;
+      color: #000000;
+      font-size: 1em;
+      border-radius: 0 5px 5px 0;
+      cursor: pointer;
+    }
+
+    /* Options for treatment methods */
+    .options {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+    }
+
+    .option {
+      border: 2px solid #00C896;
+      padding: 20px 40px;
+      border-radius: 10px;
+      font-size: 1.2em;
+      text-decoration: none;
+      transition: background-color 0.3s, transform 0.3s;
+      background-color: #ffffff;
+      color: #222;
+    }
+
+    .option:hover {
+      background-color: #0ed8a5;
+      transform: scale(1.05);
+    }
+
+    /* Section styling */
+    .section {
+      background: #ffffff;
+      padding: 30px 20px;
+      text-align: center;
+    }
+
+    .text {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 200px;
+      /* border: 2px solid black; */
+      overflow: hidden;
+    }
+
+    .bg-text {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 160px;
+      font-weight: 800;
+      color: #000;
+      line-height: 1;
+      opacity: 0.04;
+      z-index: 0;
+
+      /* Fading effect using mask */
+      -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0)) !important;
+      mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0)) !important;
+      pointer-events: none;
+      user-select: none;
+      white-space: nowrap;
+    }
+
+    .sub-heading {
+      font-size: 20px;
+      color: #e74c3c;
+      font-weight: 600;
+      margin-bottom: 10px;
+      position: relative;
+      z-index: 1;
+      top: 20px;
+    }
+
+    .main-heading {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      font-size: 36px;
+      font-weight: 800;
+      color: #2d3436;
+      position: relative;
+      z-index: 1;
+      top: 10px;
+    }
+
+    .text img {
+      position: relative;
+      top: 30px;
+    }
+
+    .cards {
+      max-width: 90vw;
+      margin: 50px auto;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .card {
+      background: linear-gradient(135deg, #ffffff 0%, #f8fafd 100%);
+      border-radius: 15px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+      padding: 25px;
+      margin: 40px 0;
+      text-align: center;
+      width: 400px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, transparent, rgba(102, 126, 234, 0.1), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .card:hover::before {
+      left: 100%;
+    }
+
+    .card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+    }
+
+    .card img {
+      width: 70px;
+      margin-bottom: 18px;
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover img {
+      transform: scale(1.1) rotate(3deg);
+    }
+
+    h3 {
+      margin-top: 0;
+      color: #2d3436;
+      font-size: 1.4em;
+      margin-bottom: 12px;
+    }
+
+    .card p {
+      color: #666;
+      line-height: 1.5;
+      margin-bottom: 18px;
+    }
+
+    .btn {
+      padding: 12px 25px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: inline-block;
+      color: #ffffff;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: 600;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .btn:hover::before {
+      left: 100%;
+    }
+
+    .btn-green {
+      background: linear-gradient(45deg, #00C896, #00ff88);
+      box-shadow: 0 4px 15px rgba(0, 200, 150, 0.4);
+    }
+
+    .btn-green:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0, 200, 150, 0.6);
+    }
+
+    .btn-blue {
+      background: linear-gradient(45deg, #2563eb, #3b82f6);
+      box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
+    }
+
+    .btn-blue:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(37, 99, 235, 0.6);
+    }
+
+    .btn-indigo {
+      background: linear-gradient(45deg, #4f46e5, #6366f1);
+      height: 44px;
+      padding: 0.5rem 1.5rem;
+      margin-top: 1.5rem;
+      box-shadow: 0 4px 15px rgba(79, 70, 229, 0.4);
+    }
+
+    .btn-indigo:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(79, 70, 229, 0.6);
+    }
+
+    /* Login form styles */
+    .login-section {
+      padding: 40px 20px;
+      background-color: #1e1e1e;
+      margin: 40px auto;
+      max-width: 400px;
+      border-radius: 10px;
+      text-align: left;
+    }
+
+    .login-section h3 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .login-form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .login-form input {
+      padding: 10px;
+      font-size: 1em;
+      border: none;
+      border-radius: 5px;
+    }
+
+    .login-form button {
+      padding: 10px;
+      font-size: 1em;
+      border: none;
+      background-color: #00C896;
+      color: #ffffff;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    /* Chat Bot */
+    /* Chat Button */
+
+    .chatbot-button {
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(8px);
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 70px;
+      height: 70px;
+      font-size: 28px;
+      cursor: pointer;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s ease;
+      z-index: 999;
+    }
+
+    .chatbot-button:hover {
+      transform: scale(1.1);
+    }
+
+    .chat-window {
+      position: fixed;
+      bottom: 110px;
+      right: 25px;
+      width: 340px;
+      max-height: 500px;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(20px);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+      display: none;
+      flex-direction: column;
+      transition: all 0.4s ease;
+      animation: fadeInUp 0.4s ease forwards;
+      z-index: 998;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        transform: translateY(30px);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .chat-header {
+      background: rgba(0, 0, 0, 0.6);
+      color: white;
+      padding: 15px;
+      font-weight: bold;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .chat-header span {
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    .chat-messages {
+      flex: 1;
+      padding: 12px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .message {
+      max-width: 80%;
+      padding: 10px 14px;
+      border-radius: 18px;
+      font-size: 14px;
+      line-height: 1.4;
+      word-wrap: break-word;
+      animation: popIn 0.3s ease-in;
+    }
+
+    @keyframes popIn {
+      from {
+        transform: scale(0.8);
+        opacity: 0;
+      }
+
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .user-message {
+      align-self: flex-end;
+      background: linear-gradient(to right, #4facfe, #00f2fe);
+      color: white;
+    }
+
+    .bot-message {
+      align-self: flex-start;
+      background: #ffffffaa;
+      color: #333;
+      border: 1px solid #ddd;
+    }
+
+    .chat-input {
+      display: flex;
+      border-top: 1px solid #ddd;
+      background: rgba(255, 255, 255, 0.5);
+    }
+
+    .chat-input input {
+      flex: 1;
+      border: none;
+      padding: 12px;
+      background: transparent;
+      font-size: 14px;
+      outline: none;
+      color: #000;
+    }
+
+    .chat-input button {
+      background: #4facfe;
+      color: white;
+      border: none;
+      padding: 12px 18px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.3s ease;
+    }
+
+    .chat-input button:hover {
+      background: #00c6ff;
+    }
+
+    * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    text-decoration: none;
+}
+
+footer {
+    width: 100%;
+    position: relative;
+    bottom: 0;
+    left: 0;
+    background: #313232;
+}
+
+footer .content-f {
+    max-width: 1350px;
+    margin: auto;
+    padding: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+footer .content-f p,
+a {
+    color: #fff;
+}
+
+footer .content-f .box-f {
+    width: 33%;
+    transition: all 0.4s ease;
+}
+
+footer .content-f .topic {
+    font-size: 22px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 16px;
+
+}
+
+footer .content-f p {
+    text-align: justify;
+}
+
+footer .content-f .lower .topic {
+    margin: 24px 0 5px 0;
+}
+
+footer .content-f .lower i {
+    padding-right: 16px;
+}
+
+footer .content-f .middle {
+    padding-left: 80px;
+}
+
+footer .content-f .middle a {
+    line-height: 32px;
+}
+
+footer .content-f .right input[type="text"] {
+    height: 45px;
+    width: 100%;
+    outline: none;
+    color: #d9d9d9;
+    background: #232121;
+    border-radius: 5px;
+    padding-left: 10px;
+    font-size: 17px;
+    border: 2px solid #222222;
+}
+
+footer .content-f .right input[type="submit"] {
+    height: 42px;
+    width: 100%;
+    font-size: 18px;
+    color: #d9d9d9;
+    background: #008893;
+    outline: none;
+    border-radius: 5px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    margin-top: 12px;
+    border: 2px solid #008893;
+    transition: all 0.3s ease-in-out;
+}
+
+.content-f .right input[type="submit"]:hover {
+    background: none;
+    color: #008893;
+}
+
+footer .content-f .media-icons a {
+    font-size: 16px;
+    height: 45px;
+    width: 45px;
+    display: inline-block;
+    text-align: center;
+    line-height: 43px;
+    border-radius: 5px;
+    border: 2px solid none;
+    margin: 30px 5px 0 0;
+    transition: all 0.3s ease;
+}
+
+.content-f .media-icons a:hover {
+    border-color: #008893;
+}
+
+footer .bottom-f {
+    width: 100%;
+    text-align: right;
+    color: #d9d9d9;
+    padding: 0 40px 5px 0;
+}
+
+footer .bottom-f a {
+    color: #008893;
+}
+
+footer a {
+    transition: all 0.3s ease;
+}
+
+footer a:hover {
+    color: #008893;
+}
+
+  </style>
+</head>
+
+<body>
+  <!-- Upper Header -->
+  <div class="upper-Header">
+    <div class="logo">
+      <img src="Supporting Meterial/healthcare.png" alt="Logo">
+    </div>
+    <div class="user-Connect">
+      <button onclick="location.href='Sign_Up/Login.html'" class="btn1 btn-log">log In</button>
+      <button onclick="location.href='Sign_Up/Register.html'" class="btn1 btn-red-sn">Sign Up</button>
+    </div>
+  </div>
+  <!-- Header -->
+  <header>
+    <nav class="navbar">
+      <ul class="nav-links">
+        <li><a href="#">Home</a></li>
+        <!-- <li class="symptom-dropdown">
+          <a href="#">Find My Disease <span class="arrow">&#9662;</span></a>
+          <ul class="symptom-menu">
+            <li><button onclick="openSymptomWindow()">Select Symptoms</button></li>
+          </ul>
+        </li> -->
+        <li class="doctor-dropdown">
+          <a href="#">Find Doctor <span class="arrow">&#9662;</span></a>
+          <ul class="doctor-menu">
+            <li><a href="Doctor_List/AlloDocList.html">Dr. For Allopathy</a></li>
+            <li><a href="Doctor_List/HomoDocList.html">Dr. For Homeopathy</a></li>
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#">Treatments <span class="arrow">&#9662;</span></a>
+          <ul class="dropdown-menu">
+            <li><a href="Allopathy-Page/index.html">Allopathy</a></li>
+            <li><a href="Homeopathy-page/index.html">Homeopathy</a></li>
+          </ul>
+        </li>
+        <li><a href="#doctors">AI Diagnosis</a></li>
+        <li><a href="#footer">Contact</a></li>
+      </ul>
+    </nav>
+
+    <!-- <div class="floating-window" id="symptomWindow">
+      <h2>Select Your Symptoms</h2>
+      <div class="content">
+        <label><input type="checkbox" name="symptom" value="Fever"> Fever</label>
+        <label><input type="checkbox" name="symptom" value="Cough"> Cough</label>
+        <label><input type="checkbox" name="symptom" value="Headache"> Headache</label>
+        <label><input type="checkbox" name="symptom" value="Fatigue"> Fatigue</label>
+      </div>
+      <button class="analyze-btn" onclick="closeSymptomWindow()">Analyze</button>
+      <button class="close-btn" onclick="closeSymptomWindow()">Close</button>
+    </div> -->
+
+    <div class="floating-window" id="allopathyDr.">
+      <h2>Select Your Doctor</h2>
+      <div class="DRcontent">
+        <p>Dr. A Kumar - Cardiologist - 9876543210</p>
+        <p>Dr. C Verma - Neurologist - 8234567890</p>
+        <p>Dr. B Sharma - Dermatologist - 9123456789</p>
+      </div>
+      <button class="book-btn">Book Appointment</button>
+      <button class="close-btn" onclick="closeAllopathyDoctorWindow()">Close</button>
+    </div>
+  </header>
+  <div class="floating-window" id="homeopathyDr.">
+    <h2>Select Your Doctor</h2>
+    <div class="DRcontent">
+      <p>Dr. C Verma - Neurologist - 8234567890</p>
+      <p>Dr. A Kumar - Cardiologist - 9876543210</p>
+      <p>Dr. B Sharma - Dermatologist - 9123456789</p>
+    </div>
+    <button class="book-btn">Book Appointment</button>
+    <button class="close-btn" onclick="closeHomeopathyDoctorWindow()">Close</button>
+  </div>
+  </header>
+
+  <!-- Hero Section with Search Box and Options -->
+  <section class="hero">
+    <h2>AI-Powered Diagnosis for Better Health</h2>
+    <p>Get accurate insights for both Allopathy and Homeopathy solutions.</p>
+    <!-- Search Box for Symptoms -->
+    <div class="search-box">
+      <input type="text" id="search" placeholder="Enter your symptoms..." />
+      <div id="suggestionBox" class="suggestions"></div>
+      <!-- <button>Search</button> -->
+    </div>
+    <!-- Options for Treatment Methods -->
+    <div class="options">
+      <a href="Allopathy-Page/index.html" class="option">Allopathy</a>
+      <a href="Homeopathy-page/index.html" class="option">Homeopathy</a>
+    </div>
+  </section>
+
+  <!-- How It Works Section -->
+  <section class="section" id="symptom">
+    <section class="text">
+      <div class="bg-text">Working</div>
+      <h2 class="sub-heading">How it works</h2>
+      <div class="main-heading">Working of our System</div>
+      <img src="../Supporting Meterial/line-1.png" alt="">
+    </section>
+    <div class="cards">
+      <div class="card" data-aos="fade-right" data-aos-delay="200">
+        <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png" alt="Search icon" />
+        <h3>Step 1: Search Symptoms</h3>
+        <p>Enter your symptoms and get personalized suggestions.</p>
+      </div>
+
+      <div class="card" data-aos="fade-down" data-aos-delay="500">
+        <img src="https://cdn-icons-png.flaticon.com/512/565/565547.png" alt="Select doctor" />
+        <h3>Step 2: Select a Specialist</h3>
+        <p>We'll guide you to the right mental health professional.</p>
+      </div>
+
+      <div class="card" data-aos="fade-left" data-aos-delay="800">
+        <img src="https://cdn-icons-png.flaticon.com/512/3105/3105825.png" alt="Get support" />
+        <h3>Step 3: Get Support</h3>
+        <p>Connect and start your journey toward wellness.</p>
+      </div>
+      <!-- <div class="card">
+        <h4>Step 1</h4>
+        <p>Enter your symptoms in the search box above.</p>
+      </div>
+      <div class="card">
+        <h4>Step 2</h4>
+        <p>Receive AI-powered diagnosis for both treatment methods.</p>
+      </div>
+      <div class="card">
+        <h4>Step 3</h4>
+        <p>Consult with our experts for personalized care.</p>
+      </div> -->
+    </div>
+  </section>
+
+  <!-- Mental Health Section -->
+  <section class="section" id="mental">
+    <section class="text">
+      <div class="bg-text">Mental Health</div>
+      <h2 class="sub-heading">Mental Health Cards</h2>
+      <div class="main-heading">Know your Mental health</div>
+      <img src="../Supporting Meterial/line-1.png" alt="">
+    </section>
+    <div class="cards">
+      <div class="card" data-aos="fade-right" data-aos-delay="200">
+        <img src="https://static.thenounproject.com/png/chatbot-icon-2761520-512.png" alt="AI Chatbot Icon">
+        <h3>AI Chatbot</h3>
+        <p>Chat with our AI for mental health advice.</p>
+        <a href="#" class="btn btn-green">Chat Now</a>
+      </div>
+
+      <div class="card" data-aos="fade-left" data-aos-delay="500">
+        <img src="https://static.thenounproject.com/png/self-assessment-icon-5592497-512.png"
+          alt="Self Assessment Icon">
+        <h3>Self-Assessment</h3>
+        <p>Take a quick quiz to assess your mental health.</p>
+        <a href="#" class="btn btn-green">Start Quiz</a>
+      </div>
+      <!-- <div class="card">
+        <h4>AI Chatbot</h4>
+        <p>Chat with our AI for mental health advice.</p>
+        <a href="#" class="btn">Chat Now</a>
+      </div>
+      <div class="card">
+        <h4>Self-Assessment</h4>
+        <p>Take a quick quiz to assess your mental health.</p>
+        <a href="#" class="btn">Start Quiz</a>
+      </div> -->
+    </div>
+  </section>
+
+  <!-- Doctor Consultation Section -->
+  <section class="section" id="doctors">
+    <section class="text">
+      <div class="bg-text">Doctors</div>
+      <h2 class="sub-heading">Our Doctors</h2>
+      <div class="main-heading">Let's Cure Your Health with us</div>
+      <img src="../Supporting Meterial/line-1.png" alt="">
+    </section>
+    <div class="cards">
+      <div class="card" data-aos="fade-right" data-aos-delay="200">
+        <img src="https://cdn-icons-png.flaticon.com/512/3175/3175199.png" alt="Allopathy" />
+        <h3>Dr. Rahul Sharma</h3>
+        <p>Allopathy Specialist (MBBS, MD)</p>
+        <a href="#" class="btn btn-green">Book Appointment</a>
+        <a href="./Doctor_List/AlloDocList.html">
+          <button class="btn btn-indigo">View All Doctors</button>
+        </a>
+      </div>
+
+      <div class="card" data-aos="fade-down" data-aos-delay="500">
+        <img src="https://cdn-icons-png.flaticon.com/512/3500/3500396.png" alt="Homeopathy" />
+        <h3>Dr. Ananya Singh</h3>
+        <p>Homeopathy Specialist (BHMS)</p>
+        <a href="#" class="btn btn-green">Book Appointment</a>
+        <a href="#">
+          <button class="btn btn-indigo">View All Doctors</button>
+        </a>
+      </div>
+
+      <div class="card" data-aos="fade-left" data-aos-delay="800">
+        <img src="https://cdn-icons-png.flaticon.com/512/4320/4320337.png" alt="ai doctor" />
+        <h3>AI Doctor</h3>
+        <p>Connect with our AI-powered virtual doctor for assistance</p>
+        <a href="#">
+          <button class="btn btn-green">AI Doctor</button>
+        </a>
+      </div>
+      <!-- <div class="card">
+        <h4>Dr. Rahul Sharma</h4>
+        <p>Allopathy Specialist (MBBS, MD)</p>
+        <a href="#" class="btn">Book Appointment</a>
+      </div>
+      <div class="card">
+        <h4>Dr. Ananya Singh</h4>
+        <p>Homeopathy Specialist (BHMS)</p>
+        <a href="#" class="btn">Book Appointment</a>
+      </div> -->
+    </div>
+  </section>
+
+  <!-- Chat Bot -->
+  <section>
+    <!-- Floating Button -->
+    <button class="chatbot-button" onclick="toggleChat()">💬</button>
+
+    <!-- Chat Window -->
+    <div class="chat-window" id="chatWindow">
+      <div class="chat-header">
+        AskBot AI
+        <span onclick="toggleChat()">✖</span>
+      </div>
+      <div class="chat-messages" id="chatMessages">
+        <!-- messages will appear here -->
+      </div>
+      <div class="chat-input">
+        <input type="text" id="userInput" placeholder="Type your question..." />
+        <button onclick="sendMessage()">Send</button>
+      </div>
+    </div>
+
+    <!-- User Dashboard Section -->
+    <!-- <section class="section" id="dashboard">
+    <h3>User Dashboard</h3>
+    <p>Access your past reports, track symptoms, and set medication reminders.</p>
+    <a href="#" class="btn">Go to Dashboard</a>
+  </section> -->
+
+    <!-- Login Section for Personalized Tracker -->
+    <!-- <section class="login-section" id="login">
+    <h3>User Login</h3>
+    <form class="login-form">
+      <input type="email" placeholder="Email" required />
+      <input type="password" placeholder="Password" required />
+      <button type="submit">Login</button>
+    </form>
+    <p style="text-align:center; margin-top:10px;">
+      Don't have an account? <a href="#" style="color:#00C896; text-decoration:none;">Register</a>
+    </p>
+  </section> -->
+
+    <!-- Footer -->
+    <footer id="footer">
+      <div class="content-f">
+        <div class="left box-f">
+          <div class="upper">
+            <div class="topic">About us</div>
+            <p>MedEase is a thorough telemedicine website created to give consumers easy access to high-quality
+              healthcare services from the convenience of their homes.</p>
+          </div>
+          <div class="lower">
+            <div class="topic">Contact us</div>
+            <div class="phone">
+              <a href="#"><i class="fas fa-phone-volume"></i>+91 9748196100</a>
+            </div>
+            <div class="email">
+              <a href="#"><i class="fas fa-envelope"></i>vikramjeetgupta2004@gmail.com</a>
+            </div>
+          </div>
+        </div>
+        <div class="middle box-f">
+          <div class="topic">Our Services</div>
+          <div><a href="./diet.html">DIET</a></div>
+          <div><a href="./aboutus.html">About Us</a></div>
+          <div><a href="#">Nearby Pharmas</a></div>
+          <div><a href="./map.html"> Nearby Hospitals</a></div>
+          <div><a href="./index.html#faq">FAQ's</a></div>
+        </div>
+        <div class="right box-f">
+          <div class="topic">Subscribe us</div>
+          <form action="#">
+            <input type="text" placeholder="Enter email address">
+            <input type="submit" name="" value="Send">
+            <div class="media-icons">
+              <a href="#" class="me-3"><img src="img/icons8-facebook.svg"></a>
+              <a href="#" class="me-3"><img src="img/icons8-twitter.svg"></a>
+              <a href="#" class="me-4"><img src="img/icons8-instagram.svg"></a>
+              <a href="#" class="me-4"><img src="img/icons8-github.svg"></a>
+              <a href="#" class="me-3"><img src="img/icons8-linkedin-circled.svg"></a>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="bottom-f mt-4">
+        <p>Copyright © 2025 <a href="./index.html">HelloTakeCare</a> All rights reserved</p>
+      </div>
+    </footer>
+    <!-- AOS JS -->
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <script>
+      AOS.init();
+    </script>
+    <script>
+      // Nevbar
+
+      function openSymptomWindow() {
+        document.getElementById('symptomWindow').style.display = 'block';
+        document.getElementById('allopathyDr.').style.display = 'none';
+        document.getElementById('homeopathyDr.').style.display = 'none';
+      }
+      function closeSymptomWindow() { document.getElementById('symptomWindow').style.display = 'none'; }
+      function openAllopathyDoctorWindow() {
+        document.getElementById('allopathyDr.').style.display = 'block';
+        document.getElementById('homeopathyDr.').style.display = 'none';
+        document.getElementById('symptomWindow').style.display = 'none';
+      }
+      function closeAllopathyDoctorWindow() { document.getElementById('allopathyDr.').style.display = 'none'; }
+      function openHomeopathyDoctorWindow() {
+        document.getElementById('homeopathyDr.').style.display = 'block';
+        document.getElementById('allopathyDr.').style.display = 'none';
+        document.getElementById('symptomWindow').style.display = 'none';
+      }
+      function closeHomeopathyDoctorWindow() { document.getElementById('homeopathyDr.').style.display = 'none'; }
+
+
+      // Search Box
+      const placeholders = [
+        "Fever, headache, fatigue...",
+        "Cough, sore throat, congestion...",
+        "Joint pain, muscle stiffness...",
+        "Skin rash, itching, redness...",
+        "Nausea, vomiting, stomach pain..."
+      ];
+
+      let index = 0;
+      let repeatCount = 0;
+      const maxRepeats = 5;
+      const inputField = document.getElementById("search");
+
+      function typeEffect(text, callback) {
+        let i = 0;
+        inputField.placeholder = "";
+        const interval = setInterval(() => {
+          if (i < text.length) {
+            inputField.placeholder += text[i];
+            i++;
+          } else {
+            clearInterval(interval);
+            setTimeout(() => deleteEffect(callback), 2000);
+          }
+        }, 100);
+      }
+
+      const symptomSuggestions = [
+        "Fever", "Cough", "Headache", "Cold", "Fatigue",
+        "Chest Pain", "Back Pain", "Nausea", "Vomiting",
+        "Shortness of Breath", "Diarrhea", "Sore Throat",
+        "Muscle Ache", "Dizziness", "Skin Rash"
+      ];
+      const input = document.getElementById("search");
+      const suggestionBox = document.getElementById("suggestionBox");
+
+      input.addEventListener("input", function () {
+        const value = this.value.toLowerCase();
+        suggestionBox.innerHTML = ""; // clear previous suggestions
+
+        if (value === "") return;
+
+        const filtered = symptomSuggestions.filter(symptom =>
+          symptom.toLowerCase().includes(value)
+        );
+
+        filtered.forEach(symptom => {
+          const div = document.createElement("div");
+          div.textContent = symptom;
+          div.onclick = () => {
+            input.value = symptom;
+            suggestionBox.innerHTML = "";
+          };
+          suggestionBox.appendChild(div);
+        });
+      });
+
+      document.addEventListener("click", function (e) {
+        if (!suggestionBox.contains(e.target) && e.target !== input) {
+          suggestionBox.innerHTML = "";
+        }
+      });
+
+      // Optional: Close suggestions when clicking outside
+      document.addEventListener("click", function (e) {
+        if (!suggestionBox.contains(e.target) && e.target !== input) {
+          suggestionBox.innerHTML = "";
+        }
+      });
+
+      function deleteEffect(callback) {
+        let text = inputField.placeholder;
+        let i = text.length;
+        const interval = setInterval(() => {
+          if (i > 0) {
+            inputField.placeholder = text.substring(0, i - 1);
+            i--;
+          } else {
+            clearInterval(interval);
+            callback();
+          }
+        }, 100);
+      }
+
+      function updatePlaceholder() {
+        if (repeatCount >= maxRepeats) return;
+        typeEffect(placeholders[index], () => {
+          index = (index + 1) % placeholders.length;
+          if (index === 0) repeatCount++;
+          setTimeout(updatePlaceholder, 500);
+        });
+      }
+
+      updatePlaceholder();
+
+      // Chat Bot
+
+      function toggleChat() {
+        const chat = document.getElementById("chatWindow");
+        chat.style.display = chat.style.display === "flex" ? "none" : "flex";
+      }
+
+      function sendMessage() {
+        const input = document.getElementById("userInput");
+        const msg = input.value.trim();
+        if (!msg) return;
+
+        const messages = document.getElementById("chatMessages");
+
+        const userMsg = document.createElement("div");
+        userMsg.className = "message user-message";
+        userMsg.textContent = msg;
+        messages.appendChild(userMsg);
+
+        input.value = "";
+        messages.scrollTop = messages.scrollHeight;
+
+        // Simulate bot typing
+        setTimeout(() => {
+          const botMsg = document.createElement("div");
+          botMsg.className = "message bot-message";
+          botMsg.textContent = "Thinking... 🤖";
+          messages.appendChild(botMsg);
+          messages.scrollTop = messages.scrollHeight;
+        }, 500);
+      }
+
+      document.getElementById("userInput").addEventListener("keydown", function (event) {
+        if (event.key == "Enter") {
+          event.preventDefault();
+          sendMessage();
+        }
+      })
+      // const chatBtn = document.getElementById('chatBtn');
+      // const chatPopup = document.getElementById('chatPopup');
+      // const sendBtn = document.getElementById('sendBtn');
+      // const userInput = document.getElementById('userInput');
+      // const chatBody = document.getElementById('chatBody');
+
+      // chatBtn.addEventListener('click', () => {
+      //   chatPopup.style.display = chatPopup.style.display === 'block' ? 'none' : 'block';
+      // });
+
+      // sendBtn.addEventListener('click', () => {
+      //   let message = userInput.value.trim();
+      //   if (message !== '') {
+      //     let userMessage = document.createElement('p');
+      //     userMessage.textContent = "You: " + message;
+      //     chatBody.appendChild(userMessage);
+      //     userInput.value = '';
+      //     chatBody.scrollTop = chatBody.scrollHeight;
+      //   }
+      // });</script>
+</body>
+
+</html>

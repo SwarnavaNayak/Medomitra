@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Allopathy | Hello Take Care</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <header>
+    <div class="logo">HelloTakeCare</div>
+    <nav>
+      <a href="../index.html">Home</a>
+      <a href="../Doctor_List/AlloDocList.html">Services</a>
+      <a href="#">Specialists</a>
+      <a href="#">Contact</a>
+      <a href="#">Login</a>
+    </nav>
+  </header>
+  <section class="hero">
+    <h1>Expert Allopathic Care You Can Trust</h1>
+    <div class="search-box">
+      <div class="search-row">
+        <input type="text" id="search" placeholder="Enter your symptoms..." />
+        <button type="button" id="diagnoseBtn" class="diagnose-btn">
+          <span class="btn-icon">🩺</span> Diagnose Now
+        </button>
+      </div>
+      <div id="suggestionBox" class="suggestions"></div>
+    </div>
+
+    <div id="diagnosisResult" class="diagnosis-result hidden"></div>
+
+    <a class="cta-button" href="../Doctor_List/AlloDocList.html">Book an Appointment</a>
+  </section>
+  <section class="text">
+    <div class="bg-text">Services</div>
+    <h2 class="sub-heading">Our Services</h2>
+    <div class="main-heading">Services we provide</div>
+    <img src="../Supporting Meterial/line-1.png" alt="">
+  </section>
+  <section class="diff-service">
+    <div class="service-detail">
+      <img src="../Supporting Meterial/GENERAL-MEDICINE-1.svg" alt="">
+      <a href="#">Genral Medicine</a>
+      <div class="service-discription">
+        Comprehensive care for common illnesses and chronic conditions.
+      </div>
+      <div class="service-button">
+        <a href="#">Read More >></a>
+      </div>
+    </div>
+    <div class="service-detail">
+      <img src="../Supporting Meterial/PULMONOLOGIST.svg" alt="">
+      <a href="#">Pulmonologist</a>
+      <div class="service-discription">
+        Diagnoses and treats lung diseases and respiratory conditions.
+      </div>
+      <div class="service-button">
+        <a href="#">Read More >></a>
+      </div>
+    </div>
+    <div class="service-detail">
+      <img src="../Supporting Meterial/DIABETOLOGIST.svg" alt="">
+      <a href="#">Diabetologist</a>
+      <div class="service-discription">
+        Expert in diabetes management and metabolic disorders.
+      </div>
+      <div class="service-button">
+        <a href="#">Read More >></a>
+      </div>
+    </div>
+    <div class="service-detail">
+      <img src="../Supporting Meterial/NEPHROLOGIST.svg" alt="">
+      <a href="#">Nephrologist</a>
+      <div class="service-discription">
+        Specializes in kidney diseases and dialysis treatments.
+      </div>
+      <div class="service-button">
+        <a href="#">Read More >></a>
+      </div>
+    </div>
+    <div class="service-detail">
+      <img src="../Supporting Meterial/GYNECOLOGIST.svg" alt="">
+      <a href="#">Gynecologist</a>
+      <div class="service-discription">
+        Women’s reproductive health specialist for all ages.
+      </div>
+      <div class="service-button">
+        <a href="#">Read More >></a>
+      </div>
+    </div>
+    <div class="service-detail">
+      <img src="../Supporting Meterial/UROLOGIST.svg" alt="">
+      <a href="#">Urologist</a>
+      <div class="service-discription">
+        Expert in urinary tract and male reproductive health.
+      </div>
+      <div class="service-button">
+        <a href="#">Read More >></a>
+      </div>
+    </div>
+    <div class="service-detail">
+      <img src="../Supporting Meterial/NEURO-SURGEON.svg" alt="">
+      <a href="#">Neuro Surgeon</a>
+      <div class="service-discription">
+        Performs surgeries for brain, spinal cord, and nerve issues.
+      </div>
+      <div class="service-button">
+        <a href="#">Read More >></a>
+      </div>
+    </div>
+    <div class="service-detail">
+      <img src="../Supporting Meterial/DENTAL-SURGEON.svg" alt="">
+      <a href="#">ENT</a>
+      <div class="service-discription">
+        Treats ear, nose, and throat disorders effectively.
+      </div>
+      <div class="service-button">
+        <a href="#">Read More >></a>
+      </div>
+    </div>
+    <div class="service-detail">
+      <img src="../Supporting Meterial/NEURO-MEDICINE.svg" alt="">
+      <a href="#">Neuro Medicine</a>
+      <div class="service-discription">
+        Expert in nervous system disorders and brain-related conditions.
+      </div>
+      <div class="service-button">
+        <a href="#">Read More >></a>
+      </div>
+    </div>
+    <div class="service-detail">
+      <img src="../Supporting Meterial/CHEST-MEDICINE.svg" alt="">
+      <a href="#">Chest Medicine</a>
+      <div class="service-discription">
+        Manages lung infections, asthma, and respiratory conditions.
+      </div>
+      <div class="service-button">
+        <a href="#">Read More >></a>
+      </div>
+    </div>
+    <div class="service-detail">
+      <img src="../Supporting Meterial/GENERAL-SURGERY-1.svg" alt="">
+      <a href="#">General Surgery</a>
+      <div class="service-discription">
+        Performs various surgical procedures for different medical conditions.
+      </div>
+      <div class="service-button">
+        <a href="#">Read More >></a>
+      </div>
+    </div>
+    <div class="service-detail">
+      <img src="../Supporting Meterial/GASTROLOGIST.svg" alt="">
+      <a href="#">Gastrologist</a>
+      <div class="service-discription">
+        Treats digestive system disorders like ulcers and acidity.
+      </div>
+      <div class="service-button">
+        <a href="#">Read More >></a>
+      </div>
+    </div>
+    <div class="service-detail">
+      <img src="../Supporting Meterial/CARDIOLOGIST.svg" alt="">
+      <a href="#">Cardiologist</a>
+      <div class="service-discription">
+        Heart specialist for hypertension, heart disease, and cholesterol management.
+      </div>
+      <div class="service-button">
+        <a href="#">Read More >></a>
+      </div>
+    </div>
+  </section>
+  <section class="conditions">
+    <h2 class="section-title">Conditions We Treat</h2>
+    <div class="cards">
+      <div class="card">Diabetes</div>
+      <div class="card">Hypertension</div>
+      <div class="card">Asthma</div>
+      <div class="card">Skin Disorders</div>
+      <div class="card">Infections</div>
+    </div>
+  </section>
+  <section class="feedback">
+    <h2 class="section-title">Patient Feedback</h2>
+    <div class="feedback-box">
+      <textarea placeholder="Write your experience here..."></textarea>
+      <button>Submit Feedback</button>
+    </div>
+  </section>
+  <footer>
+    <!-- <div class="bot">
+      <input type="checkbox" id="check"> <label class="chat-btn" for="check"> <i class="fa fa-commenting-o comment"></i>
+        <i class="fa fa-close close"></i> </label>
+      <div class="wrapper">
+        <iframe id="bot " allow="microphone;" width="350" height="430"
+          src="https://console.dialogflow.com/api-client/demo/embedded/a2a13de6-b506-4521-8512-1b3eaa5dc02f">
+        </iframe>
+      </div>
+    </div> -->
+    <div class="content-f">
+      <div class="left box-f">
+        <div class="upper">
+          <div class="topic">About us</div>
+          <p>MEDOMITRA is a thorough telemedicine website created to give consumers easy access to high-quality
+            healtcare services from the convenience of their homes.</p>
+        </div>
+        <div class="lower">
+          <div class="topic">Contact us</div>
+          <div class="phone">
+            <a href="#"><i class="fas fa-phone-volume"></i>+91 9748196100</a>
+          </div>
+          <div class="email">
+            <a href="#"><i class="fas fa-envelope"></i>vikramjeetgupta2004@gmail.com</a>
+          </div>
+        </div>
+      </div>
+      <div class="middle box-f">
+        <div class="topic">Our Services</div>
+        <div><a href="./diet.html">DIET</a></div>
+        <div><a href="./aboutus.html">About Us</a></div>
+        <div><a href="#">Nearby Pharmas</a></div>
+        <div><a href="./map.html"> Nearby Hospitals</a></div>
+        <div><a href="./index.html#faq">FAQ's</a></div>
+      </div>
+      <div class="right box-f">
+        <div class="topic">Subscribe us</div>
+        <form action="#">
+          <input type="text" placeholder="Enter email address">
+          <input type="submit" name="" value="Send">
+          <div class="media-icons">
+            <a href="#" class="me-3"><img src="../img/icons8-facebook.svg"></a>
+            <a href="#" class="me-3"><img src="../img/icons8-twitter.svg"></a>
+            <a href="#" class="me-4"><img src="../img/icons8-instagram.svg"></a>
+            <a href="#" class="me-4"><img src="../img/icons8-github.svg"></a>
+            <a href="#" class="me-3"><img src="../img/icons8-linkedin-circled.svg"></a>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="bottom-f mt-4">
+      <p>Copyright © 2025 <a href="./index.html">MEDOMITRA</a> All rights reserved</p>
+    </div>
+  </footer>
+</body>
+<script src="script.js"></script>
+</html>

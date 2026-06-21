@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Homeopathy Doctor List</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            background-color: #f0f2f5;
+            color: #333;
+            padding-bottom: 60px;
+        }
+        header {
+            background-color: #28a745;
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        header h1 {
+            font-size: 1.8rem;
+        }
+        header a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 2rem;
+        }
+        .filter-container {
+            margin-bottom: 2rem;
+            text-align: center;
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .filter-container select, .filter-container input {
+            padding: 0.7rem 1rem;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+        }
+        .filter-container input {
+            min-width: 240px;
+        }
+        .doctor-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            transition: all 0.3s ease-in-out;
+        }
+        .doctor-card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, flex 0.3s ease, width 0.3s ease;
+            min-width: 362px;
+        }
+        .doctor-card.active {
+            flex: 1 1 100%;
+            order: -1;
+        }
+        .doctor-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+        }
+        .doctor-card-top {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        .doctor-card-top img {
+            width: 64px;
+            height: 86px;
+            border-radius: 10px;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+        .doctor-card h3 {
+            margin-bottom: 0.3rem;
+            font-size: 1.3rem;
+            color: #28a745;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        .verified-badge {
+            font-size: 0.7rem;
+            background: #e6f7ec;
+            color: #1e8e3e;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+        .doctor-card p {
+            margin-bottom: 0.3rem;
+            font-size: 0.95rem;
+            color: #555;
+        }
+        .doctor-details {
+            display: none;
+            margin-top: 1rem;
+            border-top: 1px solid #eee;
+            padding-top: 1rem;
+            animation: slideDown 0.3s ease forwards;
+        }
+        @keyframes slideDown {
+            from { opacity: 0; max-height: 0; }
+            to { opacity: 1; max-height: 500px; }
+        }
+        .book-button {
+            margin-top: 1rem;
+            padding: 0.6rem 1.5rem;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+        .book-button:hover {
+            background-color: #0056b3;
+        }
+        .no-doctors {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #999;
+            margin-top: 2rem;
+        }
+        .skeleton-card {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            padding: 1.5rem;
+            min-width: 362px;
+        }
+        .skeleton-line {
+            height: 14px;
+            background: linear-gradient(90deg, #eee 25%, #f5f5f5 50%, #eee 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.2s infinite;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+        .skeleton-line.short { width: 60%; }
+        @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+        footer {
+            background-color: #28a745;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Homeopathy Doctors</h1>
+    <a href="../index.html">Home</a>
+</header>
+
+<div class="container">
+
+    <div class="filter-container">
+        <input type="text" id="doctorSearch" placeholder="Search by name, clinic, or specialty..." />
+        <label for="departmentFilter" style="align-self:center;"><strong>Specialization:</strong></label>
+        <select id="departmentFilter">
+            <option value="all">All</option>
+        </select>
+    </div>
+
+    <div class="doctor-list" id="doctorList"></div>
+
+    <div class="no-doctors" id="noDoctors" style="display: none;">No doctors found.</div>
+
+</div>
+
+<footer>
+    &copy; 2025 Medomitra. All Rights Reserved.
+</footer>
+
+<script>
+    const API_BASE = "http://localhost:5000";
+    let doctors = []; // populated from the live database, not hardcoded
+
+    const doctorListContainer = document.getElementById('doctorList');
+    const departmentFilter = document.getElementById('departmentFilter');
+    const doctorSearch = document.getElementById('doctorSearch');
+    const noDoctors = document.getElementById('noDoctors');
+
+    function doctorPhotoUrl(doctor) {
+        return doctor.has_profile_photo
+            ? `${API_BASE}/api/doctors/${doctor.id}/photo`
+            : 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Crect width=%22100%22 height=%22100%22 fill=%22%23e0e7ff%22/%3E%3Ccircle cx=%2250%22 cy=%2238%22 r=%2218%22 fill=%22%23a5b4fc%22/%3E%3Cpath d=%22M20 90 Q20 62 50 62 Q80 62 80 90 Z%22 fill=%22%23a5b4fc%22/%3E%3C/svg%3E';
+    }
+
+    function populateSpecializationFilter() {
+        const specializations = [...new Set(doctors.map(d => d.specialization).filter(Boolean))].sort();
+        departmentFilter.innerHTML = '<option value="all">All</option>' +
+            specializations.map(s => `<option value="${s}">${s}</option>`).join('');
+    }
+
+    async function loadDoctors() {
+        doctorListContainer.innerHTML = `
+            <div class="skeleton-card"><div class="skeleton-line"></div><div class="skeleton-line short"></div><div class="skeleton-line"></div></div>
+            <div class="skeleton-card"><div class="skeleton-line"></div><div class="skeleton-line short"></div><div class="skeleton-line"></div></div>
+        `;
+        try {
+            const res = await fetch(`${API_BASE}/api/doctors?type=homeopathy`);
+            const data = await res.json();
+            doctors = data.doctors || [];
+        } catch (err) {
+            doctorListContainer.innerHTML = '';
+            noDoctors.textContent = "Could not load doctors right now. Please make sure the backend server is running, then refresh this page.";
+            noDoctors.style.display = 'block';
+            return;
+        }
+        populateSpecializationFilter();
+        displayDoctors('all', '');
+    }
+
+    function displayDoctors(department, searchTerm) {
+        doctorListContainer.innerHTML = '';
+        let filteredDoctors = department === 'all' ? doctors : doctors.filter(doc => doc.specialization === department);
+
+        if (searchTerm && searchTerm.trim() !== '') {
+            const term = searchTerm.trim().toLowerCase();
+            filteredDoctors = filteredDoctors.filter(doc =>
+                (doc.name && doc.name.toLowerCase().includes(term)) ||
+                (doc.clinic_name && doc.clinic_name.toLowerCase().includes(term)) ||
+                (doc.specialization && doc.specialization.toLowerCase().includes(term)) ||
+                (doc.bio && doc.bio.toLowerCase().includes(term))
+            );
+        }
+
+        if (doctors.length === 0) {
+            noDoctors.textContent = "No homeopathy doctors have registered with Medomitra yet. Check back soon!";
+            noDoctors.style.display = 'block';
+            return;
+        }
+        if (filteredDoctors.length === 0) {
+            noDoctors.textContent = "No doctors found in this specialization.";
+            noDoctors.style.display = 'block';
+            return;
+        }
+        noDoctors.style.display = 'none';
+
+        filteredDoctors.forEach((doctor, index) => {
+            const card = document.createElement('div');
+            card.className = 'doctor-card';
+            card.setAttribute('data-index', index);
+
+            const photoUrl = doctorPhotoUrl(doctor);
+            const experienceLine = doctor.years_experience ? `${doctor.years_experience} yrs experience` : 'Experience not listed';
+            const feeLine = doctor.consultation_fee || 'Contact clinic for pricing';
+            const clinicLine = doctor.clinic_name || 'Clinic address not listed';
+            const bioLine = doctor.bio || 'This doctor has not added a bio yet.';
+
+            card.innerHTML = `
+                <div class="doctor-card-top">
+                    <img src="${photoUrl}" alt="${doctor.name}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Crect width=%22100%22 height=%22100%22 fill=%22%23e0e7ff%22/%3E%3Ccircle cx=%2250%22 cy=%2238%22 r=%2218%22 fill=%22%23a5b4fc%22/%3E%3Cpath d=%22M20 90 Q20 62 50 62 Q80 62 80 90 Z%22 fill=%22%23a5b4fc%22/%3E%3C/svg%3E'" />
+                    <div>
+                        <h3>${doctor.name} <span class="verified-badge">&#9989; Verified</span></h3>
+                        <p>${doctor.specialization || '—'}</p>
+                        <p>${experienceLine}</p>
+                    </div>
+                </div>
+                <div class="doctor-details" id="details-${index}">
+                    <p><strong>About:</strong> ${bioLine}</p>
+                    <p><strong>Clinic:</strong> ${clinicLine}</p>
+                    <p><strong>Fee:</strong> ${feeLine}</p>
+                    ${doctor.registration_number ? `<p style="font-size:0.85em;color:#888;">Reg. No: ${doctor.registration_number}</p>` : ''}
+                    <button class="book-button">Book Appointment</button>
+                </div>
+            `;
+
+            card.addEventListener('click', (e) => {
+                if (e.target.tagName.toLowerCase() === 'button') return;
+
+                document.querySelectorAll('.doctor-card').forEach(c => c.classList.remove('active'));
+                document.querySelectorAll('.doctor-details').forEach(d => d.style.display = 'none');
+
+                card.classList.add('active');
+                const detailsSection = document.getElementById(`details-${index}`);
+                detailsSection.style.display = 'block';
+            });
+
+            card.querySelector('.book-button').addEventListener('click', (e) => {
+                e.stopPropagation();
+                localStorage.setItem('selectedDoctor', JSON.stringify(doctor));
+                window.location.href = 'appointment.html';
+            });
+
+            doctorListContainer.appendChild(card);
+        });
+    }
+
+    departmentFilter.addEventListener('change', () => displayDoctors(departmentFilter.value, doctorSearch.value));
+    doctorSearch.addEventListener('input', () => displayDoctors(departmentFilter.value, doctorSearch.value));
+
+    window.onload = () => {
+        loadDoctors();
+    };
+</script>
+
+</body>
+</html>

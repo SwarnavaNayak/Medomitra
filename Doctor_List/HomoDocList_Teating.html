@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor List | HelloTakeCare</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #74ebd5, #ACB6E5);
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #222;
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        h1 {
+            text-align: center;
+            margin: 1rem 0;
+            color: white;
+        }
+
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+
+        .tab {
+            background-color: white;
+            margin: 0 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .tab.active {
+            background-color: #1976d2;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .search-box {
+            max-width: 300px;
+            margin: 1rem auto;
+            text-align: center;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.5rem;
+            border-radius: 20px;
+            border: none;
+            outline: none;
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
+        }
+
+        .doctor-list {
+            max-width: 1000px;
+            margin: auto;
+            padding: 0 1rem 2rem 1rem;
+        }
+
+        .doctor-card {
+            background-color: white;
+            margin-bottom: 1.5rem;
+            border-radius: 15px;
+            padding: 1rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .doctor-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+        }
+
+        .doctor-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .doctor-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .doctor-info img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin-right: 1rem;
+            object-fit: cover;
+            border: 2px solid #1976d2;
+        }
+
+        .doctor-details {
+            scrollbar-width: none;
+            margin-top: 1rem;
+            display: none;
+            animation: slideDown 0.3s ease forwards;
+        }
+
+        .doctor-details p {
+            margin: 0.5rem 0;
+        }
+
+        .book-btn {
+            background-color: #1976d2;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .book-btn:hover {
+            background-color: #1259a7;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; max-height: 0; transform: scaleY(0.95); }
+            to { opacity: 1; max-height: 500px; transform: scaleY(1); }
+        }
+
+        @media (max-width: 600px) {
+            .doctor-info img {
+                width: 50px;
+                height: 50px;
+            }
+        }
+
+        .arrow {
+            transition: transform 0.3s ease;
+        }
+
+        .arrow.rotate {
+            transform: rotate(180deg);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">HelloTakeCare</div>
+        <nav>
+            <a href="index.html" style="color:white; text-decoration:none;">Home</a>
+        </nav>
+    </header>
+
+    <h1>Find Your Doctor</h1>
+
+    <div class="tabs">
+        <div class="tab active" onclick="selectCategory('allopathy')">Allopathy</div>
+        <div class="tab" onclick="selectCategory('homeopathy')">Homeopathy</div>
+    </div>
+
+    <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Search doctor by name..." onkeyup="filterDoctors()">
+    </div>
+
+    <div class="doctor-list" id="doctorList"></div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const treatmentType = urlParams.get('treatment');
+        const doctorData = {
+            allopathy: [
+                { name: "Dr. Rakesh Sharma", degree: "MBBS, MD", department: "Cardiology", description: "Specialist in heart diseases with 15 years of experience.", clinic: "Sharma Heart Clinic, Delhi", image: "https://via.placeholder.com/60" },
+                { name: "Dr. Anita Verma", degree: "MBBS, MS", department: "Orthopedics", description: "Expert in bone and joint treatments with 10 years of practice.", clinic: "Verma Ortho Center, Mumbai", image: "https://via.placeholder.com/60" },
+                { name: "Dr. Vikram Singh", degree: "MBBS, MD", department: "General Medicine", description: "Experienced in diagnosing and treating daily health issues.", clinic: "Singh General Clinic, Kolkata", image: "https://via.placeholder.com/60" },
+                { name: "Dr. Rakesh Sharma", degree: "MBBS, MD", department: "Cardiology", description: "Specialist in heart diseases with 15 years of experience.", clinic: "Sharma Heart Clinic, Delhi", image: "https://via.placeholder.com/60" },
+                { name: "Dr. Anita Verma", degree: "MBBS, MS", department: "Orthopedics", description: "Expert in bone and joint treatments with 10 years of practice.", clinic: "Verma Ortho Center, Mumbai", image: "https://via.placeholder.com/60" },
+                { name: "Dr. Vikram Singh", degree: "MBBS, MD", department: "General Medicine", description: "Experienced in diagnosing and treating daily health issues.", clinic: "Singh General Clinic, Kolkata", image: "https://via.placeholder.com/60" },
+                { name: "Dr. Rakesh Sharma", degree: "MBBS, MD", department: "Cardiology", description: "Specialist in heart diseases with 15 years of experience.", clinic: "Sharma Heart Clinic, Delhi", image: "https://via.placeholder.com/60" },
+                { name: "Dr. Anita Verma", degree: "MBBS, MS", department: "Orthopedics", description: "Expert in bone and joint treatments with 10 years of practice.", clinic: "Verma Ortho Center, Mumbai", image: "https://via.placeholder.com/60" },
+                { name: "Dr. Vikram Singh", degree: "MBBS, MD", department: "General Medicine", description: "Experienced in diagnosing and treating daily health issues.", clinic: "Singh General Clinic, Kolkata", image: "https://via.placeholder.com/60" },
+                { name: "Dr. Rakesh Sharma", degree: "MBBS, MD", department: "Cardiology", description: "Specialist in heart diseases with 15 years of experience.", clinic: "Sharma Heart Clinic, Delhi", image: "https://via.placeholder.com/60" },
+                { name: "Dr. Anita Verma", degree: "MBBS, MS", department: "Orthopedics", description: "Expert in bone and joint treatments with 10 years of practice.", clinic: "Verma Ortho Center, Mumbai", image: "https://via.placeholder.com/60" },
+                { name: "Dr. Vikram Singh", degree: "MBBS, MD", department: "General Medicine", description: "Experienced in diagnosing and treating daily health issues.", clinic: "Singh General Clinic, Kolkata", image: "https://via.placeholder.com/60" }
+            ],
+            homeopathy: [
+                { name: "Dr. Nisha Agarwal", degree: "BHMS", department: "Skin Specialist", description: "Homeopathic solutions for chronic skin disorders.", clinic: "Agarwal Skin Care, Pune", image: "https://via.placeholder.com/60" },
+                { name: "Dr. Sandeep Patil", degree: "BHMS", department: "Respiratory Disorders", description: "Effective homeopathy treatment for asthma and allergies.", clinic: "Patil Homeo Clinic, Bangalore", image: "https://via.placeholder.com/60" },
+                { name: "Dr. Ritu Kapoor", degree: "BHMS", department: "Women's Health", description: "Homeopathy care for women's hormonal balance and wellness.", clinic: "Kapoor Wellness Center, Jaipur", image: "https://via.placeholder.com/60" }
+            ]
+        };
+
+        let selectedCategory = 'allopathy';
+
+        function renderDoctors() {
+            const doctorList = document.getElementById('doctorList');
+            doctorList.innerHTML = '';
+
+            const doctors = doctorData[selectedCategory];
+            if (!doctors || doctors.length === 0) {
+                doctorList.innerHTML = '<p>No doctors found.</p>';
+                return;
+            }
+
+            doctors.forEach((doc, index) => {
+                const card = document.createElement('div');
+                card.className = 'doctor-card';
+                card.innerHTML = `
+                    <div class="doctor-header" onclick="toggleDetails(${index})">
+                        <div class="doctor-info">
+                            <img src="${doc.image}" alt="Doctor Image">
+                            <div>
+                                <h3>${doc.name}</h3>
+                                <p>${doc.degree} | ${doc.department}</p>
+                            </div>
+                        </div>
+                        <span id="arrow-${index}" class="arrow">▼</span>
+                    </div>
+                    <div class="doctor-details" id="details-${index}">
+                        <p><strong>Description:</strong> ${doc.description}</p>
+                        <p><strong>Clinic Address:</strong> ${doc.clinic}</p>
+                        <button class="book-btn" onclick="bookAppointment('${doc.name}')">Book Appointment</button>
+                    </div>
+                `;
+                doctorList.appendChild(card);
+            });
+        }
+
+        function toggleDetails(index) {
+            const detailSection = document.getElementById(`details-${index}`);
+            const arrow = document.getElementById(`arrow-${index}`);
+            if (detailSection.style.display === 'block') {
+                detailSection.style.display = 'none';
+                arrow.classList.remove('rotate');
+            } else {
+                detailSection.style.display = 'block';
+                arrow.classList.add('rotate');
+                detailSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
+        function bookAppointment(doctorName) {
+            alert(`Booking appointment with ${doctorName}`);
+            // Booking logic goes here
+        }
+
+        function filterDoctors() {
+            const input = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('.doctor-card');
+
+            cards.forEach(card => {
+                const name = card.querySelector('h3').innerText.toLowerCase();
+                if (name.includes(input)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        function selectCategory(category) {
+            selectedCategory = category;
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            if (category === 'allopathy') {
+                document.querySelectorAll('.tab')[0].classList.add('active');
+            } else {
+                document.querySelectorAll('.tab')[1].classList.add('active');
+            }
+            renderDoctors();
+        }
+
+        renderDoctors();
+    </script>
+</body>
+</html>

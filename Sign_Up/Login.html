@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign In | Medomitra</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(-45deg, #1e1e1e, #06ab98, #121212, #0f0f0f);
+      background-size: 400% 400%;
+      animation: gradientShift 15s ease infinite;
+      min-height: 100vh;
+      color: #ffffff;
+      padding: 40px 20px;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100%; }
+      100% { background-position: 0%; }
+    }
+
+    .page-branding {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    .page-branding img { width: 64px; margin-bottom: 8px; }
+    .page-branding h1 { font-size: 1.6rem; margin-bottom: 4px; }
+    .page-branding p { color: #cfd4dc; font-size: 0.95rem; }
+
+    .panels-wrapper {
+      display: flex;
+      gap: 28px;
+      max-width: 920px;
+      margin: 0 auto;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .panel {
+      background: rgba(30, 30, 30, 0.7);
+      backdrop-filter: blur(16px);
+      border: 1.5px solid rgba(255, 255, 255, 0.13);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+      border-radius: 20px;
+      padding: 32px 28px;
+      width: 420px;
+      max-width: 100%;
+      flex: 1 1 380px;
+    }
+
+    .panel-header {
+      text-align: center;
+      margin-bottom: 18px;
+    }
+    .panel-header .panel-icon {
+      font-size: 2rem;
+      margin-bottom: 8px;
+      display: block;
+    }
+    .panel.patient .panel-icon { color: #06ab98; }
+    .panel.doctor .panel-icon { color: #4d9eff; }
+    .panel-header h2 { font-size: 1.25rem; margin-bottom: 4px; }
+    .panel-header p { font-size: 0.85rem; color: #9aa3af; }
+
+    .tabs {
+      display: flex;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.06);
+    }
+    .tabs button {
+      flex: 1;
+      padding: 11px;
+      background: none;
+      border: none;
+      color: #b0b8c1;
+      font-size: 0.92rem;
+      cursor: pointer;
+      transition: 0.25s;
+    }
+    .panel.patient .tabs button.active { background: #06ab98; color: #08130f; font-weight: 600; }
+    .panel.doctor .tabs button.active { background: #4d9eff; color: #08130f; font-weight: 600; }
+
+    .auth-form { display: none; flex-direction: column; gap: 14px; }
+    .auth-form.active-form { display: flex; }
+
+    .input-group {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .input-group .input-icon {
+      position: absolute;
+      left: 13px;
+      color: #8a93a0;
+      font-size: 0.9rem;
+      pointer-events: none;
+    }
+    .input-group input {
+      width: 100%;
+      padding: 12px 13px 12px 38px;
+      border-radius: 9px;
+      border: 1px solid rgba(255, 255, 255, 0.13);
+      background: rgba(255, 255, 255, 0.05);
+      color: #fff;
+      font-size: 0.92rem;
+      outline: none;
+      transition: 0.2s;
+    }
+    .panel.patient .input-group input:focus { border-color: #06ab98; box-shadow: 0 0 0 3px rgba(6, 171, 152, 0.15); }
+    .panel.doctor .input-group input:focus { border-color: #4d9eff; box-shadow: 0 0 0 3px rgba(77, 158, 255, 0.15); }
+
+    .toggle-password {
+      position: absolute;
+      right: 10px;
+      background: none;
+      border: none;
+      color: #8a93a0;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    .error-message {
+      color: #ff6b6b;
+      font-size: 0.78rem;
+      min-height: 14px;
+      display: block;
+      margin-top: -8px;
+    }
+
+    .auth-form button[type="submit"] {
+      margin-top: 4px;
+      padding: 12px;
+      border: none;
+      border-radius: 9px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .panel.patient .auth-form button[type="submit"] { background: #06ab98; color: #08130f; }
+    .panel.patient .auth-form button[type="submit"]:hover { background: #059e8c; }
+    .panel.doctor .auth-form button[type="submit"] { background: #4d9eff; color: #08130f; }
+    .panel.doctor .auth-form button[type="submit"]:hover { background: #3a8eef; }
+    .auth-form button[type="submit"]:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    .toggle-link { text-align: center; margin-top: 16px; font-size: 0.85rem; color: #9aa3af; }
+    .panel.patient .toggle-link a { color: #06ab98; text-decoration: none; font-weight: 600; }
+    .panel.doctor .toggle-link a { color: #4d9eff; text-decoration: none; font-weight: 600; }
+    .toggle-link a:hover { text-decoration: underline; }
+
+    .input-group input,
+    .input-group select {
+      width: 100%;
+      padding: 12px 13px 12px 38px;
+      border-radius: 9px;
+      border: 1px solid rgba(255, 255, 255, 0.13);
+      background: rgba(255, 255, 255, 0.05);
+      color: #fff;
+      font-size: 0.92rem;
+      outline: none;
+      transition: 0.2s;
+      appearance: none;
+    }
+    .input-group select option { background: #1c1f26; color: #fff; }
+    .panel.patient .input-group input:focus,
+    .panel.patient .input-group select:focus { border-color: #06ab98; box-shadow: 0 0 0 3px rgba(6, 171, 152, 0.15); }
+    .panel.doctor .input-group input:focus,
+    .panel.doctor .input-group select:focus { border-color: #4d9eff; box-shadow: 0 0 0 3px rgba(77, 158, 255, 0.15); }
+
+    .field-hint {
+      font-size: 0.72rem;
+      color: #6b7280;
+      margin: -4px 0 2px 4px;
+    }
+
+    .optional-section-label {
+      font-size: 0.75rem;
+      color: #6b7280;
+      text-align: center;
+      margin: 10px 0 2px;
+      padding-top: 8px;
+      border-top: 1px dashed rgba(255, 255, 255, 0.1);
+    }
+
+    .bio-textarea {
+      width: 100%;
+      padding: 12px 13px;
+      border-radius: 9px;
+      border: 1px solid rgba(255, 255, 255, 0.13);
+      background: rgba(255, 255, 255, 0.05);
+      color: #fff;
+      font-size: 0.88rem;
+      outline: none;
+      resize: vertical;
+      font-family: inherit;
+      transition: 0.2s;
+    }
+    .panel.doctor .bio-textarea:focus { border-color: #4d9eff; box-shadow: 0 0 0 3px rgba(77, 158, 255, 0.15); }
+
+    .doctor-approval-note {
+      font-size: 0.78rem;
+      color: #9aa3af;
+      background: rgba(77, 158, 255, 0.08);
+      border: 1px solid rgba(77, 158, 255, 0.2);
+      border-radius: 8px;
+      padding: 10px 12px;
+      margin-top: 4px;
+      line-height: 1.4;
+    }
+
+    .file-upload-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 13px;
+      border-radius: 9px;
+      border: 1px dashed rgba(255, 255, 255, 0.25);
+      background: rgba(255, 255, 255, 0.04);
+      color: #b0b8c1;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .file-upload-label:hover { border-color: #4d9eff; color: #d6e4ff; background: rgba(77, 158, 255, 0.07); }
+    .file-upload-label i { color: #4d9eff; font-size: 1rem; flex-shrink: 0; }
+    .file-upload-label span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+    .back-link {
+      display: block;
+      text-align: center;
+      margin-top: 28px;
+      color: #9aa3af;
+      font-size: 0.85rem;
+      text-decoration: none;
+    }
+    .back-link:hover { color: #06ab98; }
+
+    @media (max-width: 880px) {
+      .panels-wrapper { flex-direction: column; align-items: center; }
+      .panel { width: 100%; max-width: 440px; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page-branding">
+    <img src="../Supporting Meterial/AI Health Logo.png" alt="Medomitra Logo">
+    <h1>Welcome to Medomitra</h1>
+    <p>Choose how you'd like to sign in</p>
+  </div>
+
+  <div class="panels-wrapper">
+
+    <!-- ───────────── PATIENT PANEL ───────────── -->
+    <div class="panel patient">
+      <div class="panel-header">
+        <i class="fa-solid fa-user panel-icon"></i>
+        <h2>For Patients</h2>
+        <p>Get AI symptom checks, book doctors, and more.</p>
+      </div>
+
+      <div class="tabs">
+        <button id="patient-login-tab" class="active" data-target="patient">Login</button>
+        <button id="patient-register-tab" data-target="patient">Register</button>
+      </div>
+
+      <form id="patient-login-form" class="auth-form active-form" autocomplete="off" novalidate>
+        <div class="input-group">
+          <span class="input-icon"><i class="fa fa-envelope"></i></span>
+          <input type="email" id="patient-login-email" required placeholder="Email" autocomplete="off" />
+        </div>
+        <span class="error-message" id="patient-login-email-error"></span>
+        <div class="input-group">
+          <span class="input-icon"><i class="fa fa-lock"></i></span>
+          <input type="password" id="patient-login-password" required placeholder="Password" minlength="8" autocomplete="current-password" />
+          <button type="button" class="toggle-password"><i class="fa fa-eye"></i></button>
+        </div>
+        <span class="error-message" id="patient-login-password-error"></span>
+        <div class="error-message" id="patient-login-form-error"></div>
+        <button type="submit">Login</button>
+      </form>
+
+      <form id="patient-register-form" class="auth-form" autocomplete="off" novalidate>
+        <div class="input-group">
+          <span class="input-icon"><i class="fa fa-user"></i></span>
+          <input type="text" id="patient-reg-name" required placeholder="Full Name" autocomplete="off" />
+        </div>
+        <span class="error-message" id="patient-reg-name-error"></span>
+        <div class="input-group">
+          <span class="input-icon"><i class="fa fa-envelope"></i></span>
+          <input type="email" id="patient-reg-email" required placeholder="Email" autocomplete="off" />
+        </div>
+        <span class="error-message" id="patient-reg-email-error"></span>
+        <div class="input-group">
+          <span class="input-icon"><i class="fa fa-lock"></i></span>
+          <input type="password" id="patient-reg-password" required placeholder="Password (min 8 characters)" minlength="8" autocomplete="new-password" />
+          <button type="button" class="toggle-password"><i class="fa fa-eye"></i></button>
+        </div>
+        <span class="error-message" id="patient-reg-password-error"></span>
+        <div class="input-group">
+          <span class="input-icon"><i class="fa fa-lock"></i></span>
+          <input type="password" id="patient-reg-confirm" required placeholder="Confirm Password" minlength="8" autocomplete="new-password" />
+          <button type="button" class="toggle-password"><i class="fa fa-eye"></i></button>
+        </div>
+        <span class="error-message" id="patient-reg-confirm-error"></span>
+        <div class="error-message" id="patient-reg-form-error"></div>
+        <button type="submit">Create Account</button>
+      </form>
+
+      <div class="toggle-link">
+        <p id="patient-toggle-text">Don't have an account? <a href="#" id="patient-show-register">Register here</a></p>
+      </div>
+    </div>
+
+    <!-- ───────────── DOCTOR PANEL ───────────── -->
+    <div class="panel doctor">
+      <div class="panel-header">
+        <i class="fa-solid fa-user-doctor panel-icon"></i>
+        <h2>For Doctors</h2>
+        <p>Review AI diagnoses and verify patient symptom checks.</p>
+      </div>
+
+      <div class="tabs">
+        <button id="doctor-login-tab" class="active" data-target="doctor">Login</button>
+        <button id="doctor-register-tab" data-target="doctor">Register</button>
+      </div>
+
+      <form id="doctor-login-form" class="auth-form active-form" autocomplete="off" novalidate>
+        <div class="input-group">
+          <span class="input-icon"><i class="fa fa-envelope"></i></span>
+          <input type="email" id="doctor-login-email" required placeholder="Email" autocomplete="off" />
+        </div>
+        <span class="error-message" id="doctor-login-email-error"></span>
+        <div class="input-group">
+          <span class="input-icon"><i class="fa fa-lock"></i></span>
+          <input type="password" id="doctor-login-password" required placeholder="Password" minlength="8" autocomplete="current-password" />
+          <button type="button" class="toggle-password"><i class="fa fa-eye"></i></button>
+        </div>
+        <span class="error-message" id="doctor-login-password-error"></span>
+        <div class="error-message" id="doctor-login-form-error"></div>
+        <button type="submit">Login</button>
+      </form>
+
+      <form id="doctor-register-form" class="auth-form" autocomplete="off" novalidate>
+        <div class="input-group">
+          <span class="input-icon"><i class="fa fa-user"></i></span>
+          <input type="text" id="doctor-reg-name" required placeholder="Full Name (e.g. Dr. Jane Doe)" autocomplete="off" />
+        </div>
+        <span class="error-message" id="doctor-reg-name-error"></span>
+        <div class="input-group">
+          <span class="input-icon"><i class="fa fa-envelope"></i></span>
+          <input type="email" id="doctor-reg-email" required placeholder="Email" autocomplete="off" />
+        </div>
+        <span class="error-message" id="doctor-reg-email-error"></span>
+        <div class="input-group">
+          <span class="input-icon"><i class="fa fa-stethoscope"></i></span>
+          <input type="text" id="doctor-reg-specialization" required placeholder="Specialization (e.g. Cardiology)" autocomplete="off" />
+        </div>
+        <span class="error-message" id="doctor-reg-specialization-error"></span>
+
+        <div class="input-group">
+          <span class="input-icon"><i class="fa-solid fa-pills"></i></span>
+          <select id="doctor-reg-practice-type" required>
+            <option value="" disabled selected>Select Practice Type</option>
+            <option value="allopathy">Allopathy</option>
+            <option value="homeopathy">Homeopathy</option>
+          </select>
+        </div>
+        <span class="error-message" id="doctor-reg-practice-type-error"></span>
+        <p class="field-hint">This determines which "Find a Doctor" list you'll appear in.</p>
+
+        <div class="input-group">
+          <span class="input-icon"><i class="fa fa-id-card"></i></span>
+          <input type="text" id="doctor-reg-regnum" required placeholder="Medical Registration Number" autocomplete="off" />
+        </div>
+        <span class="error-message" id="doctor-reg-regnum-error"></span>
+        <div class="input-group">
+          <span class="input-icon"><i class="fa fa-lock"></i></span>
+          <input type="password" id="doctor-reg-password" required placeholder="Password (min 8 characters)" minlength="8" autocomplete="new-password" />
+          <button type="button" class="toggle-password"><i class="fa fa-eye"></i></button>
+        </div>
+        <span class="error-message" id="doctor-reg-password-error"></span>
+        <div class="input-group">
+          <span class="input-icon"><i class="fa fa-lock"></i></span>
+          <input type="password" id="doctor-reg-confirm" required placeholder="Confirm Password" minlength="8" autocomplete="new-password" />
+          <button type="button" class="toggle-password"><i class="fa fa-eye"></i></button>
+        </div>
+        <span class="error-message" id="doctor-reg-confirm-error"></span>
+
+        <label class="file-upload-label" for="doctor-reg-certificate">
+          <i class="fa-solid fa-file-arrow-up"></i>
+          <span id="doctor-cert-filename">Upload Medical Certificate / License (PNG, JPEG, or PDF, max 5MB)</span>
+        </label>
+        <input type="file" id="doctor-reg-certificate" accept="image/png,image/jpeg,image/jpg,image/webp,application/pdf" style="display:none;" required />
+        <span class="error-message" id="doctor-reg-certificate-error"></span>
+
+        <p class="optional-section-label">Optional — helps patients learn more about you on the Find a Doctor page</p>
+
+        <label class="file-upload-label" for="doctor-reg-photo">
+          <i class="fa-solid fa-image"></i>
+          <span id="doctor-photo-filename">Upload Profile Photo (PNG, JPEG, or WEBP, max 5MB)</span>
+        </label>
+        <input type="file" id="doctor-reg-photo" accept="image/png,image/jpeg,image/jpg,image/webp" style="display:none;" />
+        <span class="error-message" id="doctor-reg-photo-error"></span>
+
+        <div class="input-group">
+          <span class="input-icon"><i class="fa-solid fa-briefcase-medical"></i></span>
+          <input type="number" id="doctor-reg-experience" min="0" max="70" placeholder="Years of Experience" autocomplete="off" />
+        </div>
+        <div class="input-group">
+          <span class="input-icon"><i class="fa-solid fa-hospital"></i></span>
+          <input type="text" id="doctor-reg-clinic" placeholder="Clinic / Hospital Name & City" autocomplete="off" />
+        </div>
+        <div class="input-group">
+          <span class="input-icon"><i class="fa-solid fa-money-bill"></i></span>
+          <input type="text" id="doctor-reg-fee" placeholder="Consultation Fee (e.g. ₹500)" autocomplete="off" />
+        </div>
+        <textarea id="doctor-reg-bio" rows="3" maxlength="1000" placeholder="Short bio for patients (e.g. your areas of focus, approach to care)..." class="bio-textarea"></textarea>
+
+        <div class="doctor-approval-note">
+          <i class="fa-solid fa-circle-info"></i> Doctor accounts require admin approval before you can access the review queue. An admin will verify your registration number and certificate. You'll be able to log in right away to check your approval status.
+        </div>
+        <div class="error-message" id="doctor-reg-form-error"></div>
+        <button type="submit">Apply as Doctor</button>
+      </form>
+
+      <div class="toggle-link">
+        <p id="doctor-toggle-text">Don't have an account? <a href="#" id="doctor-show-register">Register here</a></p>
+      </div>
+    </div>
+
+  </div>
+
+  <a class="back-link" href="../index.html"><i class="fa-solid fa-arrow-left"></i> Back to Medomitra</a>
+
+  <script>
+    const API_BASE = "http://localhost:5000";
+
+    function validateEmail(email) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+    function setError(id, message) {
+      const el = document.getElementById(id);
+      if (el) el.textContent = message;
+    }
+    function clearError(id) { setError(id, ""); }
+
+    // ── Tab switching (per-panel, independent of each other) ──
+    function setupPanel(prefix) {
+      const loginTab = document.getElementById(`${prefix}-login-tab`);
+      const registerTab = document.getElementById(`${prefix}-register-tab`);
+      const loginForm = document.getElementById(`${prefix}-login-form`);
+      const registerForm = document.getElementById(`${prefix}-register-form`);
+      const toggleText = document.getElementById(`${prefix}-toggle-text`);
+
+      function bindSwitchLink(id, handler) {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener("click", (e) => { e.preventDefault(); handler(); });
+      }
+
+      function showLogin() {
+        loginTab.classList.add("active");
+        registerTab.classList.remove("active");
+        loginForm.classList.add("active-form");
+        registerForm.classList.remove("active-form");
+        toggleText.innerHTML = `Don't have an account? <a href="#" id="${prefix}-show-register">Register here</a>`;
+        bindSwitchLink(`${prefix}-show-register`, showRegister);
+      }
+      function showRegister() {
+        registerTab.classList.add("active");
+        loginTab.classList.remove("active");
+        registerForm.classList.add("active-form");
+        loginForm.classList.remove("active-form");
+        toggleText.innerHTML = `Already have an account? <a href="#" id="${prefix}-show-login">Login here</a>`;
+        bindSwitchLink(`${prefix}-show-login`, showLogin);
+      }
+
+      loginTab.addEventListener("click", showLogin);
+      registerTab.addEventListener("click", showRegister);
+      bindSwitchLink(`${prefix}-show-register`, showRegister);
+
+      return { showLogin, showRegister };
+    }
+
+    const patientPanel = setupPanel("patient");
+    const doctorPanel = setupPanel("doctor");
+
+    // Default tab is set by each page (Login.html starts on login, Register.html starts on register)
+    window.__medomitraShowDefaultTab = function (which) {
+      if (which === "register") {
+        patientPanel.showRegister();
+        doctorPanel.showRegister();
+      } else {
+        patientPanel.showLogin();
+        doctorPanel.showLogin();
+      }
+    };
+
+    // ── Password show/hide ──
+    document.querySelectorAll(".toggle-password").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const input = btn.parentElement.querySelector("input");
+        if (input.type === "password") {
+          input.type = "text";
+          btn.innerHTML = '<i class="fa fa-eye-slash"></i>';
+        } else {
+          input.type = "password";
+          btn.innerHTML = '<i class="fa fa-eye"></i>';
+        }
+      });
+    });
+
+    // ── PATIENT LOGIN ──
+    document.getElementById("patient-login-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const email = document.getElementById("patient-login-email").value.trim();
+      const password = document.getElementById("patient-login-password").value;
+      clearError("patient-login-email-error");
+      clearError("patient-login-password-error");
+      clearError("patient-login-form-error");
+
+      let valid = true;
+      if (!validateEmail(email)) { setError("patient-login-email-error", "Enter a valid email."); valid = false; }
+      if (password.length < 8) { setError("patient-login-password-error", "Password must be at least 8 characters."); valid = false; }
+      if (!valid) return;
+
+      const btn = e.target.querySelector('button[type="submit"]');
+      const original = btn.textContent;
+      btn.disabled = true; btn.textContent = "Logging in...";
+
+      try {
+        const res = await fetch(`${API_BASE}/api/auth/login`, {
+          method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password })
+        });
+        const data = await res.json();
+        if (!res.ok) { setError("patient-login-form-error", data.error || "Login failed."); return; }
+
+        if (data.user.role === "doctor" || data.user.role === "admin") {
+          setError("patient-login-form-error", "This is a doctor/admin account. Please use the panel on the right to log in.");
+          return;
+        }
+
+        localStorage.setItem("medomitra_token", data.token);
+        localStorage.setItem("medomitra_user", JSON.stringify(data.user));
+        window.location.href = "../index.html";
+      } catch {
+        setError("patient-login-form-error", "Could not reach the server. Please make sure the backend is running.");
+      } finally {
+        btn.disabled = false; btn.textContent = original;
+      }
+    });
+
+    // ── PATIENT REGISTER ──
+    document.getElementById("patient-register-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const name = document.getElementById("patient-reg-name").value.trim();
+      const email = document.getElementById("patient-reg-email").value.trim();
+      const password = document.getElementById("patient-reg-password").value;
+      const confirm = document.getElementById("patient-reg-confirm").value;
+      ["patient-reg-name-error", "patient-reg-email-error", "patient-reg-password-error", "patient-reg-confirm-error", "patient-reg-form-error"].forEach(clearError);
+
+      let valid = true;
+      if (!name) { setError("patient-reg-name-error", "Full name is required."); valid = false; }
+      if (!validateEmail(email)) { setError("patient-reg-email-error", "Enter a valid email."); valid = false; }
+      if (password.length < 8) { setError("patient-reg-password-error", "Password must be at least 8 characters."); valid = false; }
+      if (confirm !== password) { setError("patient-reg-confirm-error", "Passwords do not match."); valid = false; }
+      if (!valid) return;
+
+      const btn = e.target.querySelector('button[type="submit"]');
+      const original = btn.textContent;
+      btn.disabled = true; btn.textContent = "Creating account...";
+
+      try {
+        const res = await fetch(`${API_BASE}/api/auth/register`, {
+          method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, email, password })
+        });
+        const data = await res.json();
+        if (!res.ok) { setError("patient-reg-form-error", data.error || "Registration failed."); return; }
+
+        localStorage.setItem("medomitra_token", data.token);
+        localStorage.setItem("medomitra_user", JSON.stringify(data.user));
+        window.location.href = "../index.html";
+      } catch {
+        setError("patient-reg-form-error", "Could not reach the server. Please make sure the backend is running.");
+      } finally {
+        btn.disabled = false; btn.textContent = original;
+      }
+    });
+
+    // ── DOCTOR LOGIN ──
+    document.getElementById("doctor-login-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const email = document.getElementById("doctor-login-email").value.trim();
+      const password = document.getElementById("doctor-login-password").value;
+      clearError("doctor-login-email-error");
+      clearError("doctor-login-password-error");
+      clearError("doctor-login-form-error");
+
+      let valid = true;
+      if (!validateEmail(email)) { setError("doctor-login-email-error", "Enter a valid email."); valid = false; }
+      if (password.length < 8) { setError("doctor-login-password-error", "Password must be at least 8 characters."); valid = false; }
+      if (!valid) return;
+
+      const btn = e.target.querySelector('button[type="submit"]');
+      const original = btn.textContent;
+      btn.disabled = true; btn.textContent = "Logging in...";
+
+      try {
+        const res = await fetch(`${API_BASE}/api/auth/login`, {
+          method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password })
+        });
+        const data = await res.json();
+        if (!res.ok) { setError("doctor-login-form-error", data.error || "Login failed."); return; }
+
+        if (data.user.role !== "doctor" && data.user.role !== "admin") {
+          setError("doctor-login-form-error", "This account is not registered as a doctor. Please use the panel on the left to log in.");
+          return;
+        }
+
+        // Store under the same keys the Doctor Portal expects, so its
+        // existing pending/approved/rejected status screen takes over.
+        localStorage.setItem("medomitra_doctor_token", data.token);
+        localStorage.setItem("medomitra_doctor_user", JSON.stringify(data.user));
+        window.location.href = "../Doctor-Portal/dashboard.html";
+      } catch {
+        setError("doctor-login-form-error", "Could not reach the server. Please make sure the backend is running.");
+      } finally {
+        btn.disabled = false; btn.textContent = original;
+      }
+    });
+
+    // ── DOCTOR REGISTER ──
+    // Show the chosen filename and clear any previous error
+    const certInput = document.getElementById("doctor-reg-certificate");
+    const certLabel = document.getElementById("doctor-cert-filename");
+    const certDefaultLabel = certLabel.textContent;
+    certInput.addEventListener("change", () => {
+      clearError("doctor-reg-certificate-error");
+      certLabel.textContent = certInput.files[0] ? certInput.files[0].name : certDefaultLabel;
+    });
+
+    const photoInput = document.getElementById("doctor-reg-photo");
+    const photoLabel = document.getElementById("doctor-photo-filename");
+    const photoDefaultLabel = photoLabel.textContent;
+    photoInput.addEventListener("change", () => {
+      clearError("doctor-reg-photo-error");
+      photoLabel.textContent = photoInput.files[0] ? photoInput.files[0].name : photoDefaultLabel;
+    });
+
+    document.getElementById("doctor-register-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const name = document.getElementById("doctor-reg-name").value.trim();
+      const email = document.getElementById("doctor-reg-email").value.trim();
+      const specialization = document.getElementById("doctor-reg-specialization").value.trim();
+      const practiceType = document.getElementById("doctor-reg-practice-type").value;
+      const registrationNumber = document.getElementById("doctor-reg-regnum").value.trim();
+      const password = document.getElementById("doctor-reg-password").value;
+      const confirm = document.getElementById("doctor-reg-confirm").value;
+      const certificateFile = certInput.files[0];
+      const photoFile = photoInput.files[0];
+      const yearsExperience = document.getElementById("doctor-reg-experience").value.trim();
+      const clinicName = document.getElementById("doctor-reg-clinic").value.trim();
+      const consultationFee = document.getElementById("doctor-reg-fee").value.trim();
+      const bio = document.getElementById("doctor-reg-bio").value.trim();
+      ["doctor-reg-name-error", "doctor-reg-email-error", "doctor-reg-specialization-error", "doctor-reg-practice-type-error", "doctor-reg-regnum-error", "doctor-reg-password-error", "doctor-reg-confirm-error", "doctor-reg-certificate-error", "doctor-reg-photo-error", "doctor-reg-form-error"].forEach(clearError);
+
+      let valid = true;
+      if (!name) { setError("doctor-reg-name-error", "Full name is required."); valid = false; }
+      if (!validateEmail(email)) { setError("doctor-reg-email-error", "Enter a valid email."); valid = false; }
+      if (!specialization) { setError("doctor-reg-specialization-error", "Specialization is required."); valid = false; }
+      if (!practiceType) { setError("doctor-reg-practice-type-error", "Please select Allopathy or Homeopathy."); valid = false; }
+      if (!registrationNumber) { setError("doctor-reg-regnum-error", "Medical registration number is required."); valid = false; }
+      if (password.length < 8) { setError("doctor-reg-password-error", "Password must be at least 8 characters."); valid = false; }
+      if (confirm !== password) { setError("doctor-reg-confirm-error", "Passwords do not match."); valid = false; }
+      if (!certificateFile) { setError("doctor-reg-certificate-error", "Please upload your medical certificate or license."); valid = false; }
+      else if (certificateFile.size > 5 * 1024 * 1024) { setError("doctor-reg-certificate-error", "File must be under 5MB."); valid = false; }
+      if (photoFile && photoFile.size > 5 * 1024 * 1024) { setError("doctor-reg-photo-error", "Photo must be under 5MB."); valid = false; }
+      if (!valid) return;
+
+      const btn = e.target.querySelector('button[type="submit"]');
+      const original = btn.textContent;
+      btn.disabled = true; btn.textContent = "Submitting...";
+
+      try {
+        // multipart/form-data (not JSON) so the certificate (and optional
+        // photo) can ride along with the text fields in a single request.
+        const formData = new FormData();
+        formData.append("name", name);
+        formData.append("email", email);
+        formData.append("password", password);
+        formData.append("role", "doctor");
+        formData.append("specialization", specialization);
+        formData.append("practiceType", practiceType);
+        formData.append("registrationNumber", registrationNumber);
+        formData.append("certificate", certificateFile);
+        if (photoFile) formData.append("profilePhoto", photoFile);
+        if (yearsExperience) formData.append("yearsExperience", yearsExperience);
+        if (clinicName) formData.append("clinicName", clinicName);
+        if (consultationFee) formData.append("consultationFee", consultationFee);
+        if (bio) formData.append("bio", bio);
+
+        const res = await fetch(`${API_BASE}/api/auth/register`, {
+          method: "POST",
+          body: formData // browser sets the multipart Content-Type header automatically
+        });
+        const data = await res.json();
+        if (!res.ok) { setError("doctor-reg-form-error", data.error || "Registration failed."); return; }
+
+        localStorage.setItem("medomitra_doctor_token", data.token);
+        localStorage.setItem("medomitra_doctor_user", JSON.stringify(data.user));
+        window.location.href = "../Doctor-Portal/dashboard.html";
+      } catch {
+        setError("doctor-reg-form-error", "Could not reach the server. Please make sure the backend is running.");
+      } finally {
+        btn.disabled = false; btn.textContent = original;
+      }
+    });
+
+    window.__medomitraShowDefaultTab("login");
+  </script>
+</body>
+
+</html>
